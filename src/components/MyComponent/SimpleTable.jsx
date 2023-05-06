@@ -17,41 +17,15 @@ import AddIcon from '@mui/icons-material/Add';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
-import lightBlue from '@mui/material/colors/lightBlue';
+// import lightBlue from '@mui/material/colors/lightBlue';
 import ArrowDropDownCircleIcon from '@mui/icons-material/ArrowDropDownCircle';
 
-// const hoverColor = lightBlue[100];
-// const darkHoverColor = lightBlue[700];
-// const selectedColor = lightBlue[300];
-// const darkSelectedColor = lightBlue[900];
-
-// const useStyles = makeStyles(theme => ({
-//   tableButtons: {
-//     marginLeft: 'auto'
-//   },
-//   tablePaper: {
-//     overflowX: 'auto'
-//   },
-//   selected: {
-//     backgroundColor: (theme.palette.type === 'light') ? selectedColor : darkSelectedColor
-//   },
-//   pointer: {
-//     cursor: 'pointer',
-//     '&:hover': {
-//       backgroundColor: (theme.palette.type === 'light') ? hoverColor : darkHoverColor
-//     }
-//   },
-//   sortAction: {
-//     cursor: 'pointer'
-//   }
-// }));
 
 const SimpleTable = (props) => {
-  const classes = useStyles(props);
-  const { data, onSelection, onAdd, onFilter, onSort, sortBy, sortdir, tableTitle, children, ...configProps } = props;
-  const [selectedRow, setSelectedRow] = useState();
+const { data, onSelection, onAdd, onFilter, onSort, sortBy, sortdir, tableTitle, children, ...configProps } = props;
+const [selectedRow, setSelectedRow] = useState();
 
-  const handleSelect = (row) => {
+const handleSelect = (row) => {
     if (onSelection) {
       setSelectedRow(row);
       onSelection(row);
@@ -59,7 +33,7 @@ const SimpleTable = (props) => {
   };
 
   return (
-    <Paper className={classes.tablePaper}>
+    <Paper /*className={classes.tablePaper}*/>
       <TableContainer>
         <Toolbar>
           <Box flexGrow={3}>
@@ -69,25 +43,25 @@ const SimpleTable = (props) => {
           </Box>
           {Boolean(onFilter) &&
             <Tooltip TransitionComponent={Zoom} title={<Typography>Filter</Typography>}>
-              <IconButton data-cy='table-filter-button' className={classes.tableButtons} onClick={onFilter} color='primary'><FilterListIcon /></IconButton>
+              <IconButton data-cy='table-filter-button' /*className={classes.tableButtons}*/ onClick={onFilter} color='primary'><FilterListIcon /></IconButton>
             </Tooltip>}
           {Boolean(onAdd) &&
             <Tooltip TransitionComponent={Zoom} title={<Typography>Add</Typography>}>
-              <IconButton data-cy='table-add-button' className={classes.tableButtons} onClick={onAdd} color='primary'><AddIcon /></IconButton>
+              <IconButton data-cy='table-add-button' /*className={classes.tableButtons}*/ onClick={onAdd} color='primary'><AddIcon /></IconButton>
             </Tooltip>}
         </Toolbar>
         <Table sx={{ minWidth: 650 }} aria-label='simple table' data-cy='simple-table'>
           <TableHead>
             <TableRow>
-              {configProps.columns.map((column, colIndex) => {
+              {configProps.columns?.map((column, colIndex) => {
                 return column.sortable
                   ? (
                     <TableCell key={'header' + colIndex} data-cy='table-header-cell'>
                       <TableSortLabel
                         onClick={() => onSort(column.columnName, sortdir === 'desc' ? 'asc' : 'desc')}
-                        className={classes.sortAction}
+                        /*className={classes.sortAction}*/
                         direction={sortdir}
-                        IconComponent={ArrowDropDown}
+                        IconComponent={ArrowDropDownCircleIcon}
                       >
                         <Typography>{column.headerText}</Typography>
                       </TableSortLabel>
@@ -102,16 +76,16 @@ const SimpleTable = (props) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.map((row, rowIndex) => {
+            {data?.map((row, rowIndex) => {
               return (
                 <TableRow
                   data-cy='simple-table-row'
-                  classes={(onSelection) ? { root: classes.pointer } : {}}
-                  className={row === selectedRow ? classes.selected : ''}
+                  /*classes={(onSelection) ? { root: classes.pointer } : {}}*/
+                  /*className={row === selectedRow ? classes.selected : ''}*/
                   key={configProps.dataKey(row)}
                   onClick={onSelection && (() => handleSelect(row))}
                 >
-                  {configProps.columns.map((col, colIndex) =>
+                  {configProps.columns?.map((col, colIndex) =>
                     <TableCell key={'TblCell' + colIndex} data-cy='simple-table-cell'>{col.value(row)}</TableCell>
                   )}
                 </TableRow>
