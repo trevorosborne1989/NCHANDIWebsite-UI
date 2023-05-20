@@ -1,7 +1,15 @@
 import logo from './logo.svg';
-import NCHANDIWebsiteService from './lib/NCHANDIWebsiteService';
 import React, { useState, useEffect, useCallback } from 'react';
+import { Route, Redirect } from 'react-router-dom';
 import './App.css';
+import { Root, Header, EdgeSidebar, EdgeTrigger, Content, Footer } from '@mui-treasury/layout';
+import { Box, Container, IconButton, Toolbar, Typography } from '@mui/material';
+import { Menu, KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material';
+import CssBaseline from "@mui/material/CssBaseline";
+
+import NCHANDIWebsiteService from './lib/NCHANDIWebsiteService';
+import IconMenu from './components/IconMenu/IconMenu';
+
 
 const nchandiWebsiteService = new NCHANDIWebsiteService();
 
@@ -21,31 +29,75 @@ function App() {
     }
   }, []);
 
- /**
-   *
-   */
- useEffect(() => {
-  fetchTableData();
-}, [fetchTableData]);
+  /**
+     *
+     */
+  useEffect(() => {
+    fetchTableData();
+  }, [fetchTableData]);
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        {console.log(tableData)}
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Root
+      scheme={{
+        header: {
+          config: {
+            xs: {
+              position: "sticky",
+              height: 56,
+            },
+          },
+        },
+        leftEdgeSidebar: {
+          config: {
+            xs: {
+              variant: "temporary",
+              width: "auto"
+            },
+          },
+        },
+      }}
+    >
+      <CssBaseline />
+      <Header>
+      <Box sx={{ flex: 1, display: "flex", alignItems: "center", px: 2, gap: 1 }} >
+        <EdgeTrigger target={{ anchor: "left", field: "open" }}>
+          {(open, setOpen) => (
+            <IconButton onClick={() => setOpen(!open)}>
+              {open ? <KeyboardArrowLeft /> : <Menu />}
+            </IconButton>
+          )}
+        </EdgeTrigger>
+        <Box>
+          <Typography variant='h5' data-cy='header-title'>
+            North County H&I
+          </Typography>
+        </Box>
+      </Box>
+      </Header>
+      <EdgeSidebar anchor="left">
+        <IconMenu />
+      </EdgeSidebar>
+      <Content>
+        <Container>
+          <Box>
+            <Typography variant='h2'>
+              North County Hospital & Institutions
+            </Typography>
+          </Box>
+          <Box>
+            <Typography variant='h5'>
+              Sharing the AA message to those who cannot get to a meeting in North County San Diego
+            </Typography>
+          </Box>
+          <Box>
+            <Typography variant='h3'>
+              Interested in joining North County H&I?
+            </Typography>
+          </Box>
+        </Container>
+      </Content>
+      <Footer>Footer</Footer>
+    </Root>
   );
 }
 
