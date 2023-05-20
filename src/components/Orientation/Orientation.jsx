@@ -1,7 +1,9 @@
 import React from 'react';
 
 const Orientation = () => {
-    Orientation
+    return (
+        Orientation
+    )
 }
 
 export default Orientation;

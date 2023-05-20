@@ -1,7 +1,9 @@
 import React from 'react';
 
 const Panels = () => {
-    Panels
+    return (
+        Panels
+    )
 }
 
 export default Panels;

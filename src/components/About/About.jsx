@@ -1,7 +1,10 @@
 import React from 'react';
 
 const About = () => {
-    About
+    return (
+        About
+    )
+
 }
 
 export default About;

@@ -1,7 +1,9 @@
 import React from 'react';
 
 const Resources = () => {
-    Resources
+    return (
+        Resources
+    )
 }
 
 export default Resources;

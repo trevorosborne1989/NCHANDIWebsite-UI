@@ -1,7 +1,9 @@
 import React from 'react';
 
 const Login = () => {
-    Login
+    return (
+        Login
+    )
 }
 
 export default Login;
