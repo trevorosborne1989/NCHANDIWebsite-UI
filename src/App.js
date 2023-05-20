@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import { Root, Header, EdgeSidebar, EdgeTrigger, Content, Footer } from '@mui-treasury/layout';
-import { Box, Container, IconButton, Typography } from '@mui/material';
-import { Menu, KeyboardArrowLeft } from '@mui/icons-material';
+import { Box, IconButton, Typography } from '@mui/material';
+import { Menu, KeyboardArrowLeft, Home } from '@mui/icons-material';
 import CssBaseline from "@mui/material/CssBaseline";
 
 import NCHANDIWebsiteService from './lib/NCHANDIWebsiteService';
+import HomePage from './components/HomePage/HomePage';
 import IconMenu from './components/IconMenu/IconMenu';
 
 
@@ -76,23 +77,7 @@ function App() {
         <IconMenu />
       </EdgeSidebar>
       <Content>
-        <Container>
-          <Box>
-            <Typography variant='h2'>
-              North County Hospital & Institutions
-            </Typography>
-          </Box>
-          <Box>
-            <Typography variant='h5'>
-              Sharing the AA message to those who cannot get to a meeting in North County San Diego
-            </Typography>
-          </Box>
-          <Box>
-            <Typography variant='h3'>
-              Interested in joining North County H&I?
-            </Typography>
-          </Box>
-        </Container>
+        <HomePage></HomePage>
       </Content>
       <Footer>Footer</Footer>
     </Root>
