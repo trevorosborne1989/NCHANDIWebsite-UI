@@ -5,10 +5,15 @@ import MenuItem from '@mui/material/MenuItem';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import { Typography, Box, Divider } from '@mui/material';
-import ContentCut from '@mui/icons-material/ContentCut';
-import ContentCopy from '@mui/icons-material/ContentCopy';
-import ContentPaste from '@mui/icons-material/ContentPaste';
-import Cloud from '@mui/icons-material/Cloud';
+import {
+  Home,
+  Info,
+  AdminPanelSettings,
+  ContactPhone,
+  LockOpen,
+  School,
+  LocalHospital,
+  LibraryBooks} from '@mui/icons-material';
 import { yellow } from '@mui/material/colors';
 
 export default function IconMenu() {
@@ -25,37 +30,52 @@ export default function IconMenu() {
       <MenuList>
         <MenuItem>
           <ListItemIcon>
-            <ContentCut fontSize="small" />
+            <Home fontSize="medium" />
           </ListItemIcon>
-          <ListItemText>Cut</ListItemText>
-          <Typography variant="body2" color="text.secondary">
-            ⌘X
-          </Typography>
+          <ListItemText>Home</ListItemText>
         </MenuItem>
         <MenuItem>
           <ListItemIcon>
-            <ContentCopy fontSize="small" />
+            <Info fontSize="medium" />
           </ListItemIcon>
-          <ListItemText>Copy</ListItemText>
-          <Typography variant="body2" color="text.secondary">
-            ⌘C
-          </Typography>
+          <ListItemText>About</ListItemText>
         </MenuItem>
         <MenuItem>
           <ListItemIcon>
-            <ContentPaste fontSize="small" />
+            <School fontSize="medium" />
           </ListItemIcon>
-          <ListItemText>Paste</ListItemText>
-          <Typography variant="body2" color="text.secondary">
-            ⌘V
-          </Typography>
+          <ListItemText>Orientation</ListItemText>
+        </MenuItem>
+        <MenuItem>
+          <ListItemIcon>
+            <LocalHospital fontSize="medium" />
+          </ListItemIcon>
+          <ListItemText>Panels</ListItemText>
+        </MenuItem>
+        <MenuItem>
+          <ListItemIcon>
+            <LibraryBooks fontSize="medium" />
+          </ListItemIcon>
+          <ListItemText>Resources</ListItemText>
+        </MenuItem>
+        <MenuItem>
+          <ListItemIcon>
+            <ContactPhone fontSize="medium" />
+          </ListItemIcon>
+          <ListItemText>Contacts</ListItemText>
+        </MenuItem>
+        <MenuItem>
+          <ListItemIcon>
+            <LockOpen fontSize="medium" />
+          </ListItemIcon>
+          <ListItemText>Login</ListItemText>
         </MenuItem>
         <Divider />
         <MenuItem>
           <ListItemIcon>
-            <Cloud fontSize="small" />
+            <AdminPanelSettings fontSize="medium" />
           </ListItemIcon>
-          <ListItemText>Web Clipboard</ListItemText>
+          <ListItemText>Admin</ListItemText>
         </MenuItem>
       </MenuList>
     </Paper>

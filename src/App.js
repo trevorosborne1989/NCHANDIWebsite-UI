@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import { Root, Header, EdgeSidebar, EdgeTrigger, Content, Footer } from '@mui-treasury/layout';
 import { Box, IconButton, Typography } from '@mui/material';
-import { Menu, KeyboardArrowLeft, Home } from '@mui/icons-material';
+import { Menu, KeyboardArrowLeft } from '@mui/icons-material';
 import CssBaseline from "@mui/material/CssBaseline";
 
 import NCHANDIWebsiteService from './lib/NCHANDIWebsiteService';
