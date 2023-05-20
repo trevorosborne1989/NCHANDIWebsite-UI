@@ -6,6 +6,8 @@
     "@date-io/moment": "^2.16.1",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
+    "@mui-treasury/layout": "^5.0.0",
+    "@mui-treasury/mockup": "^1.2.12",
     "@mui/icons-material": "^5.11.16",
     "@mui/material": "^5.12.2",
     "@testing-library/jest-dom": "^5.16.5",
