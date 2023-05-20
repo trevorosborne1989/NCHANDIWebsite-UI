@@ -1,10 +1,8 @@
-import logo from './logo.svg';
 import React, { useState, useEffect, useCallback } from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import './App.css';
 import { Root, Header, EdgeSidebar, EdgeTrigger, Content, Footer } from '@mui-treasury/layout';
-import { Box, Container, IconButton, Toolbar, Typography } from '@mui/material';
-import { Menu, KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material';
+import { Box, Container, IconButton, Typography } from '@mui/material';
+import { Menu, KeyboardArrowLeft } from '@mui/icons-material';
 import CssBaseline from "@mui/material/CssBaseline";
 
 import NCHANDIWebsiteService from './lib/NCHANDIWebsiteService';
