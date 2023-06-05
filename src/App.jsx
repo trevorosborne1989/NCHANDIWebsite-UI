@@ -25,6 +25,7 @@ import {
   Menu,
   KeyboardArrowLeft
 } from '@mui/icons-material';
+import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { yellow } from '@mui/material/colors';
 import CssBaseline from "@mui/material/CssBaseline";
 import {
@@ -48,6 +49,17 @@ import Admin from './components/Admin/Admin';
 
 
 // const nchandiWebsiteService = new NCHANDIWebsiteService();
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#245980"
+    },
+    secondary: {
+      main: "#007343"
+    }
+  }
+});
 
 function Router(props) {
   const { children } = props;
@@ -126,85 +138,87 @@ function App() {
 
   return (
     <Router>
-      <Root
-        scheme={{
-          header: {
-            config: {
-              xs: {
-                position: "sticky",
-                height: 56,
+      <ThemeProvider theme={theme}>
+        <Root
+          scheme={{
+            header: {
+              config: {
+                xs: {
+                  position: "sticky",
+                  height: 56,
+                },
               },
             },
-          },
-          leftEdgeSidebar: {
-            config: {
-              xs: {
-                variant: "temporary",
-                width: "auto"
+            leftEdgeSidebar: {
+              config: {
+                xs: {
+                  variant: "temporary",
+                  width: "auto"
+                },
               },
             },
-          },
-        }}
-      >
-        <CssBaseline />
-        <Header>
-        <Box sx={{ flex: 1, display: "flex", alignItems: "center", px: 2, gap: 1 }} >
-          <EdgeTrigger target={{ anchor: "left", field: "open" }}>
-            {(open, setOpen) => (
-              <IconButton onClick={() => setOpen(!open)}>
-                {open ? <KeyboardArrowLeft /> : <Menu />}
-              </IconButton>
-            )}
-          </EdgeTrigger>
-          <Box>
-            <Typography variant='h5' data-cy='header-title'>
-              North County H&I
-            </Typography>
+          }}
+        >
+          <CssBaseline />
+          <Header>
+          <Box sx={{ flex: 1, display: "flex", alignItems: "center", px: 2, gap: 1 }} >
+            <EdgeTrigger target={{ anchor: "left", field: "open" }}>
+              {(open, setOpen) => (
+                <IconButton onClick={() => setOpen(!open)}>
+                  {open ? <KeyboardArrowLeft /> : <Menu />}
+                </IconButton>
+              )}
+            </EdgeTrigger>
+            <Box>
+              <Typography variant='h5' data-cy='header-title'>
+                North County H&I
+              </Typography>
+            </Box>
           </Box>
-        </Box>
-        </Header>
-        <EdgeSidebar anchor="left">
-          <Paper sx={{ width: 320, maxWidth: '100%' }}>
-              <Box display='flex' justifyContent='center'>
-                <Box>
-                    <Typography variant="h5" color={yellow}>
-                        NCHANDI
-                    </Typography>
+          </Header>
+          <EdgeSidebar anchor="left">
+            <Paper sx={{ width: 320, maxWidth: '100%' }}>
+                <Box display='flex' justifyContent='center'>
+                  <Box>
+                      <Typography variant="h5" color={yellow}>
+                          NCHANDI
+                      </Typography>
+                  </Box>
                 </Box>
-              </Box>
-              <Divider />
-              <List>
-                <ListItemLink to="/homepage" primary="Home" icon={<Home fontSize="medium" />} />
-                <ListItemLink to="/about" primary="About" icon={<Info fontSize="medium" />} />
-                <ListItemLink to="/orientation" primary="Orientation" icon={<School fontSize="medium" />} />
-                <ListItemLink to="/panels" primary="Panels" icon={<LocalHospital fontSize="medium" />} />
-                <ListItemLink to="/resources" primary="Resources" icon={<LibraryBooks fontSize="medium" />} />
-                <ListItemLink to="/contacts" primary="Contacts" icon={<ContactPhone fontSize="medium" />} />
-                <ListItemLink to="/login" primary="Login" icon={<LockOpen fontSize="medium" />} />
-              </List>
-              <Divider />
-              <List>
-                <ListItemLink to="/admin" primary="Admin" icon={<AdminPanelSettings fontSize="medium" />} />
-              </List>
-          </Paper>
-        </EdgeSidebar>
-        <Content>
-          <Routes>
-            <Route path="*" element={<RouterContent />} />
-            <Route path='/homepage' element={<HomePage />} />
-            <Route path='/about' element={<About />} />
-            <Route path='/orientation' element={<Orientation />} />
-            <Route path='/panels' element={<Panels />} />
-            <Route path='/resources' element={<Resources />} />
-            <Route path='/contact' element={<Contact />} />
-            <Route path='/login' element={<Login />} />
-            <Route path='/admin' element={<Admin />} />
-          </Routes>
-        </Content>
-        <div id="detail">
-        </div>
-        <Footer>Footer</Footer>
-      </Root>
+                <Divider />
+                <List>
+                  <ListItemLink to="/homepage" primary="Home" icon={<Home fontSize="medium" />} />
+                  <ListItemLink to="/about" primary="About" icon={<Info fontSize="medium" />} />
+                  <ListItemLink to="/orientation" primary="Orientation" icon={<School fontSize="medium" />} />
+                  <ListItemLink to="/panels" primary="Panels" icon={<LocalHospital fontSize="medium" />} />
+                  <ListItemLink to="/resources" primary="Resources" icon={<LibraryBooks fontSize="medium" />} />
+                  <ListItemLink to="/contacts" primary="Contacts" icon={<ContactPhone fontSize="medium" />} />
+                  <ListItemLink to="/login" primary="Login" icon={<LockOpen fontSize="medium" />} />
+                </List>
+                <Divider />
+                <List>
+                  <ListItemLink to="/admin" primary="Admin" icon={<AdminPanelSettings fontSize="medium" />} />
+                </List>
+            </Paper>
+          </EdgeSidebar>
+          <Content>
+            <Routes>
+              <Route path="*" element={<RouterContent />} />
+              <Route path='/homepage' element={<HomePage />} />
+              <Route path='/about' element={<About />} />
+              <Route path='/orientation' element={<Orientation />} />
+              <Route path='/panels' element={<Panels />} />
+              <Route path='/resources' element={<Resources />} />
+              <Route path='/contact' element={<Contact />} />
+              <Route path='/login' element={<Login />} />
+              <Route path='/admin' element={<Admin />} />
+            </Routes>
+          </Content>
+          <div id="detail">
+          </div>
+          <Footer>Footer</Footer>
+        </Root>
+      </ThemeProvider>
     </Router>
   );
 }

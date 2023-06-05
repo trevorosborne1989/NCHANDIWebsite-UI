@@ -1,5 +1,6 @@
 import React from 'react';
 import { Box, Container, Typography } from '@mui/material';
+import { Button } from '@mui/material';
 
 const HomePage = () => {
 
@@ -10,6 +11,10 @@ const HomePage = () => {
             <Typography variant='h2'>
               North County Hospital & Institutions
             </Typography>
+          </Box>
+          <Box>
+          <Button variant="contained" color='primary'>Contained</Button>
+          <Button variant="contained" color='secondary'>Contained</Button>
           </Box>
           <Box>
             <Typography variant='h5'>
