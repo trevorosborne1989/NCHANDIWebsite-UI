@@ -1,28 +1,28 @@
 import React from 'react';
 import { Box, Container, Typography } from '@mui/material';
 
-const Contact = () => {
+const Admin = () => {
 
 
     return (
         <Container>
           <Box>
             <Typography variant='h2'>
-              Contact
+              Admin
             </Typography>
           </Box>
           <Box>
             <Typography variant='h5'>
-              Please Contact Us
+              Content for Admin's
             </Typography>
           </Box>
           <Box>
             <Typography variant='h3'>
-              Contact listing
+              Content for Admin's
             </Typography>
           </Box>
         </Container>
     )
 }
 
-export default Contact;
+export default Admin;

@@ -1,19 +1,19 @@
 import React from 'react';
-import About from './About'
+import Admin from './Admin'
 
 
 export default {
-    title: 'About',
-    component: About,
+    title: 'Admin',
+    component: Admin,
   };
 
   export const Primary = ({...props}) => {
 
       return (
         <>
-          <About>
+          <Admin>
 
-          </About>
+          </Admin>
         </>
       );
     };
