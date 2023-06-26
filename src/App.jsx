@@ -1,7 +1,7 @@
 // import React, { useState, useEffect, useCallback } from 'react';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Root, Header, EdgeSidebar, EdgeTrigger, Content, Footer } from '@mui-treasury/layout';
+import { Root, Header, EdgeSidebar, EdgeTrigger, Content, Footer, SidebarContent, } from '@mui-treasury/layout';
 import {
   Typography,
   Box,
@@ -11,7 +11,8 @@ import {
   ListItemText,
   Paper,
   List,
-  ListItem
+  ListItem,
+  ButtonBase,
 } from '@mui/material';
 import {
   Home,
@@ -23,10 +24,10 @@ import {
   LocalHospital,
   LibraryBooks,
   Menu,
-  KeyboardArrowLeft
+  KeyboardArrowLeft,
+  KeyboardArrowRight,
 } from '@mui/icons-material';
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-import { yellow } from '@mui/material/colors';
 import CssBaseline from "@mui/material/CssBaseline";
 import {
   Link as RouterLink,
@@ -46,17 +47,24 @@ import Resources from './components/Resources/Resources';
 import Contact from './components/Contact/Contact';
 import Login from './components/Login/Login';
 import Admin from './components/Admin/Admin';
+import NchandiIcon from './components/NchandiIcon/NchandiIcon';
 
 
 // const nchandiWebsiteService = new NCHANDIWebsiteService();
 
+const nchandiTheme = {
+  handiBlue: "#245980",
+  handiDarkBlue: "#2b3440",
+  handiGreen: "#007343"
+}
+
 const theme = createTheme({
   palette: {
     primary: {
-      main: "#245980"
+      main: nchandiTheme.handiBlue
     },
     secondary: {
-      main: "#007343"
+      main: nchandiTheme.handiGreen
     }
   }
 });
@@ -147,6 +155,11 @@ function App() {
                   position: "sticky",
                   height: 56,
                 },
+                md: {
+                  position: "relative",
+                  height: 64,
+                  clipped: true,
+                },
               },
             },
             leftEdgeSidebar: {
@@ -155,68 +168,69 @@ function App() {
                   variant: "temporary",
                   width: "auto"
                 },
+                md: {
+                  variant: "permanent", // eliminate md property to make non permenant sidebar
+                  width: 256,
+                  collapsible: true,
+                  collapsedWidth: 64,
+                },
               },
             },
           }}
         >
           <CssBaseline />
-          <Header>
+          <Header elevation={8} sx={{ backgroundColor: nchandiTheme.handiGreen }}>
           <Box sx={{ flex: 1, display: "flex", alignItems: "center", px: 2, gap: 1 }} >
-            <EdgeTrigger target={{ anchor: "left", field: "open" }}>
+            <EdgeTrigger target={{ anchor: "left", field: "open" }} >
               {(open, setOpen) => (
                 <IconButton onClick={() => setOpen(!open)}>
                   {open ? <KeyboardArrowLeft /> : <Menu />}
                 </IconButton>
               )}
             </EdgeTrigger>
-            <Box>
+            <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
+              <NchandiIcon sx={{ color: 'action.active', mr: 1, my: 0.5 }}/>
               <Typography variant='h5' data-cy='header-title'>
                 North County H&I
               </Typography>
             </Box>
           </Box>
           </Header>
-          <EdgeSidebar anchor="left">
-            <Paper sx={{ width: 320, maxWidth: '100%' }}>
-                <Box display='flex' justifyContent='center'>
-                  <Box>
-                      <Typography variant="h5" color={yellow}>
-                          NCHANDI
-                      </Typography>
-                  </Box>
-                </Box>
-                <Divider />
-                <List>
-                  <ListItemLink to="/homepage" primary="Home" icon={<Home fontSize="medium" />} />
-                  <ListItemLink to="/about" primary="About" icon={<Info fontSize="medium" />} />
-                  <ListItemLink to="/orientation" primary="Orientation" icon={<School fontSize="medium" />} />
-                  <ListItemLink to="/panels" primary="Panels" icon={<LocalHospital fontSize="medium" />} />
-                  <ListItemLink to="/resources" primary="Resources" icon={<LibraryBooks fontSize="medium" />} />
-                  <ListItemLink to="/contacts" primary="Contacts" icon={<ContactPhone fontSize="medium" />} />
-                  <ListItemLink to="/login" primary="Login" icon={<LockOpen fontSize="medium" />} />
-                </List>
-                <Divider />
-                <List>
-                  <ListItemLink to="/admin" primary="Admin" icon={<AdminPanelSettings fontSize="medium" />} />
-                </List>
+          <EdgeSidebar anchor="left" >
+            <Paper sx={{ width: 320, maxWidth: '100%', backgroundColor: nchandiTheme.handiGreen }}>
+              <Divider />
+              <List>
+                <ListItemLink to="/homepage" primary="Home" icon={<Home fontSize="medium" />} />
+                <ListItemLink to="/about" primary="About" icon={<Info fontSize="medium" />} />
+                <ListItemLink to="/orientation" primary="Orientation" icon={<School fontSize="medium" />} />
+                <ListItemLink to="/panels" primary="Panels" icon={<LocalHospital fontSize="medium" />} />
+                <ListItemLink to="/resources" primary="Resources" icon={<LibraryBooks fontSize="medium" />} />
+                <ListItemLink to="/contacts" primary="Contacts" icon={<ContactPhone fontSize="medium" />} />
+                <ListItemLink to="/login" primary="Login" icon={<LockOpen fontSize="medium" />} />
+              </List>
+              <Divider />
+              <List>
+                <ListItemLink to="/admin" primary="Admin" icon={<AdminPanelSettings fontSize="medium" />} />
+              </List>
             </Paper>
+            <SidebarContent sx={{ backgroundColor: nchandiTheme.handiGreen }}> </SidebarContent>
           </EdgeSidebar>
-          <Content>
-            <Routes>
-              <Route path="*" element={<RouterContent />} />
-              <Route path='/homepage' element={<HomePage />} />
-              <Route path='/about' element={<About />} />
-              <Route path='/orientation' element={<Orientation />} />
-              <Route path='/panels' element={<Panels />} />
-              <Route path='/resources' element={<Resources />} />
-              <Route path='/contact' element={<Contact />} />
-              <Route path='/login' element={<Login />} />
-              <Route path='/admin' element={<Admin />} />
-            </Routes>
+          <Content >
+            <Paper variant="outlined" elevation={1} sx={{backgroundColor: nchandiTheme.handiBlue}}>
+              <Routes>
+                <Route path="*" element={<RouterContent />} />
+                <Route path='/homepage' element={<HomePage />} />
+                <Route path='/about' element={<About />} />
+                <Route path='/orientation' element={<Orientation />} />
+                <Route path='/panels' element={<Panels />} />
+                <Route path='/resources' element={<Resources />} />
+                <Route path='/contact' element={<Contact />} />
+                <Route path='/login' element={<Login />} />
+                <Route path='/admin' element={<Admin />} />
+              </Routes>
+            </Paper>
           </Content>
-          <div id="detail">
-          </div>
-          <Footer>Footer</Footer>
+          <Footer sx={{backgroundColor: nchandiTheme.handiDarkBlue}}>Footer</Footer>
         </Root>
       </ThemeProvider>
     </Router>
