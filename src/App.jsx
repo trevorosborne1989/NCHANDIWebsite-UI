@@ -12,7 +12,6 @@ import {
   Paper,
   List,
   ListItem,
-  ButtonBase,
 } from '@mui/material';
 import {
   Home,
@@ -25,7 +24,7 @@ import {
   LibraryBooks,
   Menu,
   KeyboardArrowLeft,
-  KeyboardArrowRight,
+  ExtensionTwoTone,
 } from '@mui/icons-material';
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -47,15 +46,20 @@ import Resources from './components/Resources/Resources';
 import Contact from './components/Contact/Contact';
 import Login from './components/Login/Login';
 import Admin from './components/Admin/Admin';
-import NchandiIcon from './components/NchandiIcon/NchandiIcon';
+// import NchandiIcon from './components/NchandiIcon/NchandiIcon';
 
 
 // const nchandiWebsiteService = new NCHANDIWebsiteService();
 
-const nchandiTheme = {
+export const nchandiTheme = {
   handiBlue: "#245980",
   handiDarkBlue: "#2b3440",
-  handiGreen: "#007343"
+  handiGreen: "#31a36e",
+  handiDarkGreen: "#007343",
+  handiSecondaryWhite: "#e6e6e6",
+  handiGrey: "#747373",
+  handiYellow: "#ffc107",
+  handiDarkYellow: "#c79100"
 }
 
 const theme = createTheme({
@@ -64,7 +68,7 @@ const theme = createTheme({
       main: nchandiTheme.handiBlue
     },
     secondary: {
-      main: nchandiTheme.handiGreen
+      main: nchandiTheme.handiDarkGreen
     }
   }
 });
@@ -98,7 +102,7 @@ function ListItemLink(props) {
     <li>
       <ListItem button component={Link} to={to}>
         {icon ? <ListItemIcon>{icon}</ListItemIcon> : null}
-        <ListItemText primary={primary} />
+        <ListItemText primary={primary} sx={{ color: 'white' }} />
       </ListItem>
     </li>
   );
@@ -156,9 +160,9 @@ function App() {
                   height: 56,
                 },
                 md: {
-                  position: "relative",
+                  position: "permanent",
                   height: 64,
-                  clipped: true,
+                  clipped: false, // Add this if you uncomment the bottom
                 },
               },
             },
@@ -168,52 +172,52 @@ function App() {
                   variant: "temporary",
                   width: "auto"
                 },
-                md: {
-                  variant: "permanent", // eliminate md property to make non permenant sidebar
-                  width: 256,
-                  collapsible: true,
-                  collapsedWidth: 64,
-                },
+                // md: {
+                //   variant: "permanent", // eliminate md property to make non permenant sidebar
+                //   width: 256,
+                //   collapsible: true,
+                //   collapsedWidth: 64,
+                // },
               },
             },
           }}
         >
           <CssBaseline />
-          <Header elevation={8} sx={{ backgroundColor: nchandiTheme.handiGreen }}>
+          <Header elevation={8} sx={{ backgroundColor: nchandiTheme.handiDarkGreen }}>
           <Box sx={{ flex: 1, display: "flex", alignItems: "center", px: 2, gap: 1 }} >
             <EdgeTrigger target={{ anchor: "left", field: "open" }} >
               {(open, setOpen) => (
                 <IconButton onClick={() => setOpen(!open)}>
-                  {open ? <KeyboardArrowLeft /> : <Menu />}
+                  {open ? <KeyboardArrowLeft sx={{ color: 'white' }} /> : <Menu sx={{ color: 'white' }} />}
                 </IconButton>
               )}
             </EdgeTrigger>
-            <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
-              <NchandiIcon sx={{ color: 'action.active', mr: 1, my: 0.5 }}/>
-              <Typography variant='h5' data-cy='header-title'>
+            <Box display={'flex'} sx={{  alignItems: 'center' }}>
+              <ExtensionTwoTone sx={{ color: 'white', fontSize: 50, mr: 1, my: 0.5 }}/>
+              <Typography variant='h5' color={'white'} textAlign='justify' data-cy='header-title'>
                 North County H&I
               </Typography>
             </Box>
           </Box>
           </Header>
           <EdgeSidebar anchor="left" >
-            <Paper sx={{ width: 320, maxWidth: '100%', backgroundColor: nchandiTheme.handiGreen }}>
+            <Paper sx={{ width: 320, maxWidth: '100%', backgroundColor: nchandiTheme.handiDarkGreen }}>
               <Divider />
               <List>
-                <ListItemLink to="/homepage" primary="Home" icon={<Home fontSize="medium" />} />
-                <ListItemLink to="/about" primary="About" icon={<Info fontSize="medium" />} />
-                <ListItemLink to="/orientation" primary="Orientation" icon={<School fontSize="medium" />} />
-                <ListItemLink to="/panels" primary="Panels" icon={<LocalHospital fontSize="medium" />} />
-                <ListItemLink to="/resources" primary="Resources" icon={<LibraryBooks fontSize="medium" />} />
-                <ListItemLink to="/contacts" primary="Contacts" icon={<ContactPhone fontSize="medium" />} />
-                <ListItemLink to="/login" primary="Login" icon={<LockOpen fontSize="medium" />} />
+                <ListItemLink to="/homepage" primary="Home" icon={<Home fontSize="medium" sx={{ color: 'white'}} />} />
+                <ListItemLink to="/about" primary="About" icon={<Info fontSize="medium" sx={{ color: 'white'}} />} />
+                <ListItemLink to="/orientation" primary="Orientation" icon={<School fontSize="medium" sx={{ color: 'white'}} />} />
+                <ListItemLink to="/panels" primary="Panels" icon={<LocalHospital fontSize="medium" sx={{ color: 'white'}} />} />
+                <ListItemLink to="/resources" primary="Resources" icon={<LibraryBooks fontSize="medium" sx={{ color: 'white'}} />} />
+                <ListItemLink to="/contacts" primary="Contacts" icon={<ContactPhone fontSize="medium"  sx={{ color: 'white'}} />} />
+                <ListItemLink to="/login" primary="Login" icon={<LockOpen fontSize="medium" sx={{ color: 'white'}} />} />
               </List>
               <Divider />
               <List>
-                <ListItemLink to="/admin" primary="Admin" icon={<AdminPanelSettings fontSize="medium" />} />
+                <ListItemLink to="/admin" primary="Admin" icon={<AdminPanelSettings fontSize="medium" sx={{ color: 'white'}} />} />
               </List>
             </Paper>
-            <SidebarContent sx={{ backgroundColor: nchandiTheme.handiGreen }}> </SidebarContent>
+            <SidebarContent sx={{ backgroundColor: nchandiTheme.handiDarkGreen }}> </SidebarContent>
           </EdgeSidebar>
           <Content >
             <Paper variant="outlined" elevation={1} sx={{backgroundColor: nchandiTheme.handiBlue}}>
@@ -230,7 +234,22 @@ function App() {
               </Routes>
             </Paper>
           </Content>
-          <Footer sx={{backgroundColor: nchandiTheme.handiDarkBlue}}>Footer</Footer>
+          <Footer sx={{backgroundColor: nchandiTheme.handiDarkBlue, minHeight: 50}}>
+            <Box display='flex' sx={{ flexDirection: 'row', minWidth: 100 }} alignItems="center" py={1} mb={1}>
+              <ExtensionTwoTone sx={{ color: 'white', fontSize: 50, ml: 3, my: 0.5 }}/>
+              <Typography variant='h6' color='white' sx={{ minWidth: 125 }} marginRight={3}>
+                North County H&I
+              </Typography>
+              <Box sx={{ flexDirection: 'column', minWidth: 275 }} display='flex' alignItems='right' py={3} mb={2} >
+                <Typography variant='h7' color='white' sx={{ minWidth: 125 }}  marginLeft={3} marginRight={3} mb={1}>
+                  PO Box 4013, Carlsbad, CA 92018
+                </Typography>
+                <Typography variant='h7' color='white' sx={{ minWidth: 125 }} align='right' marginLeft={3} marginRight={3} >
+                  info@nchandi.org
+                </Typography>
+              </Box>
+            </Box>
+          </Footer>
         </Root>
       </ThemeProvider>
     </Router>

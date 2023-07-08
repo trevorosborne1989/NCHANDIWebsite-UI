@@ -1,52 +1,135 @@
 import React from 'react';
-import { Box, Container, Typography, Card, CardActions, CardContent, Divider } from '@mui/material';
+import { Box, Container, Typography, Card, CardContent, Divider } from '@mui/material';
+import { SendRounded, MailOutline } from '@mui/icons-material'
 import { Button } from '@mui/material';
+import { nchandiTheme } from '../../App';
 
-
-const card = (
-  <React.Fragment>
-    <CardContent>
-      <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-        North County Hospital & Institutions
-      </Typography>
-      <Typography variant="h5" component="div">
-        Sharing the AA message to those who cannot get to a meeting in North County San Diego
-      </Typography>
-      <Typography sx={{ mb: 1.5 }} color="text.secondary">
-        Come join us!
-      </Typography>
-      <Typography variant="body2">
-        Get Connected
-        <br />
-        Join our mailing list to receiving limited emails about orientation dates, panel openings and special events.
-      </Typography>
-    </CardContent>
-    <CardActions>
-      <Button size="small">Register</Button>
-    </CardActions>
-  </React.Fragment>
-);
 
 const HomePage = () => {
 
   return (
     <Container>
-      <Box sx={{ maxWidth: 275 }} py={3} mb={2}>
-        <Card variant="outlined">{card}</Card>
+      <Box sx={{ minWidth: 275 }} textAlign={'center'} py={3} mb={2} >
+        <Typography variant="h3" color={'white'} mb={1.5} >
+          North County Hospitals & Institutions
+        </Typography>
+        <Typography variant='h6' color={'white'}>
+          Sharing the AA message to those who cannot get to a meeting in North County San Diego
+        </Typography>
       </Box>
       <Box py={3}>
         <Divider />
       </Box>
-      <Box sx={{ minWidth: 275 }} py={3} mb={2}>
-        <Card variant="outlined">{card}</Card>
+
+      <Box sx={{ minWidth: 275 }} py={3} mb={2} textAlign={'center'}>
+
+        <Typography variant="h4" color='white' py={2} mb={1.5} >
+          Interested in joining North County H&I?
+        </Typography>
+
+        <Box sx={{ flexDirection: 'column'}} display='flex' justifyContent="center" alignItems="center" py={3} mb={2} >
+          <Card sx={{ backgroundColor: nchandiTheme.handiDarkBlue }} variant="elevation" elevation={10}>
+            <CardContent>
+              <Typography variant='h5' color='white' sx={{ minWidth: 275 }}  py={2} marginLeft={3} marginRight={3} >
+                Learn how to join H&I and attend our orientation meetings.
+              </Typography>
+            </CardContent>
+
+            <Box display='flex' sx={{ minWidth: 275}} justifyContent="center" >
+              <Box display="flex" py={1.5} marginRight={3} >
+                <Button variant='contained' size='large' color='primary' >ORIENTATION</Button>
+              </Box>
+              <Box display="flex" py={1.5} >
+                <Button variant='contained' size='large' color='primary' >CONTACT US</Button>
+              </Box>
+            </Box>
+          </Card>
+        </Box>
+
+        <Box sx={{ flexDirection: 'column'}} display='flex' justifyContent="center" alignItems="center" py={3} mb={2} >
+          <Card sx={{ backgroundColor: nchandiTheme.handiDarkBlue }} variant="elevation" elevation={10}>
+            <CardContent>
+              <Typography variant='h5' color='white' sx={{ minWidth: 275 }} py={2} marginLeft={3} marginRight={3} >
+                Visit our Panels page to learn where we need your help.
+              </Typography>
+            </CardContent>
+
+            <Box display='flex' sx={{ minWidth: 275}} justifyContent="center" >
+              <Box display="flex" py={1.5} >
+                <Button variant='contained' size='large' color='secondary' >OPEN PANELS</Button>
+              </Box>
+            </Box>
+          </Card>
+        </Box>
+
+        <Box sx={{ flexDirection: 'row'}} display='flex' justifyContent="center" alignItems="center" py={3} mb={2} >
+          <Card sx={{ backgroundColor: nchandiTheme.handiDarkBlue }} variant="elevation" elevation={10}>
+            <CardContent>
+              <Typography variant='h5' color='white' sx={{ minWidth: 275 }} py={2} marginLeft={3} marginRight={3} >
+                Visit our resources page to order literature, view our financial
+              </Typography>
+              <Typography variant='h5' color='white' sx={{ minWidth: 275 }} marginLeft={3} marginRight={3} >
+                reports and important links.
+              </Typography>
+            </CardContent>
+
+            <Box display='flex' sx={{ minWidth: 275}} justifyContent="center" >
+              <Box display="flex" py={1.5} >
+                <Button variant='contained' size='large' color='secondary' >RESOURCES</Button>
+              </Box>
+            </Box>
+          </Card>
+        </Box>
       </Box>
-      <Box sx={{ minWidth: 275 }} py={3} mb={2}>
-        <Card variant="outlined">{card}</Card>
+
+      <Box py={3}>
+        <Divider />
+      </Box>
+      <Box display='flex' justifyContent="center" alignItems="left" py={3} mb={2}>
+        <Box display={'flex'} marginRight={3} >
+          <MailOutline sx={{ fontSize: 150, color: nchandiTheme.handiSecondaryWhite }} ></MailOutline>
+        </Box>
+
+        <Box display='flex' sx={{ flexDirection: 'column', minWidth: 275 }}>
+          <Typography variant="h4" color={'white'} gutterBottom>
+            Get Connected
+          </Typography>
+          <Typography variant='h6' color={'white'} gutterBottom>
+            Join our mailing list to receiving limited emails about orientation dates, panel openings and special events.
+          </Typography>
+          <Box display="flex" py={1.5} >
+            <Button variant='contained' size='large' color='secondary' endIcon={<SendRounded/>}>Register</Button>
+          </Box>
+        </Box>
+      </Box>
+      <Box py={3}>
+        <Divider />
+      </Box>
+      <Box align='center' alignItems='center' mb={8} sx={{ backgroundColor: nchandiTheme.handiSecondaryWhite } }>
+        <CardContent>
+          <Typography variant="h3" color={nchandiTheme.handiBlue} py={1} mb={7}>
+            Announcements
+          </Typography>
+          <Card variant="elevation" elevation={15} sx={{ maxWidth: 900, backgroundColor: "#f8d77f" }}>
+            <Typography variant="h4" py={2} mb={1.5}>
+              Summer Service Fair is June 24
+            </Typography>
+            <Typography variant='h6' mb={1}>
+              Posted Date: Sun Jun 18 2023
+            </Typography>
+          </Card>
+          <Card variant="elevation" elevation={5} sx={{ maxWidth: 850 }}>
+            <Typography variant='h6' marginTop={5} py={2} >
+            Join us at the Summer Service Fair, Saturday June 24 from 10AM to 1 PM at the Carlsbad Senior Center, 799 Pine Avenue, Carlsbad, CA 92008.
+            </Typography>
+            <Typography variant='h6' mb={4}>
+              Download the flyer here: https://tinyurl.com/2u8m7re2
+            </Typography>
+          </Card>
+        </CardContent>
       </Box>
     </Container>
   )
-  // You can pass in a card variable or just nest all of the Card MUI components for each section of the homepage that you want to be a Card.
-  // Probably easiest since you will have multiple cards on the homepage
 }
 
 export default HomePage;
