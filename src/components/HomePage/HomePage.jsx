@@ -9,7 +9,7 @@ const HomePage = () => {
 
   return (
     <Container>
-      <Box sx={{ minWidth: 275 }} textAlign={'center'} py={3} mb={2} >
+      <Box textAlign={'center'} py={3} mb={2} >
         <Typography variant="h3" color={'white'} mb={1.5} >
           North County Hospitals & Institutions
         </Typography>

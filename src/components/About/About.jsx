@@ -28,12 +28,11 @@ const About = () => {
                     alt="The house from the offer."
                     src={require('../../resources/images/Logo-transparancy.png')}
                     pr={2.5}
-                  >
-                  </Box>
+                  />
                 </CardContent>
               </Card>
             </Box>
-            <Box sx={{ flexDirection: 'column' }} pl={7} >
+            <Box display={'flex'} sx={{ flexDirection: 'column' }} pl={7} >
               <Typography variant='h5' color='white' pb={5} pl={3} pr={3} >
                 North County Hospitals and Institutions (North County H&I) is a volunteer organization whose mission is to carry the
                 Alcoholics Anonymous (AA) message to those who still suffer and cannot get to an AA meeting.
