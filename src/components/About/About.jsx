@@ -16,7 +16,7 @@ const About = () => {
             </Typography>
           </Box>
           <Box pb={7} >
-            <Divider />
+            <Divider sx={{background: 'white'}}/>
           </Box>
           <Box display={'flex'} sx={{ flexDirection: 'row' }} pb={7} >
             <Box>

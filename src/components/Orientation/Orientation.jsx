@@ -1,5 +1,6 @@
 import React from 'react';
-import { Box, Container, Divider, Typography } from '@mui/material';
+import { Box, Container, Divider, List, Typography, ListItem } from '@mui/material';
+import { nchandiTheme } from '../../App';
 
 const Orientation = () => {
     return (
@@ -72,14 +73,17 @@ const Orientation = () => {
               </Box>
             </Box>
           </Box>
+          <Box pb={7} >
+            <Divider />
+          </Box>
           <Box display={'flex'} sx={{ flexDirection: 'row' }} pb={7} >
             <Box display={'flex'} textAlign={'center'} sx={{ flexDirection: 'column' }} >
-              <Typography variant='h4' color='white' pb={5} pl={3} pr={3}>
+              <Typography variant='h4' color='white' pl={3} pr={3}>
                 Sobriety Requirements
               </Typography>
               <Box
                   component="img"
-                  sx={{ height: '40%', width: '50%', margin: 'auto' }}
+                  sx={{ height: '45%', width: '30%', margin: 'auto' }}
                   src={require('../../resources/images/checklist.png')}
                 />
               <Typography variant='h5' color='white' textAlign={'left'} pb={5} pl={3} pr={3}>
@@ -88,38 +92,46 @@ const Orientation = () => {
               being of service, we kindly ask that you respect the minimum requirements.
               </Typography>
             </Box>
-            <Box display={'flex'} sx={{ flexDirection: 'column' }} pl={10}>
-              <Typography variant='h3' color='white' pb={5} pl={3} pr={3}>
+            <Box display={'flex'} sx={{ flexDirection: 'column', minWidth: 425 }} pl={5}>
+              <List sx = {{fontSize: '40px', color: 'white', listStyleType: 'disc', pl: 2, '& .MuiListItem-root': {display: 'list-item',}, }}>
+              <ListItem>
+              <Typography variant='h4' color='white' pb={1} pl={3} pr={3}>
                 Panel Visitors/Guests: 3 Months.
               </Typography>
-              <Typography variant='h3' color='white' pb={5} pl={3} pr={3}>
+              </ListItem>
+              <ListItem>
+              <Typography variant='h4' color='white' pb={1} pl={3} pr={3}>
                 Panel Members: 6 months
               </Typography>
-              <Typography variant='h3' color='white' pb={5} pl={3} pr={3}>
+              </ListItem>
+              <ListItem>
+              <Typography variant='h4' color='white' pb={1} pl={3} pr={3}>
                 Panel Leaders: 1 year
               </Typography>
-              <Typography variant='h3' color='white' pb={5} pl={3} pr={3}>
+              </ListItem>
+              <ListItem>
+              <Typography variant='h4' color='white' pb={1} pl={3} pr={3}>
                 Panel Coordinator: 2 Years
               </Typography>
+              </ListItem>
+              </List>
             </Box>
           </Box>
         </Container>
-        <Container>
+        <Container sx={{backgroundColor: nchandiTheme.handiDarkGreen}} >
           <Box py={3} pb={7}>
-            <Typography variant="h3" color={'white'} pb={5} pl={3} pr={3} >
+            <Typography variant="h3" color={'white'} textAlign={'center'} pb={5} pl={3} pr={3} >
               Orientation Location
             </Typography>
-          </Box>
-          <Box pb={7} >
-              <Divider />
           </Box>
           <Box display={'flex'} sx={{ flexDirection: 'row' }} pb={7}>
             <Box
               component="img"
-              sx={{ height: '40%', width: '50%', margin: 'auto' }}
+              sx={{ height: '50%', width: '35%', margin: 'auto' }}
               src={require('../../resources/images/destination.png')}
+              pl={7}
             />
-            <Box display={'flex'} sx={{ flexDirection: 'column' }} pl={7}>
+            <Box display={'flex'} sx={{ flexDirection: 'column', maxWidth: 650 }} pl={7}>
               <Typography variant='h4' color='white' pb={5} pl={3} pr={3}>
                 All orientation meetings are held at:
               </Typography>
@@ -135,11 +147,13 @@ const Orientation = () => {
               </Typography>
             </Box>
           </Box>
-          <Box
-            component="img"
-            sx={{ height: '40%', width: '50%', margin: 'auto' }}
-            src={require('../../resources/images/Logo-transparancy.png')}
-          />
+          <Box textAlign={'center'} pb={7}>
+            <Box
+              component="img"
+              sx={{ height: '40%', width: '50%', margin: 'auto' }}
+              src={require('../../resources/images/Logo-transparancy.png')}
+            />
+          </Box>
         </Container>
       </>
     )

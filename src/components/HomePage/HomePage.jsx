@@ -18,7 +18,7 @@ const HomePage = () => {
         </Typography>
       </Box>
       <Box py={3}>
-        <Divider />
+        <Divider sx={{background: 'white'}} />
       </Box>
 
       <Box sx={{ minWidth: 275 }} py={3} mb={2} textAlign={'center'}>
