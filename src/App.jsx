@@ -209,7 +209,7 @@ function App() {
                 <ListItemLink to="/orientation" primary="Orientation" icon={<School fontSize="medium" sx={{ color: 'white'}} />} />
                 <ListItemLink to="/panels" primary="Panels" icon={<LocalHospital fontSize="medium" sx={{ color: 'white'}} />} />
                 <ListItemLink to="/resources" primary="Resources" icon={<LibraryBooks fontSize="medium" sx={{ color: 'white'}} />} />
-                <ListItemLink to="/contacts" primary="Contacts" icon={<ContactPhone fontSize="medium"  sx={{ color: 'white'}} />} />
+                <ListItemLink to="/contact" primary="Contact" icon={<ContactPhone fontSize="medium"  sx={{ color: 'white'}} />} />
                 <ListItemLink to="/login" primary="Login" icon={<LockOpen fontSize="medium" sx={{ color: 'white'}} />} />
               </List>
               <Divider />
