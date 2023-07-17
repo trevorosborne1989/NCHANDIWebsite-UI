@@ -1,0 +1,21 @@
+{
+    "error": {
+        "instructions": "Please contact the Application Developer for assistance or try again later.",
+        "configuration": {
+            "variant": "error",
+            "style": {
+                "color": "white",
+                "whiteSpace": "pre-line"
+            }
+        }
+    },
+    "success": {
+        "configuration": {
+            "variant": "success",
+            "style": {
+                "color": "white",
+                "whiteSpace": "pre-line"
+            }
+        }
+    }
+}
