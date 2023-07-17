@@ -32,7 +32,7 @@ const Contact = () => {
         }
       } catch (e) {
         console.error(e);
-        enqueueSnackbar('There was an error submitting/updating ECP Staff', snackbarMessages.error.configuration);
+        enqueueSnackbar('There was an error submitting contact info', snackbarMessages.error.configuration);
       }
       console.log(formik.values);
       alert(JSON.stringify(formik.values));
