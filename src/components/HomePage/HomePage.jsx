@@ -20,68 +20,56 @@ const HomePage = () => {
       <Box py={3}>
         <Divider sx={{background: 'white'}} />
       </Box>
-
-      <Box sx={{ minWidth: 275 }} py={3} mb={2} textAlign={'center'}>
-
+      <Box py={3} mb={2} textAlign={'center'}>
         <Typography variant="h4" color='white' py={2} mb={1.5} >
           Interested in joining North County H&I?
         </Typography>
-
         <Box sx={{ flexDirection: 'column'}} display='flex' justifyContent="center" alignItems="center" py={3} mb={2} >
-          <Card sx={{ backgroundColor: nchandiTheme.handiDarkBlue }} variant="elevation" elevation={10}>
+          <Card sx={{ backgroundColor: nchandiTheme.handiDarkBlue, width: '80%' }} variant="elevation" elevation={10}>
             <CardContent>
-              <Typography variant='h5' color='white' sx={{ minWidth: 275 }}  py={2} marginLeft={3} marginRight={3} >
+              <Typography variant='h5' color='white' py={2} marginLeft={3} marginRight={3} >
                 Learn how to join H&I and attend our orientation meetings.
               </Typography>
             </CardContent>
-
-            <Box display='flex' sx={{ minWidth: 275}} justifyContent="center" >
+            <Box display='flex' justifyContent="center" >
               <Box display="flex" py={1.5} marginRight={3} >
-                <Button variant='contained' size='large' color='primary' >ORIENTATION</Button>
+                <Button variant='contained' size='large' color='primary' sx={{ width: 250 }} >ORIENTATION</Button>
               </Box>
               <Box display="flex" py={1.5} >
-                <Button variant='contained' size='large' color='primary' >CONTACT US</Button>
+                <Button variant='contained' size='large' color='primary' sx={{ width: 250 }} >CONTACT US</Button>
               </Box>
             </Box>
           </Card>
         </Box>
-
         <Box sx={{ flexDirection: 'column'}} display='flex' justifyContent="center" alignItems="center" py={3} mb={2} >
-          <Card sx={{ backgroundColor: nchandiTheme.handiDarkBlue }} variant="elevation" elevation={10}>
+          <Card sx={{ backgroundColor: nchandiTheme.handiDarkBlue, width: '75%' }} variant="elevation" elevation={10}>
             <CardContent>
-              <Typography variant='h5' color='white' sx={{ minWidth: 275 }} py={2} marginLeft={3} marginRight={3} >
+              <Typography variant='h5' color='white' py={2} marginLeft={3} marginRight={3} >
                 Visit our Panels page to learn where we need your help.
               </Typography>
             </CardContent>
-
-            <Box display='flex' sx={{ minWidth: 275}} justifyContent="center" >
+            <Box display='flex' justifyContent="center" >
               <Box display="flex" py={1.5} >
-                <Button variant='contained' size='large' color='secondary' >OPEN PANELS</Button>
+                <Button variant='contained' size='large' color='secondary' sx={{ width: 300 }}>OPEN PANELS</Button>
               </Box>
             </Box>
           </Card>
         </Box>
-
         <Box sx={{ flexDirection: 'row'}} display='flex' justifyContent="center" alignItems="center" py={3} mb={2} >
-          <Card sx={{ backgroundColor: nchandiTheme.handiDarkBlue }} variant="elevation" elevation={10}>
+          <Card sx={{ backgroundColor: nchandiTheme.handiDarkBlue, width: '70%' }} variant="elevation" elevation={10}>
             <CardContent>
-              <Typography variant='h5' color='white' sx={{ minWidth: 275 }} py={2} marginLeft={3} marginRight={3} >
-                Visit our resources page to order literature, view our financial
-              </Typography>
-              <Typography variant='h5' color='white' sx={{ minWidth: 275 }} marginLeft={3} marginRight={3} >
-                reports and important links.
+              <Typography variant='h5' color='white' py={2} marginLeft={3} marginRight={3} >
+                Visit our resources page to order literature, view our financial reports and important links.
               </Typography>
             </CardContent>
-
-            <Box display='flex' sx={{ minWidth: 275}} justifyContent="center" >
+            <Box display='flex' justifyContent="center" >
               <Box display="flex" py={1.5} >
-                <Button variant='contained' size='large' color='secondary' >RESOURCES</Button>
+                <Button variant='contained' size='large' color='secondary' sx={{ width: 300 }}>RESOURCES</Button>
               </Box>
             </Box>
           </Card>
         </Box>
       </Box>
-
       <Box py={3}>
         <Divider />
       </Box>
@@ -89,8 +77,7 @@ const HomePage = () => {
         <Box display={'flex'} marginRight={3} >
           <MailOutline sx={{ fontSize: 150, color: nchandiTheme.handiSecondaryWhite }} ></MailOutline>
         </Box>
-
-        <Box display='flex' sx={{ flexDirection: 'column', minWidth: 275 }}>
+        <Box display='flex' sx={{ flexDirection: 'column' }}>
           <Typography variant="h4" color={'white'} gutterBottom>
             Get Connected
           </Typography>
@@ -98,7 +85,7 @@ const HomePage = () => {
             Join our mailing list to receiving limited emails about orientation dates, panel openings and special events.
           </Typography>
           <Box display="flex" py={1.5} >
-            <Button variant='contained' size='large' color='secondary' endIcon={<SendRounded/>}>Register</Button>
+            <Button variant='contained' size='large' sx={{ backgroundColor: nchandiTheme.handiGreen }} endIcon={<SendRounded/>}>Register</Button>
           </Box>
         </Box>
       </Box>
