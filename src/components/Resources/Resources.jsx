@@ -15,6 +15,7 @@ import { useFormik } from 'formik';
 import { useSnackbar } from 'notistack';
 import snackbarMessages from '../../lib/snackbarMessages.json';
 import { nchandiTheme } from '../../App';
+import { yupSchema } from './ValidationSchema';
 
 const Resources = () => {
 
@@ -28,35 +29,39 @@ const Resources = () => {
       email: '',
       phonenumber: '',
       comments: '',
-    },
-    onSubmit: async values => {
-      try {
-        const { id } = values;
-        if (id) {
-          // await ectsService.putEctsstaffWithEctsStaffId({}, id, values);
-          // setDialogOpen(false);
-          console.log('Calling PUT service mthod')
+    }, // Add all the literature (boolean) types here and their qty counterparts (int)
+    onSubmit: async () => {},
+    validationSchema: yupSchema,
+    validateOnBlur: true
+  });
+
+  const validateSubmission = async () => {
+    try {
+      formik.submitForm();
+      const errors = await formik.validateForm();
+
+      if (Object.keys(errors).length === 0) {
+        if (false) {
+          // await putMethod();
+        } else {
+          // await postMethod();
         }
-        else {
-          // await ectsService.postEctsstaff({}, values);
-          // setDialogOpen(false);
-          console.log('Calling POST service mthod')
-        }
-      } catch (e) {
-        console.error(e);
-        enqueueSnackbar('There was an error submitting contact info', snackbarMessages.error.configuration);
+      } else {
+        enqueueSnackbar('There were errors submitting this lieterature request.', snackbarMessages.error.configuration);
       }
+
       console.log(formik.values);
       alert(JSON.stringify(formik.values));
+
+      formik.handleReset()
+      formik.setSubmitting(false);
+    } catch (err) {
+      console.error(err);
     }
-  });
+  };
 
   // const { setValues, submitForm, handleReset, handleBlur, handleChange } = formik;
 
-  const handleSubmit = (values) => {
-    formik.submitForm(values)
-    formik.handleReset()
-  };
 
   return (
       <Grid container>
@@ -369,19 +374,6 @@ const Resources = () => {
                       control={<Checkbox sx={{ color: nchandiTheme.handiDarkGreen,'&.Mui-checked': {color: nchandiTheme.handiGreen} }}/>}
                       label="Living Sober" sx={{ color: nchandiTheme.handiDarkBlue}}
                     />
-                    <TextField
-                      id="outlined-select-currency"
-                      select
-                      label="Select"
-                      defaultValue="EUR"
-                      helperText="Please select your currency"
-                    >
-                      {currencies.map((option) => (
-                        <MenuItem key={option.value} value={option.value}>
-                          {option.label}
-                        </MenuItem>
-                      ))}
-                    </TextField>
                     <FormControlLabel
                       control={<Checkbox sx={{ color: nchandiTheme.handiDarkGreen,'&.Mui-checked': {color: nchandiTheme.handiGreen} }}/>}
                       label="12 Steps and 12 Traditions" sx={{ color: nchandiTheme.handiDarkBlue}}
@@ -445,7 +437,7 @@ const Resources = () => {
                     variant='contained'
                     sx={{ width: '50%', padding: 1, margin: 2 }}
                     size='large'
-                    onClick={handleSubmit}
+                    onClick={async () => { await validateSubmission(); }}
                     disabled={formik.isSubmitting}
                   >
                     Submit {formik.isSubmitting &&
