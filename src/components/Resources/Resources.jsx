@@ -29,7 +29,25 @@ const Resources = () => {
       email: '',
       phonenumber: '',
       comments: '',
-    }, // Add all the literature (boolean) types here and their qty counterparts (int)
+      livingSober: false,
+      livingSoberQty: '',
+      stepsAndTraditions12x12: false,
+      stepsAndTraditions12x12Qty: '',
+      aaPaperback: false,
+      aaPaperbackQty: '',
+      aaPocketSize: false,
+      aaPocketSizeQty: '',
+      grapevine: false,
+      grapevineQty: '',
+      laVina: false,
+      laVinaQty: '',
+      newcomerPackets: false,
+      newcomerPacketsQty: '',
+      literatureRackWithPamphlets: false,
+      literatureRackWithPamphletsQty: '',
+      other: false,
+      otherQty: ''
+    },
     onSubmit: async () => {},
     validationSchema: yupSchema,
     validateOnBlur: true
@@ -47,7 +65,7 @@ const Resources = () => {
           // await postMethod();
         }
       } else {
-        enqueueSnackbar('There were errors submitting this lieterature request.', snackbarMessages.error.configuration);
+        enqueueSnackbar('There were errors submitting this literature request.', snackbarMessages.error.configuration);
       }
 
       console.log(formik.values);
@@ -368,45 +386,200 @@ const Resources = () => {
                     Literature Request
                   </Typography>
                 </Grid>
-                <Grid sm={10} pb={5}>
-                  <FormGroup>
-                    <FormControlLabel
-                      control={<Checkbox sx={{ color: nchandiTheme.handiDarkGreen,'&.Mui-checked': {color: nchandiTheme.handiGreen} }}/>}
-                      label="Living Sober" sx={{ color: nchandiTheme.handiDarkBlue}}
-                    />
-                    <FormControlLabel
-                      control={<Checkbox sx={{ color: nchandiTheme.handiDarkGreen,'&.Mui-checked': {color: nchandiTheme.handiGreen} }}/>}
-                      label="12 Steps and 12 Traditions" sx={{ color: nchandiTheme.handiDarkBlue}}
-                    />
-                    <FormControlLabel
-                      control={<Checkbox sx={{ color: nchandiTheme.handiDarkGreen,'&.Mui-checked': {color: nchandiTheme.handiGreen} }}/>}
-                      label="Alcoholic Anonymous paperback" sx={{ color: nchandiTheme.handiDarkBlue}}
-                    />
-                    <FormControlLabel
-                      control={<Checkbox sx={{ color: nchandiTheme.handiDarkGreen,'&.Mui-checked': {color: nchandiTheme.handiGreen} }}/>}
-                      label="Alcoholic Anonymous pocket size" sx={{ color: nchandiTheme.handiDarkBlue}}
-                    />
-                    <FormControlLabel
-                      control={<Checkbox sx={{ color: nchandiTheme.handiDarkGreen,'&.Mui-checked': {color: nchandiTheme.handiGreen} }}/>}
-                      label="Grapevines" sx={{ color: nchandiTheme.handiDarkBlue}}
-                    />
-                    <FormControlLabel
-                      control={<Checkbox sx={{ color: nchandiTheme.handiDarkGreen,'&.Mui-checked': {color: nchandiTheme.handiGreen} }}/>}
-                      label="La Vina" sx={{ color: nchandiTheme.handiDarkBlue}}
-                    />
-                    <FormControlLabel
-                      control={<Checkbox sx={{ color: nchandiTheme.handiDarkGreen,'&.Mui-checked': {color: nchandiTheme.handiGreen} }}/>}
-                      label="Newcomer Packets" sx={{ color: nchandiTheme.handiDarkBlue}}
-                    />
-                    <FormControlLabel
-                      control={<Checkbox sx={{ color: nchandiTheme.handiDarkGreen,'&.Mui-checked': {color: nchandiTheme.handiGreen} }}/>}
-                      label="Literature Rack w/ Pamphlets" sx={{ color: nchandiTheme.handiDarkBlue}}
-                    />
-                    <FormControlLabel
-                      control={<Checkbox sx={{ color: nchandiTheme.handiDarkGreen,'&.Mui-checked': {color: nchandiTheme.handiGreen} }}/>}
-                      label="Other" sx={{ color: nchandiTheme.handiDarkBlue}}
-                    />
-                  </FormGroup>
+                <Grid container direction='column' sm={12} pb={5}>
+                  <Grid sm={4} ml={4}>
+                    <FormGroup>
+                      <FormControlLabel
+                        control={<Checkbox 
+                          sx={{ color: nchandiTheme.handiDarkGreen,'&.Mui-checked': {color: nchandiTheme.handiGreen} }}
+                          name='livingSober'
+                          value={formik.values.livingSober}
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          />}
+                        label="Living Sober" sx={{ color: nchandiTheme.handiDarkBlue}}
+                      />
+                      {formik.values.livingSober &&
+                      <TextField
+                        label="Living Sober Quantity"
+                        sx={{ width: '60%' }}
+                        variant='filled'
+                        color='secondary'
+                        name='livingSoberQty'
+                        value={formik.values.livingSoberQty}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                      />}
+                      <FormControlLabel
+                        control={<Checkbox 
+                          sx={{ color: nchandiTheme.handiDarkGreen,'&.Mui-checked': {color: nchandiTheme.handiGreen} }}
+                          name='stepsAndTraditions12x12'
+                          value={formik.values.stepsAndTraditions12x12}
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          />}
+                        label="12 Steps and 12 Traditions" sx={{ color: nchandiTheme.handiDarkBlue}}
+                      />
+                      {formik.values.stepsAndTraditions12x12 &&
+                      <TextField
+                        label="12x12 Quantity"
+                        sx={{ width: '60%' }}
+                        variant='filled'
+                        color='secondary'
+                        name='stepsAndTraditions12x12Qty'
+                        value={formik.values.stepsAndTraditions12x12Qty}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                      />}
+                      <FormControlLabel
+                        control={<Checkbox
+                          sx={{ color: nchandiTheme.handiDarkGreen,'&.Mui-checked': {color: nchandiTheme.handiGreen} }}
+                          name='aaPaperback'
+                          value={formik.values.aaPaperback}
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          />}
+                        label="Alcoholic Anonymous paperback" sx={{ color: nchandiTheme.handiDarkBlue}}
+                      />
+                      {formik.values.aaPaperback &&
+                      <TextField
+                        label="Paperback Quantity"
+                        sx={{ width: '60%' }}
+                        variant='filled'
+                        color='secondary'
+                        name='aaPaperbackQty'
+                        value={formik.values.aaPaperbackQty}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                      />}
+                      <FormControlLabel
+                        control={<Checkbox
+                          sx={{ color: nchandiTheme.handiDarkGreen,'&.Mui-checked': {color: nchandiTheme.handiGreen} }}
+                          name='aaPocketSize'
+                          value={formik.values.aaPocketSize}
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          />}
+                        label="Alcoholic Anonymous pocket size" sx={{ color: nchandiTheme.handiDarkBlue}}
+                      />
+                      {formik.values.aaPocketSize &&
+                      <TextField
+                        label="Pocket Size Quantity"
+                        sx={{ width: '60%' }}
+                        variant='filled'
+                        color='secondary'
+                        name='aaPocketSizeQty'
+                        value={formik.values.aaPocketSizeQty}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                      />}
+                      <FormControlLabel
+                        control={<Checkbox
+                          sx={{ color: nchandiTheme.handiDarkGreen,'&.Mui-checked': {color: nchandiTheme.handiGreen} }}
+                          name='grapevine'
+                          value={formik.values.grapevine}
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          />}
+                        label="Grapevines" sx={{ color: nchandiTheme.handiDarkBlue}}
+                      />
+                      {formik.values.grapevine &&
+                      <TextField
+                        label="Grapevine Quantity"
+                        sx={{ width: '60%' }}
+                        variant='filled'
+                        color='secondary'
+                        name='grapevineQty'
+                        value={formik.values.grapevineQty}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                      />}
+                      <FormControlLabel
+                        control={<Checkbox
+                          sx={{ color: nchandiTheme.handiDarkGreen,'&.Mui-checked': {color: nchandiTheme.handiGreen} }}
+                          name='laVina'
+                          value={formik.values.laVina}
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          />}
+                        label="La Vina" sx={{ color: nchandiTheme.handiDarkBlue}}
+                      />
+                      {formik.values.laVina &&
+                      <TextField
+                        label="La Vina Quantity"
+                        sx={{ width: '60%' }}
+                        variant='filled'
+                        color='secondary'
+                        name='laVinaQty'
+                        value={formik.values.laVinaQty}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                      />}
+                      <FormControlLabel
+                        control={<Checkbox
+                          sx={{ color: nchandiTheme.handiDarkGreen,'&.Mui-checked': {color: nchandiTheme.handiGreen} }}
+                          name='newcomerPackets'
+                          value={formik.values.newcomerPackets}
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          />}
+                        label="Newcomer Packets" sx={{ color: nchandiTheme.handiDarkBlue}}
+                      />
+                      {formik.values.newcomerPackets &&
+                      <TextField
+                        label="Packets Quantity"
+                        sx={{ width: '60%' }}
+                        variant='filled'
+                        color='secondary'
+                        name='newcomerPacketsQty'
+                        value={formik.values.newcomerPacketsQty}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                      />}
+                      <FormControlLabel
+                        control={<Checkbox
+                          sx={{ color: nchandiTheme.handiDarkGreen,'&.Mui-checked': {color: nchandiTheme.handiGreen} }}
+                          name='literatureRackWithPamphlets'
+                          value={formik.values.literatureRackWithPamphlets}
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          />}
+                        label="Literature Rack w/ Pamphlets" sx={{ color: nchandiTheme.handiDarkBlue}}
+                      />
+                      {formik.values.literatureRackWithPamphlets &&
+                      <TextField
+                        label="Rack Quantity"
+                        sx={{ width: '60%' }}
+                        variant='filled'
+                        color='secondary'
+                        name='literatureRackWithPamphletsQty'
+                        value={formik.values.literatureRackWithPamphletsQty}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                      />}
+                      <FormControlLabel
+                        control={<Checkbox
+                          sx={{ color: nchandiTheme.handiDarkGreen,'&.Mui-checked': {color: nchandiTheme.handiGreen} }}
+                          name='other'
+                          value={formik.values.other}
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          />}
+                        label="Other" sx={{ color: nchandiTheme.handiDarkBlue}}
+                      />
+                      {formik.values.other &&
+                      <TextField
+                        label="Other Quantity"
+                        sx={{ width: '60%' }}
+                        variant='filled'
+                        color='secondary'
+                        name='otherQty'
+                        value={formik.values.otherQty}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                      />}
+                    </FormGroup>
+                  </Grid>
                 </Grid>
                 <Grid sm={10} pb={5}>
                   <TextField
