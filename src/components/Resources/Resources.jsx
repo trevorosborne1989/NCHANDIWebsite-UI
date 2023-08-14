@@ -10,9 +10,7 @@ import {
   FormGroup,
   FormControlLabel,
   Checkbox,
-  MenuItem,
-  Snackbar,
-  Alert, } from '@mui/material';
+  MenuItem, } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import { useFormik } from 'formik';
 import { useSnackbar } from 'notistack';
@@ -134,11 +132,6 @@ const Resources = () => {
       formik.setSubmitting(false);
     }, 1000);
   };
-
-  const handleSnackbarClose = () => {
-    setOpenSuccess(false);
-    setOpenError(false)
-  }
 
   // const { setValues, submitForm, handleReset, handleBlur, handleChange } = formik;
 
@@ -729,16 +722,6 @@ const Resources = () => {
                       <Box ml={1} mt={1}><CircularProgress size={15} /></Box>
                     }
                   </Button>
-                  {/* <Snackbar open={openSuccess} autoHideDuration={6000} onClose={handleClose}>
-                    <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
-                      Form submitted successfully!
-                    </Alert>
-                  </Snackbar>
-                  <Snackbar open={openError} autoHideDuration={6000} onClose={handleClose}>
-                    <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
-                      Error submitting this form.
-                    </Alert>
-                  </Snackbar> */}
                 </Grid>
               </Grid>
             </Paper>
