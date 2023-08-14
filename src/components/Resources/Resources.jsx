@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Typography,
   Divider,
@@ -9,26 +9,82 @@ import {
   CircularProgress,
   FormGroup,
   FormControlLabel,
-  Checkbox, } from '@mui/material';
+  Checkbox,
+  MenuItem,
+  Snackbar,
+  Alert, } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import { useFormik } from 'formik';
 import { useSnackbar } from 'notistack';
 import snackbarMessages from '../../lib/snackbarMessages.json';
 import { nchandiTheme } from '../../App';
+// import { NCHANDIWebsiteService } from '../../lib/NCHANDIWebsiteService';
 import { yupSchema } from './ValidationSchema';
 
-const Resources = () => {
+// const nchandiWebsiteService = new NCHANDIWebsiteService();
+const facilityData = [
+  {
+    value: 'West Coast Recovery',
+    label: 'West Coast Recovery',
+  },
+  {
+    value: 'Tri-City',
+    label: 'Tri-City',
+  },
+  {
+    value: 'First Step House',
+    label: 'First Step House',
+  },
+  {
+    value: 'Crown View',
+    label: 'Crown View',
+  }
+];
+const commitmentOptions = [
+  {
+    value: 'Panel Leader',
+    label: 'Panel Leader',
+  },
+  {
+    value: 'Panel Coordinator',
+    label: 'Panel Coordinator',
+  },
+  {
+    value: 'Board Member',
+    label: 'Board Member',
+  }
+];
 
+
+const Resources = () => {
   const { enqueueSnackbar } = useSnackbar();
+  const [facilityOptions, setFaciltiyOptions] = useState([]);
+  const [openSuccess, setOpenSuccess] = useState(false);
+  const [openError, setOpenError ] = useState(false);
+
+  useEffect(() => {
+    const fetchFacilities = async () => {
+      try {
+        // let response = await nchandiWebsiteService.getFacilites();
+        // let facilityOptions = response.data.map(facilities => facilities || '');
+        let facilityOptions = facilityData;
+        setFaciltiyOptions(facilityOptions);
+      } catch (error) {
+        console.error(error);
+        setFaciltiyOptions([]);
+      }
+    };
+    fetchFacilities();
+  }, []);
 
   const formik = useFormik({
     initialValues: {
       firstName: '',
-      commitments: '',
+      lastName: '',
+      commitment: '',
       facility: '',
       email: '',
-      phonenumber: '',
-      comments: '',
+      phoneNumber: '',
       livingSober: false,
       livingSoberQty: '',
       stepsAndTraditions12x12: false,
@@ -46,40 +102,45 @@ const Resources = () => {
       literatureRackWithPamphlets: false,
       literatureRackWithPamphletsQty: '',
       other: false,
-      otherQty: ''
+      otherQty: '',
+      comments: ''
     },
-    onSubmit: async () => {},
+    onSubmit: async () => {
+      try {
+        // await post method()   Use await here.
+        enqueueSnackbar('This literature request was successfully submitted.', snackbarMessages.success.configuration);
+        formik.setFieldValue('livingSober', false);
+        formik.handleReset();
+      } catch (err) {
+        enqueueSnackbar('There was an error when submitting this form, please try again later or contact the Technology Chair', snackbarMessages.error.configuration);
+        console.error(err);
+      }
+    },
     validationSchema: yupSchema,
-    validateOnBlur: true
+    validateOnBlur: true,
   });
 
   const validateSubmission = async () => {
-    try {
+    setTimeout( async () => { // Remove the onTimeout once the POST method in onSubmit is defined.
       formik.submitForm();
+      console.log('hello');
       const errors = await formik.validateForm();
+      console.log(errors);
+      console.log(Object.keys(errors).length );
 
-      if (Object.keys(errors).length === 0) {
-        if (false) {
-          // await putMethod();
-        } else {
-          // await postMethod();
-        }
-      } else {
-        enqueueSnackbar('There were errors submitting this literature request.', snackbarMessages.error.configuration);
+      if (!formik.isValid) {
+        enqueueSnackbar('There are fields missing in your form. Please fill out all required * fields.', snackbarMessages.error.configuration);
       }
-
-      console.log(formik.values);
-      alert(JSON.stringify(formik.values));
-
-      formik.handleReset()
       formik.setSubmitting(false);
-    } catch (err) {
-      console.error(err);
-    }
+    }, 1000);
   };
 
-  // const { setValues, submitForm, handleReset, handleBlur, handleChange } = formik;
+  const handleSnackbarClose = () => {
+    setOpenSuccess(false);
+    setOpenError(false)
+  }
 
+  // const { setValues, submitForm, handleReset, handleBlur, handleChange } = formik;
 
   return (
       <Grid container>
@@ -313,6 +374,8 @@ const Resources = () => {
                     value={formik.values.firstName}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
+                    helperText={formik.touched.firstName ? formik.errors.firstName : ""}
+                    error={formik.touched.firstName && Boolean(formik.errors.firstName)}
                     required
                   />
                 </Grid>
@@ -326,11 +389,14 @@ const Resources = () => {
                     value={formik.values.lastName}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
+                    helperText={formik.touched.lastName ? formik.errors.lastName : ""}
+                    error={formik.touched.lastName && Boolean(formik.errors.lastName)}
                     required
                   />
                 </Grid>
                 <Grid sm={10} pb={5}>
                   <TextField
+                    select
                     label='H&I Commitment'
                     name='commitment'
                     fullWidth
@@ -339,11 +405,20 @@ const Resources = () => {
                     value={formik.values.commitment}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
+                    helperText={formik.touched.commitment ? formik.errors.commitment : ""}
+                    error={formik.touched.commitment && Boolean(formik.errors.commitment)}
                     required
-                  />
+                  >
+                    {commitmentOptions.map(option => (
+                      <MenuItem key={option.value} value={option.value}>
+                        {option.label}
+                      </MenuItem>
+                    ))}
+                  </TextField>
                 </Grid>
                 <Grid sm={10} pb={5}>
-                  <TextField
+                <TextField
+                    select
                     label='Facility'
                     name='facility'
                     fullWidth
@@ -352,8 +427,16 @@ const Resources = () => {
                     value={formik.values.facility}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
+                    helperText={formik.touched.facility ? formik.errors.facility : ""}
+                    error={formik.touched.facility && Boolean(formik.errors.facility)}
                     required
-                  />
+                  >
+                    {facilityOptions.map(option => (
+                      <MenuItem key={option.value} value={option.value}>
+                        {option.label}
+                      </MenuItem>
+                    ))}
+                  </TextField>
                 </Grid>
                 <Grid sm={10} pb={5}>
                   <TextField
@@ -365,6 +448,8 @@ const Resources = () => {
                     value={formik.values.email}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
+                    helperText={formik.touched.email ? formik.errors.email : ""}
+                    error={formik.touched.email && Boolean(formik.errors.email)}
                     required
                   />
                 </Grid>
@@ -378,6 +463,8 @@ const Resources = () => {
                     value={formik.values.phoneNumber}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
+                    helperText={formik.touched.phoneNumber ? formik.errors.phoneNumber : ""}
+                    error={formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber)}
                     required
                   />
                 </Grid>
@@ -393,6 +480,7 @@ const Resources = () => {
                         control={<Checkbox 
                           sx={{ color: nchandiTheme.handiDarkGreen,'&.Mui-checked': {color: nchandiTheme.handiGreen} }}
                           name='livingSober'
+                          checked={formik.values.livingSober}
                           value={formik.values.livingSober}
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
@@ -401,19 +489,21 @@ const Resources = () => {
                       />
                       {formik.values.livingSober &&
                       <TextField
-                        label="Living Sober Quantity"
+                        label="*Living Sober Quantity"
                         sx={{ width: '60%' }}
                         variant='filled'
-                        color='secondary'
                         name='livingSoberQty'
                         value={formik.values.livingSoberQty}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
+                        helperText={formik.touched.livingSoberQty ? formik.errors.livingSoberQty : ""}
+                        error={formik.touched.livingSoberQty && Boolean(formik.errors.livingSoberQty)}
                       />}
                       <FormControlLabel
-                        control={<Checkbox 
+                        control={<Checkbox
                           sx={{ color: nchandiTheme.handiDarkGreen,'&.Mui-checked': {color: nchandiTheme.handiGreen} }}
                           name='stepsAndTraditions12x12'
+                          checked={formik.values.stepsAndTraditions12x12}
                           value={formik.values.stepsAndTraditions12x12}
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
@@ -422,7 +512,7 @@ const Resources = () => {
                       />
                       {formik.values.stepsAndTraditions12x12 &&
                       <TextField
-                        label="12x12 Quantity"
+                        label="*12x12 Quantity"
                         sx={{ width: '60%' }}
                         variant='filled'
                         color='secondary'
@@ -430,11 +520,14 @@ const Resources = () => {
                         value={formik.values.stepsAndTraditions12x12Qty}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
+                        helperText={formik.touched.stepsAndTraditions12x12Qty ? formik.errors.stepsAndTraditions12x12Qty : ""}
+                        error={formik.touched.stepsAndTraditions12x12Qty && Boolean(formik.errors.stepsAndTraditions12x12Qty)}
                       />}
                       <FormControlLabel
                         control={<Checkbox
                           sx={{ color: nchandiTheme.handiDarkGreen,'&.Mui-checked': {color: nchandiTheme.handiGreen} }}
                           name='aaPaperback'
+                          checked={formik.values.aaPaperback}
                           value={formik.values.aaPaperback}
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
@@ -443,7 +536,7 @@ const Resources = () => {
                       />
                       {formik.values.aaPaperback &&
                       <TextField
-                        label="Paperback Quantity"
+                        label="*Paperback Quantity"
                         sx={{ width: '60%' }}
                         variant='filled'
                         color='secondary'
@@ -451,11 +544,14 @@ const Resources = () => {
                         value={formik.values.aaPaperbackQty}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
+                        helperText={formik.touched.aaPaperbackQty ? formik.errors.aaPaperbackQty : ""}
+                        error={formik.touched.aaPaperbackQty && Boolean(formik.errors.aaPaperbackQty)}
                       />}
                       <FormControlLabel
                         control={<Checkbox
                           sx={{ color: nchandiTheme.handiDarkGreen,'&.Mui-checked': {color: nchandiTheme.handiGreen} }}
                           name='aaPocketSize'
+                          checked={formik.values.aaPocketSize}
                           value={formik.values.aaPocketSize}
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
@@ -464,7 +560,7 @@ const Resources = () => {
                       />
                       {formik.values.aaPocketSize &&
                       <TextField
-                        label="Pocket Size Quantity"
+                        label="*Pocket Size Quantity"
                         sx={{ width: '60%' }}
                         variant='filled'
                         color='secondary'
@@ -472,11 +568,14 @@ const Resources = () => {
                         value={formik.values.aaPocketSizeQty}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
+                        helperText={formik.touched.aaPocketSizeQty ? formik.errors.aaPocketSizeQty : ""}
+                        error={formik.touched.aaPocketSizeQty && Boolean(formik.errors.aaPocketSizeQty)}
                       />}
                       <FormControlLabel
                         control={<Checkbox
                           sx={{ color: nchandiTheme.handiDarkGreen,'&.Mui-checked': {color: nchandiTheme.handiGreen} }}
                           name='grapevine'
+                          checked={formik.values.grapevine}
                           value={formik.values.grapevine}
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
@@ -485,7 +584,7 @@ const Resources = () => {
                       />
                       {formik.values.grapevine &&
                       <TextField
-                        label="Grapevine Quantity"
+                        label="*Grapevine Quantity"
                         sx={{ width: '60%' }}
                         variant='filled'
                         color='secondary'
@@ -493,11 +592,14 @@ const Resources = () => {
                         value={formik.values.grapevineQty}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
+                        helperText={formik.touched.grapevineQty ? formik.errors.grapevineQty : ""}
+                        error={formik.touched.grapevineQty && Boolean(formik.errors.grapevineQty)}
                       />}
                       <FormControlLabel
                         control={<Checkbox
                           sx={{ color: nchandiTheme.handiDarkGreen,'&.Mui-checked': {color: nchandiTheme.handiGreen} }}
                           name='laVina'
+                          checked={formik.values.laVina}
                           value={formik.values.laVina}
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
@@ -506,7 +608,7 @@ const Resources = () => {
                       />
                       {formik.values.laVina &&
                       <TextField
-                        label="La Vina Quantity"
+                        label="*La Vina Quantity"
                         sx={{ width: '60%' }}
                         variant='filled'
                         color='secondary'
@@ -514,11 +616,14 @@ const Resources = () => {
                         value={formik.values.laVinaQty}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
+                        helperText={formik.touched.laVinaQty ? formik.errors.laVinaQty : ""}
+                        error={formik.touched.laVinaQty && Boolean(formik.errors.laVinaQty)}
                       />}
                       <FormControlLabel
                         control={<Checkbox
                           sx={{ color: nchandiTheme.handiDarkGreen,'&.Mui-checked': {color: nchandiTheme.handiGreen} }}
                           name='newcomerPackets'
+                          checked={formik.values.newcomerPackets}
                           value={formik.values.newcomerPackets}
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
@@ -527,7 +632,7 @@ const Resources = () => {
                       />
                       {formik.values.newcomerPackets &&
                       <TextField
-                        label="Packets Quantity"
+                        label="*Packets Quantity"
                         sx={{ width: '60%' }}
                         variant='filled'
                         color='secondary'
@@ -535,11 +640,14 @@ const Resources = () => {
                         value={formik.values.newcomerPacketsQty}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
+                        helperText={formik.touched.newcomerPacketsQty ? formik.errors.newcomerPacketsQty : ""}
+                        error={formik.touched.newcomerPacketsQty && Boolean(formik.errors.newcomerPacketsQty)}
                       />}
                       <FormControlLabel
                         control={<Checkbox
                           sx={{ color: nchandiTheme.handiDarkGreen,'&.Mui-checked': {color: nchandiTheme.handiGreen} }}
                           name='literatureRackWithPamphlets'
+                          checked={formik.values.literatureRackWithPamphlets}
                           value={formik.values.literatureRackWithPamphlets}
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
@@ -548,7 +656,7 @@ const Resources = () => {
                       />
                       {formik.values.literatureRackWithPamphlets &&
                       <TextField
-                        label="Rack Quantity"
+                        label="*Rack Quantity"
                         sx={{ width: '60%' }}
                         variant='filled'
                         color='secondary'
@@ -556,11 +664,14 @@ const Resources = () => {
                         value={formik.values.literatureRackWithPamphletsQty}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
+                        helperText={formik.touched.literatureRackWithPamphletsQty ? formik.errors.literatureRackWithPamphletsQty : ""}
+                        error={formik.touched.literatureRackWithPamphletsQty && Boolean(formik.errors.literatureRackWithPamphletsQty)}
                       />}
                       <FormControlLabel
                         control={<Checkbox
                           sx={{ color: nchandiTheme.handiDarkGreen,'&.Mui-checked': {color: nchandiTheme.handiGreen} }}
                           name='other'
+                          checked={formik.values.other}
                           value={formik.values.other}
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
@@ -569,7 +680,7 @@ const Resources = () => {
                       />
                       {formik.values.other &&
                       <TextField
-                        label="Other Quantity"
+                        label="*Other Quantity"
                         sx={{ width: '60%' }}
                         variant='filled'
                         color='secondary'
@@ -577,6 +688,8 @@ const Resources = () => {
                         value={formik.values.otherQty}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
+                        helperText={formik.touched.otherQty ? formik.errors.otherQty : ""}
+                        error={formik.touched.otherQty && Boolean(formik.errors.otherQty)}
                       />}
                     </FormGroup>
                   </Grid>
@@ -600,7 +713,6 @@ const Resources = () => {
                     value={formik.values.comments}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    required
                   />
                 </Grid>
                 <Grid sm={10} alignItems={'center'} justifyContent={'center'} textAlign={'center'}>
@@ -617,6 +729,16 @@ const Resources = () => {
                       <Box ml={1} mt={1}><CircularProgress size={15} /></Box>
                     }
                   </Button>
+                  {/* <Snackbar open={openSuccess} autoHideDuration={6000} onClose={handleClose}>
+                    <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+                      Form submitted successfully!
+                    </Alert>
+                  </Snackbar>
+                  <Snackbar open={openError} autoHideDuration={6000} onClose={handleClose}>
+                    <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
+                      Error submitting this form.
+                    </Alert>
+                  </Snackbar> */}
                 </Grid>
               </Grid>
             </Paper>

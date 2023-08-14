@@ -2,12 +2,13 @@ import * as yup from 'yup';
 
 export const yupSchema = yup.object().shape({
   firstName: yup.string().required('Required').typeError('Required'),
-  commitments: yup.string().required('Required').typeError('Required'),
+  lastName: yup.string().required('Required').typeError('Required'),
+  commitment: yup.string().required('Required').typeError('Required'),
   facility: yup.string().required('Required').typeError('Required'),
   email: yup.string().required('Required').typeError('Required'),
-  phonenumber: yup.string().required('Required').typeError('Required'),
+  phoneNumber: yup.string().required('Required').typeError('Required'),
   livingSober: yup.boolean().nullable(),
-  livingSoberQty: yup.number().typeError('Required')
+  livingSoberQty: yup.number().typeError('Numbers only')
     .when('livingSober', {
       is: true,
       then: schema => schema.test(
@@ -27,7 +28,7 @@ export const yupSchema = yup.object().shape({
       )
     }).nullable(),
   stepsAndTraditions12x12: yup.boolean().nullable(),
-  stepsAndTraditions12x12Qty: yup.number().typeError('Required')
+  stepsAndTraditions12x12Qty: yup.number().typeError('Numbers only')
     .when('stepsAndTraditions12x12', {
       is: true,
       then: schema => schema.test(
@@ -47,7 +48,7 @@ export const yupSchema = yup.object().shape({
       )
     }).nullable(),
   aaPaperback: yup.boolean().nullable(),
-  aaPaperbackQty: yup.number().typeError('Required')
+  aaPaperbackQty: yup.number().typeError('Numbers only')
   .when('aaPaperback', {
     is: true,
     then: schema => schema.test(
@@ -67,7 +68,7 @@ export const yupSchema = yup.object().shape({
     )
   }).nullable(),
   aaPocketSize: yup.boolean().nullable(),
-  aaPocketSizeQty: yup.number().typeError('Required')
+  aaPocketSizeQty: yup.number().typeError('Numbers only')
   .when('aaPocketSize', {
     is: true,
     then: schema => schema.test(
@@ -87,7 +88,7 @@ export const yupSchema = yup.object().shape({
     )
   }).nullable(),
   grapevine: yup.boolean().nullable(),
-  grapevineQty: yup.number().typeError('Required')
+  grapevineQty: yup.number().typeError('Numbers only')
   .when('grapevine', {
     is: true,
     then: schema => schema.test(
@@ -107,7 +108,7 @@ export const yupSchema = yup.object().shape({
     )
   }).nullable(),
   laVina: yup.boolean().nullable(),
-  laVinaQty: yup.number().typeError('Required')
+  laVinaQty: yup.number().typeError('Numbers only')
   .when('laVina', {
     is: true,
     then: schema => schema.test(
@@ -127,7 +128,7 @@ export const yupSchema = yup.object().shape({
     )
   }).nullable(),
   newcomerPackets: yup.boolean().nullable(),
-  newcomerPacketsQty: yup.number().typeError('Required')
+  newcomerPacketsQty: yup.number().typeError('Numbers only')
   .when('newcomerPackets', {
     is: true,
     then: schema => schema.test(
@@ -147,7 +148,7 @@ export const yupSchema = yup.object().shape({
     )
   }).nullable(),
   literatureRackWithPamphlets: yup.boolean().nullable(),
-  literatureRackWithPamphletsQty: yup.number().typeError('Required')
+  literatureRackWithPamphletsQty: yup.number().typeError('Numbers only')
   .when('literatureRackWithPamphlets', {
     is: true,
     then: schema => schema.test(
@@ -167,7 +168,7 @@ export const yupSchema = yup.object().shape({
     )
   }).nullable(),
   other: yup.boolean().nullable(),
-  otherQty: yup.number().typeError('Required')
+  otherQty: yup.number().typeError('Numbers only')
   .when('other', {
     is: true,
     then: schema => schema.test(
@@ -185,5 +186,5 @@ export const yupSchema = yup.object().shape({
         }
       }
     )
-  }).nullable(),
+  }).nullable()
 });
