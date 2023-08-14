@@ -36,7 +36,7 @@ const Login = () => {
     }
   });
 
-  const { setValues, submitForm, handleReset, handleBlur, handleChange } = formik;
+  // const { setValues, submitForm, handleReset, handleBlur, handleChange } = formik;
 
   const handleSubmit = (values) => {
     formik.submitForm(values)
@@ -47,7 +47,7 @@ const Login = () => {
       <Container>
         <Box textAlign={'center'} py={5} pb={3}>
           <Typography variant="h3" color={'white'} pb={10} pl={3} pr={3} >
-            Admin Log In
+            Admin Login
           </Typography>
         </Box>
         <Grid container spacing={1} pb={7} alignContent={'center'} justifyContent={'center'}>

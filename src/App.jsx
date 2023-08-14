@@ -220,7 +220,7 @@ function App() {
             <SidebarContent sx={{ backgroundColor: nchandiTheme.handiDarkGreen }}> </SidebarContent>
           </EdgeSidebar>
           <Content >
-            <Paper variant="outlined" elevation={1} sx={{backgroundColor: nchandiTheme.handiBlue}}>
+            <Paper variant='outlined' sx={{backgroundColor: nchandiTheme.handiBlue}}>
               <Routes>
                 <Route path="*" element={<RouterContent />} />
                 <Route path='/homepage' element={<HomePage />} />
