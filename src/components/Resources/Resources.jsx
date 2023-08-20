@@ -57,8 +57,6 @@ const commitmentOptions = [
 const Resources = () => {
   const { enqueueSnackbar } = useSnackbar();
   const [facilityOptions, setFaciltiyOptions] = useState([]);
-  const [openSuccess, setOpenSuccess] = useState(false);
-  const [openError, setOpenError ] = useState(false);
 
   useEffect(() => {
     const fetchFacilities = async () => {
