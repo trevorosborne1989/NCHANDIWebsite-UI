@@ -210,10 +210,10 @@ function EnhancedTableToolbar() {
   );
 }
 
-export default function EnhancedTable() {
+export default function EnhancedTable({ handleSelection }) {
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('panelId');
-  const [selected, setSelected] = React.useState([]);
+  // const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -224,25 +224,25 @@ export default function EnhancedTable() {
     setOrderBy(property);
   };
 
-  const handleClick = (event, panelId) => {
-    const selectedIndex = selected.indexOf(panelId);
-    let newSelected = [];
+  // const handleClick = (event, panelId) => {
+  //   const selectedIndex = selected.indexOf(panelId);
+  //   let newSelected = [];
 
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, panelId);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1),
-      );
-    }
+  //   if (selectedIndex === -1) {
+  //     newSelected = newSelected.concat(selected, panelId);
+  //   } else if (selectedIndex === 0) {
+  //     newSelected = newSelected.concat(selected.slice(1));
+  //   } else if (selectedIndex === selected.length - 1) {
+  //     newSelected = newSelected.concat(selected.slice(0, -1));
+  //   } else if (selectedIndex > 0) {
+  //     newSelected = newSelected.concat(
+  //       selected.slice(0, selectedIndex),
+  //       selected.slice(selectedIndex + 1),
+  //     );
+  //   }
 
-    setSelected(newSelected);
-  };
+  //   setSelected(newSelected);
+  // };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -257,7 +257,7 @@ export default function EnhancedTable() {
     setDense(event.target.checked);
   };
 
-  const isSelected = (panelId) => selected.indexOf(panelId) !== -1;
+  // const isSelected = (panelId) => selected.indexOf(panelId) !== -1;
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
@@ -289,15 +289,16 @@ export default function EnhancedTable() {
             />
             <TableBody>
               {visibleRows.map((row, index) => {
-                const isItemSelected = isSelected(row.panelId);
+                // const isItemSelected = isSelected(row.panelId);
 
                 return (
                   <StyledTableRow
                     hover
-                    onClick={(event) => handleClick(event, row.panelId)}
+                    // onClick={(event) => handleClick(event, row.panelId)}
+                    onClick={handleSelection}
                     tabIndex={-1}
                     key={row.panelId}
-                    selected={isItemSelected}
+                    // selected={isItemSelected}
                     sx={{ cursor: 'pointer' }}
                   >
                     <StyledTableCell  align="right">{row.dayOfWeek}</StyledTableCell>
