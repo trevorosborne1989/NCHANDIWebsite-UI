@@ -6,9 +6,9 @@ export default {
     title: 'Panels',
     component: Panels,
   };
-  
+
   export const Primary = ({...props}) => {
-  
+
       return (
         <>
           <Panels>

@@ -58,21 +58,6 @@ const Resources = () => {
   const { enqueueSnackbar } = useSnackbar();
   const [facilityOptions, setFaciltiyOptions] = useState([]);
 
-  useEffect(() => {
-    const fetchFacilities = async () => {
-      try {
-        // let response = await nchandiWebsiteService.getFacilites();
-        // let facilityOptions = response.data.map(facilities => facilities || '');
-        let facilityOptions = facilityData;
-        setFaciltiyOptions(facilityOptions);
-      } catch (error) {
-        console.error(error);
-        setFaciltiyOptions([]);
-      }
-    };
-    fetchFacilities();
-  }, []);
-
   const formik = useFormik({
     initialValues: {
       firstName: '',
@@ -105,7 +90,6 @@ const Resources = () => {
       try {
         // await post method()   Use await here.
         enqueueSnackbar('This literature request was successfully submitted.', snackbarMessages.success.configuration);
-        formik.setFieldValue('livingSober', false);
         formik.handleReset();
       } catch (err) {
         enqueueSnackbar('There was an error when submitting this form, please try again later or contact the Technology Chair', snackbarMessages.error.configuration);
@@ -119,10 +103,9 @@ const Resources = () => {
   const validateSubmission = async () => {
     setTimeout( async () => { // Remove the onTimeout once the POST method in onSubmit is defined.
       formik.submitForm();
-      console.log('hello');
       const errors = await formik.validateForm();
-      console.log(errors);
-      console.log(Object.keys(errors).length );
+      // console.log(errors);
+      // console.log(Object.keys(errors).length );
 
       if (!formik.isValid) {
         enqueueSnackbar('There are fields missing in your form. Please fill out all required * fields.', snackbarMessages.error.configuration);
@@ -132,6 +115,21 @@ const Resources = () => {
   };
 
   // const { setValues, submitForm, handleReset, handleBlur, handleChange } = formik;
+
+  useEffect(() => {
+    const fetchFacilities = async () => {
+      try {
+        // let response = await nchandiWebsiteService.getFacilites();
+        // let facilityOptions = response.data.map(facilities => facilities || '');
+        let facilityOptions = facilityData;
+        setFaciltiyOptions(facilityOptions);
+      } catch (error) {
+        console.error(error);
+        setFaciltiyOptions([]);
+      }
+    };
+    fetchFacilities();
+  }, []);
 
   return (
       <Grid container>
