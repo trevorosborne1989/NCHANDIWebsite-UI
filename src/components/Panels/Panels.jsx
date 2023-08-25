@@ -39,10 +39,6 @@ const Panels = () => {
   const handleDialogSave = () => {
     setTimeout( async () => { // Remove the onTimeout once the POST method in onSubmit is defined.
       formik.submitForm();
-      const errors = await formik.validateForm();
-      console.log(errors);
-      console.log(Object.keys(errors).length );
-
       if (!formik.isValid) {
         enqueueSnackbar('There are fields missing in your form. Please fill out all required * fields.', snackbarMessages.error.configuration);
       }
