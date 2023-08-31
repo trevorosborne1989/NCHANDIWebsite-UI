@@ -184,7 +184,7 @@ EnhancedTableHead.propTypes = {
   orderBy: PropTypes.string.isRequired,
 };
 
-function EnhancedTableToolbar() {
+function EnhancedTableToolbar({ title }) {
 
   return (
     <Toolbar
@@ -199,7 +199,7 @@ function EnhancedTableToolbar() {
         id="tableTitle"
         component="div"
       >
-        Open Panels
+        {title}
       </Typography>
       <Tooltip title="Filter list">
         <IconButton>
@@ -210,7 +210,7 @@ function EnhancedTableToolbar() {
   );
 }
 
-export default function EnhancedTable({ handleSelection }) {
+export default function EnhancedTable({ title, handleSelection }) {
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('panelId');
   // const [selected, setSelected] = React.useState([]);
@@ -275,7 +275,7 @@ export default function EnhancedTable({ handleSelection }) {
   return (
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
-        <EnhancedTableToolbar />
+        <EnhancedTableToolbar title={title} />
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}

@@ -1,30 +1,31 @@
-import { Typography, Divider } from "@mui/material";
-import React, { useState } from "react";
-import EnhancedTable from "../EnhancedTable/EnhancedTable";
+import React, { useState } from 'react';
+import { Divider, Typography } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
-import PanelsDialog from "../PanelsDialog/PanelsDialog";
 import { useFormik } from 'formik';
 import { useSnackbar } from 'notistack';
 import snackbarMessages from '../../lib/snackbarMessages.json';
+import EnhancedTable from '../EnhancedTable/EnhancedTable';
+import CommitteeDashboardDialog from '../CommitteeDashboardDialog/CommitteeDashboardDialog';
 import { yupSchema } from './ValidationSchema';
 
-const Panels = () => {
+const CommitteeDashboard = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
-  // const [facilityData, setFacilityData] = useState('');
+  // const [rowData, setRowData] = useState('');
   const { enqueueSnackbar } = useSnackbar();
 
   const formik = useFormik({
     initialValues: {
       firstName: '',
       lastName: '',
-      commitment: '',
       email: '',
       phoneNumber: '',
-      contactMethod: ''
+      contactMethod: '',
+      commitment: ''
     },
     onSubmit: async () => {
       try {
         // await post method()   Use await here.
+        // How do you know when to use PUT instead for an update of a row?
         enqueueSnackbar('This volunteer request was successfully submitted.', snackbarMessages.success.configuration);
         handleDialogClose();
       } catch (err) {
@@ -51,36 +52,40 @@ const Panels = () => {
     setDialogOpen(false);
   };
 
+  const handleNew = () => {
+    setDialogOpen(true);
+  };
+
   const handleRowSelection = (row) => {
-    // setFacilityData(row);
+    // setRowData(row);
     setDialogOpen(true);
   };
 
   return (
     <>
-      <Grid container sm={12} textAlign={'center'} justifyContent={'center'} py={3} pb={7}>
+      <Grid Grid container sm={12} textAlign={'center'} justifyContent={'center'} py={3} pb={3}>
         <Grid sm={10}>
-          <Typography variant="h3" color={'white'} >
-            Panels
+          <Typography variant="h4" color={'white'} >
+            Committee Dashboard
           </Typography>
         </Grid>
       </Grid>
-      <Grid container sm={12} justifyContent={'center'} pb={7}>
-        <Grid sm={10}>
+      <Grid container sm={12} justifyContent={'center'} pb={5}>
+        <Grid sm={8}>
           <Divider sx={{background: 'white'}} />
         </Grid>
       </Grid>
-      <Grid container  sm={12} justifyContent={'center'} pb={7}>
-        <Grid sm={11}>
+      <Grid container sm={12} justifyContent={'center'}>
+        <Grid sm={12}>
           <EnhancedTable
-            title={'Open Panels'}
+            title={'Committee Members'}
             handleSelection={handleRowSelection}
           />
         </Grid>
       </Grid>
-      <PanelsDialog
+      <CommitteeDashboardDialog
         formik={formik}
-        // data={facilityData}
+        // data={rowData}
         isOpen={dialogOpen}
         handleSave={handleDialogSave}
         handleClose={handleDialogClose}
@@ -89,4 +94,4 @@ const Panels = () => {
   )
 }
 
-export default Panels;
+export default CommitteeDashboard;

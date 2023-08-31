@@ -5,7 +5,9 @@ import {
   Tab,
   Typography,
   Box } from '@mui/material';
-  import { nchandiTheme } from '../../App';
+import Grid from '@mui/material/Unstable_Grid2';
+import { nchandiTheme } from '../../App';
+import CommitteeDashboard from '../CommitteeDashboard/CommitteeDashboard';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -49,16 +51,17 @@ export default function VerticalTabs() {
 
   return (
     <Box
-      sx={{ flexGrow: 1, bgcolor: nchandiTheme.handiSecondaryWhite, display: 'flex', height: '100%' }}
+      sx={{ flexGrow: 1, display: 'flex', height: '100%' }}
     >
-      <Tabs textColor='secondary'
+      <Tabs
+        textColor='inherit'
         orientation="vertical"
         variant='scrollable'
         value={value}
         onChange={handleChange}
         aria-label="Vertical tabs example"
         indicatorColor='secondary'
-        sx={{ borderRight: 3, borderColor: 'divider' }}
+        sx={{ borderRight: 5, borderColor: 'divider', color: nchandiTheme.handiSecondaryWhite }}
         tabsTemplate
       >
         <Tab label="Admin Dashboard" {...a11yProps(0)} />
@@ -68,24 +71,38 @@ export default function VerticalTabs() {
         <Tab label="Facilities Dashboard" {...a11yProps(4)} />
         <Tab label="Pending Volunteers" {...a11yProps(5)} />
       </Tabs>
-      <TabPanel value={value} index={0}>
-        Item One
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-        Item Two
-      </TabPanel>
-      <TabPanel value={value} index={2}>
-        Item Three
-      </TabPanel>
-      <TabPanel value={value} index={3}>
-        Item Four
-      </TabPanel>
-      <TabPanel value={value} index={4}>
-        Item Five
-      </TabPanel>
-      <TabPanel value={value} index={5}>
-        Item Six
-      </TabPanel>
+      <Grid container sm={12} justifyContent={'center'} >
+        <Grid sm={10}>
+          <TabPanel value={value} index={0}>
+            Tab 1
+          </TabPanel>
+        </Grid>
+        <Grid sm={10}>
+          <TabPanel value={value} index={1}>
+            <CommitteeDashboard />
+          </TabPanel>
+        </Grid>
+        <Grid sm={10}>
+          <TabPanel value={value} index={2}>
+            Tab 3
+          </TabPanel>
+        </Grid>
+        <Grid sm={10}>
+          <TabPanel value={value} index={3}>
+            Tab 4
+          </TabPanel>
+        </Grid>
+        <Grid sm={10}>
+          <TabPanel value={value} index={4}>
+            Tab 5
+          </TabPanel>
+        </Grid>
+        <Grid sm={10}>
+          <TabPanel value={value} index={5}>
+            Tab 6
+          </TabPanel>
+        </Grid>
+        </Grid>
     </Box>
   );
 }
