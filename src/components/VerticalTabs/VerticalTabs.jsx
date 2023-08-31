@@ -5,6 +5,7 @@ import {
   Tab,
   Typography,
   Box } from '@mui/material';
+  import { nchandiTheme } from '../../App';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -48,9 +49,9 @@ export default function VerticalTabs() {
 
   return (
     <Box
-      sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex', height: '100%' }}
+      sx={{ flexGrow: 1, bgcolor: nchandiTheme.handiSecondaryWhite, display: 'flex', height: '100%' }}
     >
-      <Tabs
+      <Tabs textColor='secondary'
         orientation="vertical"
         variant='scrollable'
         value={value}

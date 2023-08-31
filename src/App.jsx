@@ -2,6 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Root, Header, EdgeSidebar, EdgeTrigger, Content, Footer, SidebarContent, } from '@mui-treasury/layout';
+import Grid from '@mui/material/Unstable_Grid2';
 import {
   Typography,
   Box,
@@ -45,7 +46,7 @@ import Panels from './components/Panels/Panels';
 import Resources from './components/Resources/Resources';
 import Contact from './components/Contact/Contact';
 import Login from './components/Login/Login';
-import Admin from './components/Admin/Admin';
+import AdminContainer from './components/AdminContainer/AdminContainer';
 // import NchandiIcon from './components/NchandiIcon/NchandiIcon';
 
 
@@ -214,41 +215,54 @@ function App() {
               </List>
               <Divider />
               <List>
-                <ListItemLink to="/admin" primary="Admin" icon={<AdminPanelSettings fontSize="medium" sx={{ color: 'white'}} />} />
+                <ListItemLink to="/admin-container" primary="Admin" icon={<AdminPanelSettings fontSize="medium" sx={{ color: 'white'}} />} />
               </List>
             </Paper>
             <SidebarContent sx={{ backgroundColor: nchandiTheme.handiDarkGreen }}> </SidebarContent>
           </EdgeSidebar>
-          <Content >
-            <Paper variant='outlined' sx={{backgroundColor: nchandiTheme.handiBlue}}>
-              <Routes>
-                <Route path="*" element={<RouterContent />} />
-                <Route path='/homepage' element={<HomePage />} />
-                <Route path='/about' element={<About />} />
-                <Route path='/orientation' element={<Orientation />} />
-                <Route path='/panels' element={<Panels />} />
-                <Route path='/resources' element={<Resources />} />
-                <Route path='/contact' element={<Contact />} />
-                <Route path='/login' element={<Login />} />
-                <Route path='/admin' element={<Admin />} />
-              </Routes>
-            </Paper>
-          </Content>
-          <Footer sx={{backgroundColor: nchandiTheme.handiDarkBlue, minHeight: 50}}>
-            <Box display='flex' sx={{ flexDirection: 'row', minWidth: 100 }} alignItems="center" py={1} mb={1}>
-              <ExtensionTwoTone sx={{ color: 'white', fontSize: 50, ml: 3, my: 0.5 }}/>
-              <Typography variant='h6' color='white' sx={{ minWidth: 125 }} marginRight={3}>
-                North County H&I
-              </Typography>
-              <Box sx={{ flexDirection: 'column', minWidth: 275 }} display='flex' alignItems='right' py={3} mb={2} >
-                <Typography variant='h7' color='white' sx={{ minWidth: 125 }}  marginLeft={3} marginRight={3} mb={1}>
-                  PO Box 4013, Carlsbad, CA 92018
-                </Typography>
-                <Typography variant='h7' color='white' sx={{ minWidth: 125 }} align='right' marginLeft={3} marginRight={3} >
-                  info@nchandi.org
-                </Typography>
-              </Box>
+          <Content>
+            <Box height='100%' sx={{backgroundColor: nchandiTheme.handiBlue}}>
+              <Paper variant='outlined' sx={{backgroundColor: nchandiTheme.handiBlue}}>
+                <Routes>
+                  <Route path="*" element={<RouterContent />} />
+                  <Route path='/homepage' element={<HomePage />} />
+                  <Route path='/about' element={<About />} />
+                  <Route path='/orientation' element={<Orientation />} />
+                  <Route path='/panels' element={<Panels />} />
+                  <Route path='/resources' element={<Resources />} />
+                  <Route path='/contact' element={<Contact />} />
+                  <Route path='/login' element={<Login />} />
+                  <Route path='/admin-container' element={<AdminContainer />} />
+                </Routes>
+              </Paper>
             </Box>
+          </Content>
+          <Footer>
+            <Grid container sm={12}  sx={{backgroundColor: nchandiTheme.handiDarkBlue}} justifyContent={'center'} alignItems={'center'} py={1}>
+              <Grid sm={1} textAlign={'right'} pr={1}>
+                <ExtensionTwoTone sx={{ color: 'white', fontSize: 50, my: 0.5 }}/>
+              </Grid>
+              <Grid sm={2}>
+                <Typography variant='h6' color='white' >
+                  North County H&I
+                </Typography>
+              </Grid>
+              <Grid sm={5}>
+
+              </Grid>
+              <Grid container sm={4} direction='column' justifyContent={'center'} alignItems={'end'} textAlign={'end'} pr={4}>
+                <Grid sm={10}>
+                  <Typography variant='h7' color='white' >
+                    PO Box 4013, Carlsbad, CA 92018
+                  </Typography>
+                </Grid>
+                <Grid sm={10}>
+                  <Typography variant='h7' color='white'>
+                    info@nchandi.org
+                  </Typography>
+                </Grid>
+              </Grid>
+            </Grid>
           </Footer>
         </Root>
       </ThemeProvider>
