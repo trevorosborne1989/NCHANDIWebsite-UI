@@ -73,6 +73,7 @@ const Panels = () => {
       <Grid container  sm={12} justifyContent={'center'} pb={7}>
         <Grid sm={11}>
           <EnhancedTable
+            title={'Open Panels'}
             handleSelection={handleRowSelection}
           />
         </Grid>
