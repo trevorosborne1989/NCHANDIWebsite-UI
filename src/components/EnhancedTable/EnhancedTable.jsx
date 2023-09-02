@@ -210,7 +210,7 @@ function EnhancedTableToolbar({ title }) {
   );
 }
 
-export default function EnhancedTable({ title, handleSelection }) {
+export default function EnhancedTable({ tableTitle, handleSelection, data }) {
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('panelId');
   // const [selected, setSelected] = React.useState([]);
@@ -265,17 +265,17 @@ export default function EnhancedTable({ title, handleSelection }) {
 
   const visibleRows = React.useMemo(
     () =>
-      stableSort(rows, getComparator(order, orderBy)).slice(
+      stableSort(data, getComparator(order, orderBy)).slice(
         page * rowsPerPage,
         page * rowsPerPage + rowsPerPage,
       ),
-    [order, orderBy, page, rowsPerPage],
+    [order, orderBy, page, rowsPerPage, data],
   );
 
   return (
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
-        <EnhancedTableToolbar title={title} />
+        <EnhancedTableToolbar title={tableTitle} />
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}
