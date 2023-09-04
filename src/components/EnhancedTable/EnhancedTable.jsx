@@ -40,37 +40,6 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-function createData(panelId, dayOfWeek, weekOfMomth, time, facility, gender, numberNeeded) {
-  return {
-    panelId,
-    dayOfWeek,
-    weekOfMomth,
-    time,
-    facility,
-    gender,
-    numberNeeded,
-  };
-}
-
-const rows = [
-  createData('1', 'Tuesday', 1, '7:00 AM', 'First Step House', 'Male', 5),
-  createData('2','Friday', 3, '8:00 AM', 'First Step House', 'Female', 1),
-  createData('3','Wednesday', 2, '7:00 PM', 'Tri-City', 'Male/Female', 4),
-  createData('4','Saturday', 1, '5:00 PM', 'First Step House', 'Female', 5),
-  createData('5','Thrsday', 1, '10:00 AM', 'Crown View', 'Male', 2),
-  createData('6','Monday', 3, '7:00 PM', 'Sober Recovery', 'Male', 3),
-  createData('7','Wednesday', 3, '7:00 AM', 'Recovered Sisters', 'Female', 3),
-  createData('8','Friday', 2, '7:00 AM', 'First Step House', 'Male', 5),
-  createData('9','Tuesday', 4, '5:00 PM', 'Tri-City', 'Male', 4),
-  createData('10','Saturday', 5, '10:00 AM', 'Sober Recovery', 'Male', 1),
-  createData('11','Friday', 1, '12:30 PM', 'First Step House', 'Male', 2),
-  createData('12','Monday', 2, '4:00 PM', 'Tri-City', 'Female', 1),
-  createData('13','Wednsesday', 3, '9:00 AM', 'Crown View', 'Male/Female', 3),
-  createData('14','Thursday', 1, '10:00 AM', 'Carlsbad Recovery', 'Male', 1),
-  createData('15','Sunday', 4, '12:00 PM', 'Recovered Sisters', 'Female', 5),
-  createData('16','Saturday', 2, '8:00 AM', 'Carlsbad Recovery', 'Male', 4)
-];
-
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -93,57 +62,18 @@ function getComparator(order, orderBy) {
 // with exampleArray.slice().sort(exampleComparator)
 function stableSort(array, comparator) {
   const stabilizedThis = array.map((el, index) => [el, index]);
-  stabilizedThis.sort((a, b) => {
+  stabilizedThis?.sort((a, b) => {
     const order = comparator(a[0], b[0]);
     if (order !== 0) {
       return order;
     }
     return a[1] - b[1];
   });
-  return stabilizedThis.map((el) => el[0]);
+  return stabilizedThis?.map((el) => el[0]);
 }
 
-const headCells = [
-  {
-    id: 'dayOfWeek',
-    numeric: true,
-    disablePadding: false,
-    label: 'Day of Week',
-  },
-  {
-    id: 'weekOfMonth',
-    numeric: true,
-    disablePadding: false,
-    label: 'Week of Month',
-  },
-  {
-    id: 'time',
-    numeric: true,
-    disablePadding: false,
-    label: 'Time',
-  },
-  {
-    id: 'facility',
-    numeric: true,
-    disablePadding: false,
-    label: 'Facility',
-  },
-  {
-    id: 'gender',
-    numeric: true,
-    disablePadding: false,
-    label: 'Gender',
-  },
-  {
-    id: 'numberNeeded',
-    numeric: true,
-    disablePadding: false,
-    label: '# Needed',
-  },
-];
-
 function EnhancedTableHead(props) {
-  const { order, orderBy, onRequestSort } =
+  const { order, orderBy, onRequestSort, ...configProps } =
     props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
@@ -152,20 +82,20 @@ function EnhancedTableHead(props) {
   return (
     <TableHead>
       <TableRow>
-        {headCells.map((headCell) => (
+        {configProps.columns.map((headCell) => (
           <StyledTableCell
-            key={headCell.id}
+            key={headCell.columnName}
             align={headCell.numeric ? 'right' : 'left'}
             padding={headCell.disablePadding ? 'none' : 'normal'}
-            sortDirection={orderBy === headCell.id ? order : false}
+            sortDirection={orderBy === headCell.columnName ? order : false}
           >
             <TableSortLabel
-              active={orderBy === headCell.id}
-              direction={orderBy === headCell.id ? order : 'asc'}
-              onClick={createSortHandler(headCell.id)}
+              active={orderBy === headCell.columnName}
+              direction={orderBy === headCell.columnName ? order : 'asc'}
+              onClick={createSortHandler(headCell.columnName)}
             >
               {headCell.label}
-              {orderBy === headCell.id ? (
+              {orderBy === headCell.columnName ? (
                 <Box component="span" sx={visuallyHidden}>
                   {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
                 </Box>
@@ -210,9 +140,10 @@ function EnhancedTableToolbar({ title }) {
   );
 }
 
-export default function EnhancedTable({ tableTitle, handleSelection, data }) {
+export default function EnhancedTable({ data, handleSelection, ...configProps }) {
+  // const { data, handleSelection, ...configProps } = props;
   const [order, setOrder] = React.useState('asc');
-  const [orderBy, setOrderBy] = React.useState('panelId');
+  const [orderBy, setOrderBy] = React.useState('columnName'); // TODO: verify its this and not the unique key of a record which would be configProps[0].id ~
   // const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
@@ -261,11 +192,11 @@ export default function EnhancedTable({ tableTitle, handleSelection, data }) {
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - data?.length) : 0;
 
   const visibleRows = React.useMemo(
     () =>
-      stableSort(data, getComparator(order, orderBy)).slice(
+      stableSort(data, getComparator(order, orderBy))?.slice(
         page * rowsPerPage,
         page * rowsPerPage + rowsPerPage,
       ),
@@ -275,7 +206,7 @@ export default function EnhancedTable({ tableTitle, handleSelection, data }) {
   return (
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
-        <EnhancedTableToolbar title={tableTitle} />
+        <EnhancedTableToolbar title={configProps.tableTitle} />
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}
@@ -286,9 +217,10 @@ export default function EnhancedTable({ tableTitle, handleSelection, data }) {
               order={order}
               orderBy={orderBy}
               onRequestSort={handleRequestSort}
+              {...configProps}
             />
             <TableBody>
-              {visibleRows.map((row, index) => {
+              {visibleRows?.map((row, index) => {
                 // const isItemSelected = isSelected(row.panelId);
 
                 return (
@@ -297,16 +229,13 @@ export default function EnhancedTable({ tableTitle, handleSelection, data }) {
                     // onClick={(event) => handleClick(event, row.panelId)}
                     onClick={handleSelection}
                     tabIndex={-1}
-                    key={row.panelId}
+                    key={configProps.dataKey(row)}
                     // selected={isItemSelected}
                     sx={{ cursor: 'pointer' }}
                   >
-                    <StyledTableCell  align="right">{row.dayOfWeek}</StyledTableCell>
-                    <StyledTableCell  align="right">{row.weekOfMomth}</StyledTableCell>
-                    <StyledTableCell  align="right">{row.time}</StyledTableCell>
-                    <StyledTableCell  align="right">{row.facility}</StyledTableCell>
-                    <StyledTableCell  align="right">{row.gender}</StyledTableCell>
-                    <StyledTableCell  align="right">{row.numberNeeded}</StyledTableCell>
+                    {configProps.columns.map((col, colIndex) =>
+                      <StyledTableCell key={'TblCell' + colIndex} align="right" data-cy='ehnahnced-table-cell'>{col.value(row)}</StyledTableCell>
+                    )}
                   </StyledTableRow>
                 );
               })}
@@ -325,7 +254,7 @@ export default function EnhancedTable({ tableTitle, handleSelection, data }) {
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={rows.length}
+          count={data?.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}

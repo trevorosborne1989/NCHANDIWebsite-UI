@@ -7,39 +7,40 @@ import snackbarMessages from '../../lib/snackbarMessages.json';
 import EnhancedTable from '../EnhancedTable/EnhancedTable';
 import CommitteeDashboardDialog from '../CommitteeDashboardDialog/CommitteeDashboardDialog';
 import { yupSchema } from './ValidationSchema';
+import TableConfig from './TableConfig';
 // import NCHANDIWebsiteService from '../../lib/NCHANDIWebsiteService'
 
 // const nchandiWebsiteService = new NCHANDIWebsiteService();
 
-function createData(panelId, dayOfWeek, weekOfMomth, time, facility, gender, numberNeeded) {
+function createData(id, firstName, lastName, email, phoneNumber, contactMethod, commitment) {
   return {
-    panelId,
-    dayOfWeek,
-    weekOfMomth,
-    time,
-    facility,
-    gender,
-    numberNeeded,
+    id,
+    firstName,
+    lastName,
+    email,
+    phoneNumber,
+    contactMethod,
+    commitment
   };
 }
 
 const comitteeMembers = [
-  createData('1', 'Tuesday', 1, '7:00 AM', 'First Step House', 'Male', 5),
-  createData('2','Friday', 3, '8:00 AM', 'First Step House', 'Female', 1),
-  createData('3','Wednesday', 2, '7:00 PM', 'Tri-City', 'Male/Female', 4),
-  createData('4','Saturday', 1, '5:00 PM', 'First Step House', 'Female', 5),
-  createData('5','Thrsday', 1, '10:00 AM', 'Crown View', 'Male', 2),
-  createData('6','Monday', 3, '7:00 PM', 'Sober Recovery', 'Male', 3),
-  createData('7','Wednesday', 3, '7:00 AM', 'Recovered Sisters', 'Female', 3),
-  createData('8','Friday', 2, '7:00 AM', 'First Step House', 'Male', 5),
-  createData('9','Tuesday', 4, '5:00 PM', 'Tri-City', 'Male', 4),
-  createData('10','Saturday', 5, '10:00 AM', 'Sober Recovery', 'Male', 1),
-  createData('11','Friday', 1, '12:30 PM', 'First Step House', 'Male', 2),
-  createData('12','Monday', 2, '4:00 PM', 'Tri-City', 'Female', 1),
-  createData('13','Wednsesday', 3, '9:00 AM', 'Crown View', 'Male/Female', 3),
-  createData('14','Thursday', 1, '10:00 AM', 'Carlsbad Recovery', 'Male', 1),
-  createData('15','Sunday', 4, '12:00 PM', 'Recovered Sisters', 'Female', 5),
-  createData('16','Saturday', 2, '8:00 AM', 'Carlsbad Recovery', 'Male', 4)
+  createData('1', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'panelLeader'),
+  createData('2', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'panelLeader'),
+  createData('3', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'panelLeader'),
+  createData('4', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'panelLeader'),
+  createData('5', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'panelLeader'),
+  createData('6', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'panelLeader'),
+  createData('7', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'panelLeader'),
+  createData('8', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'panelLeader'),
+  createData('9', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'panelLeader'),
+  createData('10', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'panelLeader'),
+  createData('12', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'panelLeader'),
+  createData('13', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'panelLeader'),
+  createData('14', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'panelLeader'),
+  createData('15', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'panelLeader'),
+  createData('16', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'panelLeader'),
+  createData('17', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'panelLeader'),
 ];
 
 const CommitteeDashboard = () => {
@@ -104,7 +105,7 @@ const CommitteeDashboard = () => {
     setDialogOpen(false);
   };
 
-  // const handleNew = () => {
+  // const handleAdd = () => {
   //   setDialogOpen(true);
   // };
 
@@ -130,9 +131,10 @@ const CommitteeDashboard = () => {
       <Grid container sm={12} justifyContent={'center'}>
         <Grid sm={12}>
           <EnhancedTable
-            title={'Committee Members'}
-            handleSelection={handleRowSelection}
             data ={tableData}
+            handleSelection={handleRowSelection}
+            {...TableConfig}
+            
           />
         </Grid>
       </Grid>
