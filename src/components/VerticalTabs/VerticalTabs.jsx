@@ -9,6 +9,7 @@ import Grid from '@mui/material/Unstable_Grid2';
 import { nchandiTheme } from '../../App';
 import CommitteeDashboard from '../CommitteeDashboard/CommitteeDashboard';
 import PanelMembersDashboard from '../PanelMembersDashboard/PanelMembersDashboard';
+import FacilitiesDashboard from '../FacilitiesDashboard/FacilitiesDashboard';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -95,7 +96,7 @@ export default function VerticalTabs() {
         </Grid>
         <Grid sm={10}>
           <TabPanel value={value} index={4}>
-            Tab 5
+            <FacilitiesDashboard />
           </TabPanel>
         </Grid>
         <Grid sm={10}>
