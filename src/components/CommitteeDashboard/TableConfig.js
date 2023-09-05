@@ -1,5 +1,5 @@
 const TableConfig = {
-  tableTitle: 'Comittee Members',
+  tableTitle: 'Committee Members',
   dataKey: d => d.id,
   columns: [
     {

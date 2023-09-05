@@ -141,7 +141,6 @@ function EnhancedTableToolbar({ title }) {
 }
 
 export default function EnhancedTable({ data, handleSelection, ...configProps }) {
-  // const { data, handleSelection, ...configProps } = props;
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('columnName'); // TODO: verify its this and not the unique key of a record which would be configProps[0].id ~
   // const [selected, setSelected] = React.useState([]);
@@ -222,19 +221,18 @@ export default function EnhancedTable({ data, handleSelection, ...configProps })
             <TableBody>
               {visibleRows?.map((row, index) => {
                 // const isItemSelected = isSelected(row.panelId);
-
                 return (
                   <StyledTableRow
                     hover
                     // onClick={(event) => handleClick(event, row.panelId)}
-                    onClick={handleSelection}
+                    onClick={() => handleSelection(row)}
                     tabIndex={-1}
                     key={configProps.dataKey(row)}
                     // selected={isItemSelected}
                     sx={{ cursor: 'pointer' }}
                   >
                     {configProps.columns.map((col, colIndex) =>
-                      <StyledTableCell key={'TblCell' + colIndex} align="right" data-cy='ehnahnced-table-cell'>{col.value(row)}</StyledTableCell>
+                      <StyledTableCell key={'TblCell' + colIndex} align="right" data-cy='enhanced-table-cell'>{col.value(row)}</StyledTableCell>
                     )}
                   </StyledTableRow>
                 );
