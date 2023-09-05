@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Divider, Typography } from '@mui/material';
+import { Divider, Typography, IconButton, Box } from '@mui/material';
+import { Add } from '@mui/icons-material';
 import Grid from '@mui/material/Unstable_Grid2';
 import { useFormik } from 'formik';
 import { useSnackbar } from 'notistack';
@@ -24,23 +25,23 @@ function createData(id, firstName, lastName, email, phoneNumber, contactMethod, 
   };
 }
 
-const comitteeMembers = [
-  createData('1', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'panelLeader'),
-  createData('2', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'panelLeader'),
-  createData('3', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'panelLeader'),
-  createData('4', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'panelLeader'),
-  createData('5', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'panelLeader'),
-  createData('6', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'panelLeader'),
-  createData('7', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'panelLeader'),
-  createData('8', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'panelLeader'),
-  createData('9', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'panelLeader'),
-  createData('10', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'panelLeader'),
-  createData('12', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'panelLeader'),
-  createData('13', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'panelLeader'),
-  createData('14', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'panelLeader'),
-  createData('15', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'panelLeader'),
-  createData('16', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'panelLeader'),
-  createData('17', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'panelLeader'),
+const committeeMembers = [
+  createData('1', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'Panel Leader'),
+  createData('2', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'Panel Leader'),
+  createData('3', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'Panel Leader'),
+  createData('4', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'Panel Leader'),
+  createData('5', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'Panel Leader'),
+  createData('6', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'Panel Leader'),
+  createData('7', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'Panel Leader'),
+  createData('8', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'Panel Leader'),
+  createData('9', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'Panel Leader'),
+  createData('10', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'Panel Leader'),
+  createData('12', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'Panel Leader'),
+  createData('13', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'Panel Leader'),
+  createData('14', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'Panel Leader'),
+  createData('15', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'Panel Leader'),
+  createData('16', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'Panel Leader'),
+  createData('17', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'Panel Leader'),
 ];
 
 const CommitteeDashboard = () => {
@@ -59,12 +60,18 @@ const CommitteeDashboard = () => {
       contactMethod: '',
       commitment: ''
     },
-    onSubmit: async () => {
+    onSubmit: async (values) => {
+      const { id } = values;
       try {
-        // await post method()   Use await here.
-        // How do you know when to use PUT instead for an update of a row?
+
+        if (id) {
+          // await ectsService.putEctsstaffWithEctsStaffId({}, id, values);
+          setDialogOpen(false);
+        }else {
+          // await ectsService.postEctsstaff({}, values);
+          setDialogOpen(false);
+        }
         enqueueSnackbar('This volunteer request was successfully submitted.', snackbarMessages.success.configuration);
-        handleDialogClose();
       } catch (err) {
         enqueueSnackbar('There was an error when submitting this form, please try again later or contact the Technology Chair', snackbarMessages.error.configuration);
         console.error(err);
@@ -74,11 +81,13 @@ const CommitteeDashboard = () => {
     validateOnBlur: true,
   });
 
+  // const fetchData = useCallback(params => ectsService.getEctsstaff(params), []); //Try This!!!
+
   const fetchTableData = useCallback(async () => {
     try {
       // setLoading(true);
-      // const { data: comitteeMembers } = await nchandiWebsiteService.getComitteeMembers();
-      setTableData(comitteeMembers);
+      // const { data: committeeMembers } = await nchandiWebsiteService.getCommitteeMembers();
+      setTableData(committeeMembers);
     } catch (err) {
       console.error(err);
     } finally {
@@ -105,12 +114,13 @@ const CommitteeDashboard = () => {
     setDialogOpen(false);
   };
 
-  // const handleAdd = () => {
-  //   setDialogOpen(true);
-  // };
+  const handleNew = () => {
+    formik.handleReset();
+    setDialogOpen(true);
+  };
 
   const handleRowSelection = (row) => {
-    // setRowData(row);
+    formik.setValues(row);
     setDialogOpen(true);
   };
 
@@ -128,13 +138,21 @@ const CommitteeDashboard = () => {
           <Divider sx={{background: 'white'}} />
         </Grid>
       </Grid>
+      <Box display='flex' alignItems='center' justifyContent='flex-end'>
+        <IconButton
+          color='primary'
+          onClick={handleNew}
+          data-cy='committee-dashboard-add-button'
+        >
+          <Add sx={{ color: 'white' }} fontSize='large' />
+        </IconButton>
+      </Box>
       <Grid container sm={12} justifyContent={'center'}>
         <Grid sm={12}>
           <EnhancedTable
             data ={tableData}
             handleSelection={handleRowSelection}
             {...TableConfig}
-            
           />
         </Grid>
       </Grid>

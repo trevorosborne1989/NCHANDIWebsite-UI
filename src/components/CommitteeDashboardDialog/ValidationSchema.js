@@ -7,4 +7,5 @@ export const yupSchema = yup.object().shape({
   email: yup.string().required('Required').typeError('Required'),
   phoneNumber: yup.string().required('Required').typeError('Required'),
   contactMethod: yup.string().required('Required').typeError('Required'),
+  commitment: yup.string().required('Required').typeError('Required'),
 });

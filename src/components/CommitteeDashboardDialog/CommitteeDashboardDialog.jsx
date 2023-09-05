@@ -12,12 +12,26 @@ import {
 
 const contactOptions = [
   {
-    value: 'text',
+    value: 'Text',
     label: 'Text'
   },
   {
-    value: 'email',
+    value: 'Email',
     label: 'Email'
+  }
+];
+const commitmentOptions = [
+  {
+    value: 'Panel Leader',
+    label: 'Panel Leader',
+  },
+  {
+    value: 'Panel Coordinator',
+    label: 'Panel Coordinator',
+  },
+  {
+    value: 'Board Member',
+    label: 'Board Member',
   }
 ];
 
@@ -28,10 +42,10 @@ const CommitteeDashboardDialog = ({ formik, data, isOpen, handleSave, handleClos
   return (
     <>
       <Dialog open={isOpen} onClose={handleClose}>
-        <DialogTitle>Volunteer</DialogTitle>
+        <DialogTitle>Committee Member</DialogTitle>
         <DialogContent>
           <DialogContentText pb={3}>
-            Please fill out the volunteer information below.
+            Please fill out the committee information below.
           </DialogContentText>
           {/* {data && <DialogContentText pb={5}> {data.dayOfWeek} </DialogContentText>} */}
           <TextField
@@ -101,6 +115,26 @@ const CommitteeDashboardDialog = ({ formik, data, isOpen, handleSave, handleClos
             required
           >
             {contactOptions.map(option => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
+          <TextField
+            select
+            label='H&I Commitment'
+            name='commitment'
+            fullWidth
+            variant='outlined'
+            margin='dense'
+            value={formik.values.commitment}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            helperText={formik.touched.commitment ? formik.errors.commitment : ""}
+            error={formik.touched.commitment && Boolean(formik.errors.commitment)}
+            required
+          >
+            {commitmentOptions.map(option => (
               <MenuItem key={option.value} value={option.value}>
                 {option.label}
               </MenuItem>

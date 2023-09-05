@@ -72,7 +72,7 @@ const Panels = () => {
   const fetchPanelData = useCallback(async () => {
     try {
       // setLoading(true);
-      // const { data: comitteeMembers } = await nchandiWebsiteService.getComitteeMembers();
+      // const { data: committeeMembers } = await nchandiWebsiteService.getCommitteeMembers();
       setTableData(panels);
     } catch (err) {
       console.error(err);
