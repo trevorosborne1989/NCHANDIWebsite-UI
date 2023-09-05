@@ -42,7 +42,7 @@ const panels = [
 
 const Panels = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
-  // const [facilityData, setFacilityData] = useState('');
+  const [facilityData, setFacilityData] = useState('');
   const [tableData, setTableData] = useState([]);
   const { enqueueSnackbar } = useSnackbar();
 
@@ -101,7 +101,7 @@ const Panels = () => {
   };
 
   const handleRowSelection = (row) => {
-    // setFacilityData(row);
+    setFacilityData(row);
     setDialogOpen(true);
   };
 
@@ -130,7 +130,7 @@ const Panels = () => {
       </Grid>
       <PanelsDialog
         formik={formik}
-        // data={facilityData}
+        data={facilityData}
         isOpen={dialogOpen}
         handleSave={handleDialogSave}
         handleClose={handleDialogClose}

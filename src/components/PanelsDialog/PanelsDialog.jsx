@@ -33,7 +33,7 @@ const PanelsDialog = ({ formik, data, isOpen, handleSave, handleClose }) => {
           <DialogContentText pb={3}>
             Please fill out the volunteer information below.
           </DialogContentText>
-          {/* {data && <DialogContentText pb={5}> {data.dayOfWeek} </DialogContentText>} */}
+          {data && <DialogContentText pb={5}> {data.dayOfWeek + '     -     ' + data.weekOfMonth + '     -    ' + data.time + '     -     ' + data.facility} </DialogContentText>}
           <TextField
             label='First Name'
             name='firstName'
