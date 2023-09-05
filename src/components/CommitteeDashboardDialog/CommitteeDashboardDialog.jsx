@@ -144,7 +144,7 @@ const CommitteeDashboardDialog = ({ formik, isOpen, handleSave, handleClose }) =
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button variant='contained' color='secondary' onClick={handleSave}>Volunteer</Button>
+          <Button variant='contained' color='secondary' onClick={handleSave}>Submit</Button>
         </DialogActions>
       </Dialog>
     </>

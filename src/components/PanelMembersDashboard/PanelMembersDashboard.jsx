@@ -139,7 +139,7 @@ const PanelMembersDashboard = () => {
         <IconButton
           color='primary'
           onClick={handleNew}
-          data-cy='committee-dashboard-add-button'
+          data-cy='panel-member-dashboard-add-button'
         >
           <Add sx={{ color: 'white' }} fontSize='large' />
         </IconButton>
