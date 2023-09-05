@@ -12,11 +12,15 @@ import {
 
 const contactOptions = [
   {
-    value: 'text',
+    value: 'None',
+    label: 'None'
+  },
+  {
+    value: 'Text',
     label: 'Text'
   },
   {
-    value: 'email',
+    value: 'Email',
     label: 'Email'
   }
 ];
