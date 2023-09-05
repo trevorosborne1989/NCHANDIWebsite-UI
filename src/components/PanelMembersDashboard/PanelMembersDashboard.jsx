@@ -6,45 +6,44 @@ import { useFormik } from 'formik';
 import { useSnackbar } from 'notistack';
 import snackbarMessages from '../../lib/snackbarMessages.json';
 import EnhancedTable from '../EnhancedTable/EnhancedTable';
-import CommitteeDashboardDialog from '../CommitteeDashboardDialog/CommitteeDashboardDialog';
+import PanelMembersDashboardDialog from '../PanelMembersDashboardDialog/PanelMembersDashboardDialog'
 import { yupSchema } from './ValidationSchema';
 import TableConfig from './TableConfig';
 // import NCHANDIWebsiteService from '../../lib/NCHANDIWebsiteService'
 
 // const nchandiWebsiteService = new NCHANDIWebsiteService();
 
-function createData(id, firstName, lastName, email, phoneNumber, contactMethod, commitment) {
+function createData(id, firstName, lastName, email, phoneNumber, contactMethod) {
   return {
     id,
     firstName,
     lastName,
     email,
     phoneNumber,
-    contactMethod,
-    commitment
+    contactMethod
   };
 }
 
-const committeeMembers = [
-  createData('1', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'Panel Leader'),
-  createData('2', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'Panel Leader'),
-  createData('3', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'Panel Leader'),
-  createData('4', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'Panel Leader'),
-  createData('5', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'Panel Leader'),
-  createData('6', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'Panel Leader'),
-  createData('7', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'Panel Leader'),
-  createData('8', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'Panel Leader'),
-  createData('9', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'Panel Leader'),
-  createData('10', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'Panel Leader'),
-  createData('12', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'Panel Leader'),
-  createData('13', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'Panel Leader'),
-  createData('14', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'Panel Leader'),
-  createData('15', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'Panel Leader'),
-  createData('16', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'Panel Leader'),
-  createData('17', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'Panel Leader'),
+const panelMembers = [
+  createData('1', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text'),
+  createData('2', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text'),
+  createData('3', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text'),
+  createData('4', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text'),
+  createData('5', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text'),
+  createData('6', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text'),
+  createData('7', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text'),
+  createData('8', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text'),
+  createData('9', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text'),
+  createData('10', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text'),
+  createData('12', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text'),
+  createData('13', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text'),
+  createData('14', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text'),
+  createData('15', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text'),
+  createData('16', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text'),
+  createData('17', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text'),
 ];
 
-const CommitteeDashboard = () => {
+const PanelMembersDashboard = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
   // const [loading, setLoading] = useState(false);
   const [tableData, setTableData] = useState([]);
@@ -56,8 +55,7 @@ const CommitteeDashboard = () => {
       lastName: '',
       email: '',
       phoneNumber: '',
-      contactMethod: '',
-      commitment: ''
+      contactMethod: ''
     },
     onSubmit: async (values) => {
       const { id } = values;
@@ -70,7 +68,7 @@ const CommitteeDashboard = () => {
           // await ectsService.postEctsstaff({}, values);
           setDialogOpen(false);
         }
-        enqueueSnackbar('This committee member was successfully submitted.', snackbarMessages.success.configuration);
+        enqueueSnackbar('This member was successfully submitted.', snackbarMessages.success.configuration);
       } catch (err) {
         enqueueSnackbar('There was an error when submitting this form, please try again later or contact the Technology Chair', snackbarMessages.error.configuration);
         console.error(err);
@@ -85,8 +83,8 @@ const CommitteeDashboard = () => {
   const fetchTableData = useCallback(async () => {
     try {
       // setLoading(true);
-      // const { data: committeeMembers } = await nchandiWebsiteService.getCommitteeMembers();
-      setTableData(committeeMembers);
+      // const { data: panelMembers } = await nchandiWebsiteService.getPanelMembers();
+      setTableData(panelMembers);
     } catch (err) {
       console.error(err);
     } finally {
@@ -128,7 +126,7 @@ const CommitteeDashboard = () => {
       <Grid Grid container sm={12} textAlign={'center'} justifyContent={'center'} py={3} pb={3}>
         <Grid sm={10}>
           <Typography variant="h4" color={'white'} >
-            Committee Dashboard
+            Panel Members Dashboard
           </Typography>
         </Grid>
       </Grid>
@@ -155,7 +153,7 @@ const CommitteeDashboard = () => {
           />
         </Grid>
       </Grid>
-      <CommitteeDashboardDialog
+      <PanelMembersDashboardDialog
         formik={formik}
         isOpen={dialogOpen}
         handleSave={handleDialogSave}
@@ -165,4 +163,4 @@ const CommitteeDashboard = () => {
   )
 }
 
-export default CommitteeDashboard;
+export default PanelMembersDashboard;

@@ -28,7 +28,7 @@ export default {
       onSubmit: async () => {
         try {
           // await post method()   Use await here.
-          enqueueSnackbar('This volunteer request was successfully submitted.', snackbarMessages.success.configuration);
+          enqueueSnackbar('This committee member was successfully submitted.', snackbarMessages.success.configuration);
           handleDialogClose();
         } catch (err) {
           enqueueSnackbar('There was an error when submitting this form, please try again later or contact the Technology Chair', snackbarMessages.error.configuration);
@@ -47,7 +47,7 @@ export default {
         console.log(Object.keys(errors).length );
 
         if (!formik.isValid) {
-          enqueueSnackbar('There are fields missing in your form. Please fill out all required * fields.', snackbarMessages.error.configuration);
+          enqueueSnackbar('There are fields missing in your form. Please fill out all the required * fields.', snackbarMessages.error.configuration);
         }
         formik.setSubmitting(false);
       }, 1000);
@@ -65,7 +65,7 @@ export default {
       return (
         <>
           <Box textAlign={'center'} py={7}>
-            <Button variant='contained' onClick={handleClick}>Open Panel Dialog</Button>
+            <Button variant='contained' onClick={handleClick}>Open Committee Members Dialog</Button>
           </Box>
           <PanelsDialog
           formik={formik}
