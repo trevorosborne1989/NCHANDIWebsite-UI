@@ -24,30 +24,16 @@ const contactOptions = [
     label: 'Email'
   }
 ];
-const commitmentOptions = [
-  {
-    value: 'Panel Leader',
-    label: 'Panel Leader',
-  },
-  {
-    value: 'Panel Coordinator',
-    label: 'Panel Coordinator',
-  },
-  {
-    value: 'Board Member',
-    label: 'Board Member',
-  }
-];
 
-const CommitteeDashboardDialog = ({ formik, isOpen, handleSave, handleClose }) => {
+const PanelMembersDashboardDialog = ({ formik, isOpen, handleSave, handleClose }) => {
 
   return (
     <>
       <Dialog open={isOpen} onClose={handleClose}>
-        <DialogTitle>Committee Member</DialogTitle>
+        <DialogTitle>Panel Member</DialogTitle>
         <DialogContent>
           <DialogContentText pb={3}>
-            Please fill out the committee information below.
+            Please fill out the panel member information below.
           </DialogContentText>
           <TextField
             label='First Name'
@@ -121,26 +107,6 @@ const CommitteeDashboardDialog = ({ formik, isOpen, handleSave, handleClose }) =
               </MenuItem>
             ))}
           </TextField>
-          <TextField
-            select
-            label='H&I Commitment'
-            name='commitment'
-            fullWidth
-            variant='outlined'
-            margin='dense'
-            value={formik.values.commitment}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            helperText={formik.touched.commitment ? formik.errors.commitment : ""}
-            error={formik.touched.commitment && Boolean(formik.errors.commitment)}
-            required
-          >
-            {commitmentOptions.map(option => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}
-              </MenuItem>
-            ))}
-          </TextField>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
@@ -151,4 +117,4 @@ const CommitteeDashboardDialog = ({ formik, isOpen, handleSave, handleClose }) =
   );
 }
 
-export default CommitteeDashboardDialog;
+export default PanelMembersDashboardDialog;

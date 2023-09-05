@@ -104,7 +104,7 @@ const Resources = () => {
     setTimeout( async () => { // Remove the onTimeout once the POST method in onSubmit is defined.
       formik.submitForm();
       if (!formik.isValid) {
-        enqueueSnackbar('There are fields missing in your form. Please fill out all required * fields.', snackbarMessages.error.configuration);
+        enqueueSnackbar('There are fields missing in your form. Please fill out all the required * fields.', snackbarMessages.error.configuration);
       }
       formik.setSubmitting(false);
     }, 1000);

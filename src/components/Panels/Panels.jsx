@@ -58,7 +58,7 @@ const Panels = () => {
     onSubmit: async () => {
       try {
         // await post method()   Use await here.
-        enqueueSnackbar('This volunteer request was successfully submitted.', snackbarMessages.success.configuration);
+        enqueueSnackbar('Your volunteer request was successfully submitted.', snackbarMessages.success.configuration);
         handleDialogClose();
       } catch (err) {
         enqueueSnackbar('There was an error when submitting this form, please try again later or contact the Technology Chair', snackbarMessages.error.configuration);
@@ -89,7 +89,7 @@ const Panels = () => {
     setTimeout( async () => { // Remove the onTimeout once the POST method in onSubmit is defined.
       formik.submitForm();
       if (!formik.isValid) {
-        enqueueSnackbar('There are fields missing in your form. Please fill out all required * fields.', snackbarMessages.error.configuration);
+        enqueueSnackbar('There are fields missing in your form. Please fill out all the required * fields.', snackbarMessages.error.configuration);
       }
       formik.setSubmitting(false);
     }, 1000);
