@@ -50,7 +50,6 @@ const Panels = () => {
     initialValues: {
       firstName: '',
       lastName: '',
-      commitment: '',
       email: '',
       phoneNumber: '',
       contactMethod: ''

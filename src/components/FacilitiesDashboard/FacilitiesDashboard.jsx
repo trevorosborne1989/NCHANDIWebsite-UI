@@ -13,10 +13,10 @@ import TableConfig from './TableConfig';
 
 // const nchandiWebsiteService = new NCHANDIWebsiteService();
 
-function createData(id, facilityName, facilityType, address, city, state, website, primaryContactName, primaryContactEmail, primaryPhoneNumber, altContactName, altContactEmail, altPhoneNumber, active) {
+function createData(id, name, facilityType, address, city, state, website, primaryContactName, primaryContactEmail, primaryPhoneNumber, altContactName, altContactEmail, altPhoneNumber, active) {
   return {
     id,
-    facilityName,
+    name,
     facilityType,
     address,
     city,
@@ -61,7 +61,7 @@ const FacilitiesDashboard = () => {
 
   const formik = useFormik({
     initialValues: {
-      facilityName: '',
+      name: '',
       facilityType: '',
       address: '',
       city: '',
