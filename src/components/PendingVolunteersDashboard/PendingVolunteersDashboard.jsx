@@ -21,8 +21,8 @@ const generateTableConfig = (handleSave, handleDelete) => ({
     { columnName: 'email', numeric: true, disablePadding: false, label: 'Email', value: d => d.email },
     { columnName: 'phone', numeric: true, disablePadding: false, label: 'Phone', value: d => d.phone },
     { columnName: 'facility', numeric: true, disablePadding: false, label: 'Facility', value: d => d.facility },
-    { columnName: 'dayOfWeek', numeric: true, disablePadding: false, label: 'Day of Week', value: d => d.dayOfWeek },
-    { columnName: 'weekOfMonth', numeric: true, disablePadding: false, label: 'Week of Month', value: d => d.weekOfMonth },
+    { columnName: 'dayOfWeek', numeric: true, disablePadding: true, label: 'Day of Week', value: d => d.dayOfWeek },
+    { columnName: 'weekOfMonth', numeric: true, disablePadding: true, label: 'Week of Month', value: d => d.weekOfMonth },
     { columnName: 'time', numeric: true, disablePadding: false, label: 'Time', value: d => d.time }
   ]
 });
@@ -58,7 +58,7 @@ const pendingVolunteers = [
 const PendingVolunteersDashboard = () => {
   // const [loading, setLoading] = useState(false);
   const [tableData, setTableData] = useState([]);
-  const [pendingVolunteer, setRequest] = useState(null);
+  const [pendingVolunteer, setPendingVolunteer] = useState(null);
   const [isSaveDialogOpen, setIsSaveDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
@@ -94,14 +94,14 @@ const PendingVolunteersDashboard = () => {
   const handleSave = (e, id) => {
     e.stopPropagation();
     setIsSaveDialogOpen(true);
-    setRequest(id);
+    setPendingVolunteer(id);
   };
 
   /**
    *
    */
   const handleSaveDialogClose = () => {
-    setRequest(null);
+    setPendingVolunteer(null);
     setIsSaveDialogOpen(false);
   };
 
@@ -119,7 +119,7 @@ const PendingVolunteersDashboard = () => {
       enqueueSnackbar('There was an error adding the pending volunteer!', snackbarMessages.error.configuration);
     } finally {
       // setLoading(false);
-      setRequest(null);
+      setPendingVolunteer(null);
       setIsSaveDialogOpen(false);
       // fetchRequests();
     }
@@ -131,14 +131,14 @@ const PendingVolunteersDashboard = () => {
   const handleDelete = (e, id) => {
     e.stopPropagation();
     setIsDeleteDialogOpen(true);
-    setRequest(id);
+    setPendingVolunteer(id);
   };
 
   /**
    *
    */
   const handleDeleteDialogClose = () => {
-    setRequest(null);
+    setPendingVolunteer(null);
     setIsDeleteDialogOpen(false);
   };
 
@@ -149,14 +149,14 @@ const PendingVolunteersDashboard = () => {
     // setLoading(true);
     try {
       // const { id } = pendingVolunteer;
-      // await nchandiWebsiteService.deleteRequestById(id);
+      // await nchandiWebsiteService.deletePendingVolunteerById(id);
       enqueueSnackbar('This pending volunteer was deleted.', snackbarMessages.success.configuration);
     } catch (error) {
       console.error(error);
       enqueueSnackbar('There was an error deleting the pending volunteer!', snackbarMessages.error.configuration);
     } finally {
       // setLoading(false);
-      setRequest(null);
+      setPendingVolunteer(null);
       setIsDeleteDialogOpen(false);
       // fetchRequests();
     }
