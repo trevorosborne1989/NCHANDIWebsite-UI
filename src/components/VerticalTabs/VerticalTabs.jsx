@@ -11,6 +11,7 @@ import CommitteeDashboard from '../CommitteeDashboard/CommitteeDashboard';
 import PanelMembersDashboard from '../PanelMembersDashboard/PanelMembersDashboard';
 import FacilitiesDashboard from '../FacilitiesDashboard/FacilitiesDashboard';
 import PanelsDashboard from '../PanelsDashboard/PanelsDashboard';
+import PendingVolunteersDashboard from '../PendingVolunteersDashboard/PendingVolunteersDashboard';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -102,7 +103,7 @@ export default function VerticalTabs() {
         </Grid>
         <Grid sm={10}>
           <TabPanel value={value} index={5}>
-            Tab 6
+            <PendingVolunteersDashboard />
           </TabPanel>
         </Grid>
         </Grid>

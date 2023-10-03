@@ -79,7 +79,7 @@ function EnhancedTableHead(props) {
   return (
     <TableHead>
       <TableRow>
-        {configProps.columns.map((headCell) => (
+        {configProps.columns?.map((headCell) => (
           <StyledTableCell
             key={headCell.columnName}
             align={headCell.numeric ? 'right' : 'left'}
@@ -111,8 +111,7 @@ EnhancedTableHead.propTypes = {
   orderBy: PropTypes.string.isRequired,
 };
 
-function EnhancedTableToolbar({ configProps }) {
-
+function EnhancedTableToolbar({ ...configProps }) {
   return (
     <Toolbar
       sx={{
@@ -128,9 +127,10 @@ function EnhancedTableToolbar({ configProps }) {
       >
         {configProps.title}
       </Typography>
-      <Tooltip title="Add item">
-        {configProps.toolbar}
-      </Tooltip>
+      {Boolean(configProps.toolbar) &&
+        <Tooltip title="Add item">
+          {configProps.toolbar}
+        </Tooltip>}
     </Toolbar>
   );
 }
@@ -200,7 +200,7 @@ export default function EnhancedTable({ data, ...configProps }) {
   return (
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
-        <EnhancedTableToolbar configProps />
+        <EnhancedTableToolbar {...configProps} />
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}
@@ -220,7 +220,7 @@ export default function EnhancedTable({ data, ...configProps }) {
                   <StyledTableRow
                     hover
                     // onClick={(event) => handleClick(event, row.panelId)}
-                    onClick={() => configProps.handleSelection(row)}
+                    onClick={() => Boolean(configProps.handleSelection) && configProps.handleSelection(row)}
                     tabIndex={-1}
                     key={configProps.dataKey(row)}
                     // selected={isItemSelected}

@@ -12,34 +12,34 @@ import {
   } from '@mui/material';
 import PropTypes from 'prop-types';
 
-const DeleteConfirmationDialog = ({
+const SaveConfirmationDialog = ({
   isOpen,
   entityName,
   primaryText,
   secondaryText,
   handleClose,
-  handleDelete
+  handleSave
 }) => (
   <Dialog open={isOpen} onClose={handleClose} fullWidth>
-    <DialogTitle>Delete Confirmation</DialogTitle>
+    <DialogTitle>Confirmation</DialogTitle>
     <DialogContent>
       {entityName
-        ? <Typography>You are about to delete the following {entityName}:</Typography>
-        : <Typography>You are about to delete the following:</Typography>}
+        ? <Typography>You are about to confirm the following {entityName}:</Typography>
+        : <Typography>You are about to confirm the following:</Typography>}
       <List dense>
-        <ListItem data-cy='delete-entity-list'>
+        <ListItem data-cy='save-entity-list'>
           <ListItemText primary={primaryText} secondary={secondaryText} />
         </ListItem>
       </List>
     </DialogContent>
     <DialogActions>
-      <Button onClick={handleClose} data-cy='delete-entity-cancel'>Cancel</Button>
-      <Button variant='contained' color='error' onClick={handleDelete} data-cy='delete-entity-confirm'>Delete</Button>
+      <Button onClick={handleClose} data-cy='save-entity-cancel'>Cancel</Button>
+      <Button variant='contained' color='secondary' onClick={handleSave} data-cy='save-entity-confirm'>Confirm</Button>
     </DialogActions>
   </Dialog>
 );
 
-DeleteConfirmationDialog.propTypes = {
+SaveConfirmationDialog.propTypes = {
   /**
    * Boolean value reprenting open and close state of the dialog
    */
@@ -61,9 +61,9 @@ DeleteConfirmationDialog.propTypes = {
    */
   handleClose: PropTypes.func,
   /**
-   * Function handler for on delete
+   * Function handler for on save
    */
-  handleDelete: PropTypes.func
+  handleSave: PropTypes.func
 };
 
-export default DeleteConfirmationDialog;
+export default SaveConfirmationDialog;
