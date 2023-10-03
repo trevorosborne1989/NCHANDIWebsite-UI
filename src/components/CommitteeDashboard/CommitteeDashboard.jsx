@@ -16,7 +16,7 @@ import { nchandiTheme } from '../../App';
 
 
 const generateTableConfig = (handleSelection, handleAdd, handleDelete) => ({
-  title: 'Pending Volunteers',
+  title: 'Committee Members',
   dataKey: d => d.id,
   handleSelection: handleSelection,
   toolbar: (
@@ -70,7 +70,7 @@ const CommitteeDashboard = () => {
   const [isOpen, setIsOpen] = useState(false);
   // const [loading, setLoading] = useState(false);
   const [tableData, setTableData] = useState([]);
-  const [committeeMember, setComitteeMember] = useState(null);
+  const [committeeMember, setCommitteeMember] = useState(null);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
 
@@ -171,14 +171,14 @@ const CommitteeDashboard = () => {
   const handleDelete = (e, id) => {
     e.stopPropagation();
     setIsDeleteDialogOpen(true);
-    setComitteeMember(id);
+    setCommitteeMember(id);
   };
 
   /**
    *
    */
   const handleDeleteDialogClose = () => {
-    setComitteeMember(null);
+    setCommitteeMember(null);
     setIsDeleteDialogOpen(false);
   };
 
@@ -189,14 +189,14 @@ const CommitteeDashboard = () => {
     // setLoading(true);
     try {
       // const { id } = committeeMember;
-      // await nchandiWebsiteService.deleteComitteeMemberById(id);
+      // await nchandiWebsiteService.deleteCommitteeMemberById(id);
       enqueueSnackbar('This pending volunteer was deleted.', snackbarMessages.success.configuration);
     } catch (error) {
       console.error(error);
       enqueueSnackbar('There was an error deleting the pending volunteer!', snackbarMessages.error.configuration);
     } finally {
       // setLoading(false);
-      setComitteeMember(null);
+      setCommitteeMember(null);
       setIsDeleteDialogOpen(false);
       // fetchRequests();
     }

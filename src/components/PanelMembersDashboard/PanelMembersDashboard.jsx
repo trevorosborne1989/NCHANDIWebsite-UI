@@ -1,17 +1,37 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Divider, Typography, IconButton, Box } from '@mui/material';
-import { Add } from '@mui/icons-material';
+import { Divider, Typography, IconButton } from '@mui/material';
+import { Add, DeleteForever } from '@mui/icons-material';
 import Grid from '@mui/material/Unstable_Grid2';
 import { useFormik } from 'formik';
 import { useSnackbar } from 'notistack';
 import snackbarMessages from '../../lib/snackbarMessages.json';
 import EnhancedTable from '../EnhancedTable/EnhancedTable';
 import PanelMembersDashboardDialog from '../PanelMembersDashboardDialog/PanelMembersDashboardDialog'
+import DeleteConfirmationDialog from '../DeleteConfirmationDialog/DeleteConfirmationDialog';
 import { yupSchema } from './ValidationSchema';
-import TableConfig from './TableConfig';
+import { nchandiTheme } from '../../App';
 // import NCHANDIWebsiteService from '../../lib/NCHANDIWebsiteService'
 
 // const nchandiWebsiteService = new NCHANDIWebsiteService();
+
+const generateTableConfig = (handleSelection, handleAdd, handleDelete) => ({
+  title: 'Panel Members',
+  dataKey: d => d.id,
+  handleSelection: handleSelection,
+  toolbar: (
+    <IconButton color='primary' onClick={handleAdd} data-cy='table-add-button'>
+      <Add sx={{ color: nchandiTheme.handiGreen }} fontSize='large' />
+    </IconButton>
+  ),
+  columns: [
+    { columnName: '', numeric: true, disablePadding: false, label: '', value: d => <DeleteForever color='error' onClick={e => handleDelete(e, d)} data-cy='table-delete-btn' /> },
+    { columnName: 'firstName', numeric: true, disablePadding: true, label: 'First Name', value: d => d.firstName },
+    { columnName: 'lastName', numeric: true, disablePadding: false, label: 'Last Name', value: d => d.lastName },
+    { columnName: 'email', numeric: true, disablePadding: false, label: 'Email', value: d => d.email },
+    { columnName: 'phoneNumber', numeric: true, disablePadding: false, label: 'Phone Number', value: d => d.phoneNumber },
+    { columnName: 'contactMethod', numeric: true, disablePadding: false, label: 'Contact Method', value: d => d.contactMethod }
+  ]
+});
 
 function createData(id, firstName, lastName, email, phoneNumber, contactMethod) {
   return {
@@ -44,9 +64,11 @@ const panelMembers = [
 ];
 
 const PanelMembersDashboard = () => {
-  const [dialogOpen, setDialogOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   // const [loading, setLoading] = useState(false);
   const [tableData, setTableData] = useState([]);
+  const [panelMember, setPanelMember] = useState(null);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
 
   const formik = useFormik({
@@ -63,10 +85,10 @@ const PanelMembersDashboard = () => {
 
         if (id) {
           // await ectsService.putEctsstaffWithEctsStaffId({}, id, values);
-          setDialogOpen(false);
+          setIsOpen(false);
         }else {
           // await ectsService.postEctsstaff({}, values);
-          setDialogOpen(false);
+          setIsOpen(false);
         }
         enqueueSnackbar('This member was successfully submitted.', snackbarMessages.success.configuration);
       } catch (err) {
@@ -80,6 +102,9 @@ const PanelMembersDashboard = () => {
 
   // const fetchData = useCallback(params => ectsService.getEctsstaff(params), []); //Try This!!!
 
+  /**
+   *
+   */
   const fetchTableData = useCallback(async () => {
     try {
       // setLoading(true);
@@ -92,11 +117,17 @@ const PanelMembersDashboard = () => {
     }
   }, []);
 
+  /**
+   *
+   */
   useEffect(() => {
     fetchTableData();
   }, [fetchTableData]);
 
-  const handleDialogSave = () => {
+  /**
+   *
+   */
+  const handleSave = () => {
     setTimeout( async () => { // Remove the onTimeout once the POST method in onSubmit is defined.
       formik.submitForm();
       if (!formik.isValid) {
@@ -106,20 +137,68 @@ const PanelMembersDashboard = () => {
     }, 1000);
   };
 
-  const handleDialogClose = () => {
+  /**
+   *
+   */
+  const handleClose = () => {
     formik.handleReset();
-    setDialogOpen(false);
+    setIsOpen(false);
   };
 
-  const handleNew = () => {
+  /**
+   *
+   */
+  const handleAdd = () => {
     formik.handleReset();
-    setDialogOpen(true);
+    setIsOpen(true);
   };
 
-  const handleRowSelection = (row) => {
+  /**
+   *
+   */
+  const handleSelection = (row) => {
     formik.setValues(row);
-    setDialogOpen(true);
+    setIsOpen(true);
   };
+
+  /**
+   *
+   */
+  const handleDelete = (e, id) => {
+    e.stopPropagation();
+    setIsDeleteDialogOpen(true);
+    setPanelMember(id);
+  };
+
+  /**
+   *
+   */
+  const handleDeleteDialogClose = () => {
+    setPanelMember(null);
+    setIsDeleteDialogOpen(false);
+  };
+
+  /**
+   *
+   */
+  const handleDeleteDialogConfirm = async () => {
+    // setLoading(true);
+    try {
+      // const { id } = panelMember;
+      // await nchandiWebsiteService.deletePanelMemberById(id);
+      enqueueSnackbar('This pending volunteer was deleted.', snackbarMessages.success.configuration);
+    } catch (error) {
+      console.error(error);
+      enqueueSnackbar('There was an error deleting the pending volunteer!', snackbarMessages.error.configuration);
+    } finally {
+      // setLoading(false);
+      setPanelMember(null);
+      setIsDeleteDialogOpen(false);
+      // fetchRequests();
+    }
+  };
+
+  const tableConfig = generateTableConfig(handleSelection, handleAdd, handleDelete);
 
   return (
     <>
@@ -135,29 +214,27 @@ const PanelMembersDashboard = () => {
           <Divider sx={{background: 'white'}} />
         </Grid>
       </Grid>
-      <Box display='flex' alignItems='center' justifyContent='flex-end'>
-        <IconButton
-          color='primary'
-          onClick={handleNew}
-          data-cy='panel-member-dashboard-add-button'
-        >
-          <Add sx={{ color: 'white' }} fontSize='large' />
-        </IconButton>
-      </Box>
       <Grid container sm={12} justifyContent={'center'}>
         <Grid sm={12}>
           <EnhancedTable
             data ={tableData}
-            handleSelection={handleRowSelection}
-            {...TableConfig}
+            handleSelection={handleSelection}
+            {...tableConfig}
           />
         </Grid>
       </Grid>
       <PanelMembersDashboardDialog
         formik={formik}
-        isOpen={dialogOpen}
-        handleSave={handleDialogSave}
-        handleClose={handleDialogClose}
+        isOpen={isOpen}
+        handleSave={handleSave}
+        handleClose={handleClose}
+      />
+      <DeleteConfirmationDialog
+        isOpen={isDeleteDialogOpen}
+        entityName='Panel Member'
+        primaryText={panelMember?.firstName + ' ' + panelMember?.lastName}
+        handleClose={handleDeleteDialogClose}
+        handleDelete={handleDeleteDialogConfirm}
       />
     </>
   )
