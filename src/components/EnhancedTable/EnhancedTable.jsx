@@ -11,11 +11,9 @@ import TableSortLabel from '@mui/material/TableSortLabel';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
-import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
-import FilterListIcon from '@mui/icons-material/FilterList';
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import { styled } from '@mui/material/styles';
 import { visuallyHidden } from '@mui/utils';
@@ -73,8 +71,7 @@ function stableSort(array, comparator) {
 }
 
 function EnhancedTableHead(props) {
-  const { order, orderBy, onRequestSort, ...configProps } =
-    props;
+  const { order, orderBy, onRequestSort, ...configProps } = props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
@@ -82,7 +79,7 @@ function EnhancedTableHead(props) {
   return (
     <TableHead>
       <TableRow>
-        {configProps.columns.map((headCell) => (
+        {configProps.columns?.map((headCell) => (
           <StyledTableCell
             key={headCell.columnName}
             align={headCell.numeric ? 'right' : 'left'}
@@ -114,8 +111,7 @@ EnhancedTableHead.propTypes = {
   orderBy: PropTypes.string.isRequired,
 };
 
-function EnhancedTableToolbar({ title }) {
-
+function EnhancedTableToolbar({ ...configProps }) {
   return (
     <Toolbar
       sx={{
@@ -129,18 +125,17 @@ function EnhancedTableToolbar({ title }) {
         id="tableTitle"
         component="div"
       >
-        {title}
+        {configProps.title}
       </Typography>
-      <Tooltip title="Filter list">
-        <IconButton>
-          <FilterListIcon />
-        </IconButton>
-      </Tooltip>
+      {Boolean(configProps.toolbar) &&
+        <Tooltip title="Add item">
+          {configProps.toolbar}
+        </Tooltip>}
     </Toolbar>
   );
 }
 
-export default function EnhancedTable({ data, handleSelection, ...configProps }) {
+export default function EnhancedTable({ data, ...configProps }) {
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('columnName'); // TODO: verify its this and not the unique key of a record which would be configProps[0].id ~
   // const [selected, setSelected] = React.useState([]);
@@ -205,7 +200,7 @@ export default function EnhancedTable({ data, handleSelection, ...configProps })
   return (
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
-        <EnhancedTableToolbar title={configProps.tableTitle} />
+        <EnhancedTableToolbar {...configProps} />
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}
@@ -225,7 +220,7 @@ export default function EnhancedTable({ data, handleSelection, ...configProps })
                   <StyledTableRow
                     hover
                     // onClick={(event) => handleClick(event, row.panelId)}
-                    onClick={() => handleSelection(row)}
+                    onClick={() => Boolean(configProps.handleSelection) && configProps.handleSelection(row)}
                     tabIndex={-1}
                     key={configProps.dataKey(row)}
                     // selected={isItemSelected}
