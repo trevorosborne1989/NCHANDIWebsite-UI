@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Divider, Typography, } from '@mui/material';
-import { Done, DeleteForever, } from '@mui/icons-material';
+import { Done, DeleteForever, CheckCircle, CheckCircleOutline } from '@mui/icons-material';
 import Grid from '@mui/material/Unstable_Grid2';
 import { useSnackbar } from 'notistack';
 import snackbarMessages from '../../lib/snackbarMessages.json';
@@ -15,14 +15,14 @@ const generateTableConfig = (handleSave, handleDelete) => ({
   title: 'Pending Volunteers',
   dataKey: d => d.id,
   columns: [
-    { columnName: '', numeric: true, disablePadding: false, label: '', value: d => <Done color='success' onClick={e => handleSave(e, d)} data-cy='table-confirm-btn' /> },
-    { columnName: '', numeric: true, disablePadding: false, label: '', value: d => <DeleteForever color='error' onClick={e => handleDelete(e, d)} data-cy='table-delete-btn' /> },
+    { columnName: '', numeric: true, disablePadding: false, label: '', value: d => <CheckCircleOutline fontSize='large' color='success' onClick={e => handleSave(e, d)} data-cy='table-confirm-btn' /> },
+    { columnName: '', numeric: true, disablePadding: false, label: '', value: d => <DeleteForever fontSize='large'  color='error' onClick={e => handleDelete(e, d)} data-cy='table-delete-btn' /> },
     { columnName: 'fullName', numeric: true, disablePadding: false, label: 'Full Name', value: d => d.fullName },
     { columnName: 'email', numeric: true, disablePadding: false, label: 'Email', value: d => d.email },
     { columnName: 'phone', numeric: true, disablePadding: false, label: 'Phone', value: d => d.phone },
     { columnName: 'facility', numeric: true, disablePadding: false, label: 'Facility', value: d => d.facility },
-    { columnName: 'dayOfWeek', numeric: true, disablePadding: false, label: 'Day of Week', value: d => d.dayOfWeek },
-    { columnName: 'weekOfMonth', numeric: true, disablePadding: false, label: 'Week of Month', value: d => d.weekOfMonth },
+    { columnName: 'dayOfWeek', numeric: true, disablePadding: true, label: 'Day of Week', value: d => d.dayOfWeek },
+    { columnName: 'weekOfMonth', numeric: true, disablePadding: true, label: 'Week of Month', value: d => d.weekOfMonth },
     { columnName: 'time', numeric: true, disablePadding: false, label: 'Time', value: d => d.time }
   ]
 });
@@ -58,7 +58,7 @@ const pendingVolunteers = [
 const PendingVolunteersDashboard = () => {
   // const [loading, setLoading] = useState(false);
   const [tableData, setTableData] = useState([]);
-  const [pendingVolunteer, setRequest] = useState(null);
+  const [pendingVolunteer, setPendingVolunteer] = useState(null);
   const [isSaveDialogOpen, setIsSaveDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
@@ -94,14 +94,14 @@ const PendingVolunteersDashboard = () => {
   const handleSave = (e, id) => {
     e.stopPropagation();
     setIsSaveDialogOpen(true);
-    setRequest(id);
+    setPendingVolunteer(id);
   };
 
   /**
    *
    */
   const handleSaveDialogClose = () => {
-    setRequest(null);
+    setPendingVolunteer(null);
     setIsSaveDialogOpen(false);
   };
 
@@ -119,7 +119,7 @@ const PendingVolunteersDashboard = () => {
       enqueueSnackbar('There was an error adding the pending volunteer!', snackbarMessages.error.configuration);
     } finally {
       // setLoading(false);
-      setRequest(null);
+      setPendingVolunteer(null);
       setIsSaveDialogOpen(false);
       // fetchRequests();
     }
@@ -131,14 +131,14 @@ const PendingVolunteersDashboard = () => {
   const handleDelete = (e, id) => {
     e.stopPropagation();
     setIsDeleteDialogOpen(true);
-    setRequest(id);
+    setPendingVolunteer(id);
   };
 
   /**
    *
    */
   const handleDeleteDialogClose = () => {
-    setRequest(null);
+    setPendingVolunteer(null);
     setIsDeleteDialogOpen(false);
   };
 
@@ -149,14 +149,14 @@ const PendingVolunteersDashboard = () => {
     // setLoading(true);
     try {
       // const { id } = pendingVolunteer;
-      // await nchandiWebsiteService.deleteRequestById(id);
+      // await nchandiWebsiteService.deletePendingVolunteerById(id);
       enqueueSnackbar('This pending volunteer was deleted.', snackbarMessages.success.configuration);
     } catch (error) {
       console.error(error);
       enqueueSnackbar('There was an error deleting the pending volunteer!', snackbarMessages.error.configuration);
     } finally {
       // setLoading(false);
-      setRequest(null);
+      setPendingVolunteer(null);
       setIsDeleteDialogOpen(false);
       // fetchRequests();
     }
@@ -169,7 +169,7 @@ const PendingVolunteersDashboard = () => {
       <Grid Grid container sm={12} textAlign={'center'} justifyContent={'center'} py={3} pb={3}>
         <Grid sm={10}>
           <Typography variant="h4" color={'white'} >
-            Facilities Dashboard
+            Pending Volunteers Dashboard
           </Typography>
         </Grid>
       </Grid>
