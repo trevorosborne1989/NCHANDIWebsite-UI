@@ -25,7 +25,7 @@ const generateTableConfig = (handleSelection, handleAdd, handleDelete) => ({
     </IconButton>
   ),
   columns: [
-    { columnName: '', numeric: true, disablePadding: false, label: '', value: d => <DeleteForever color='error' onClick={e => handleDelete(e, d)} data-cy='table-delete-btn' /> },
+    { columnName: '', numeric: true, disablePadding: false, label: '', value: d => <DeleteForever fontSize='large' color='error' onClick={e => handleDelete(e, d)} data-cy='table-delete-btn' /> },
     { columnName: 'firstName', numeric: true, disablePadding: true, label: 'First Name', value: d => d.firstName },
     { columnName: 'lastName', numeric: true, disablePadding: false, label: 'Last Name', value: d => d.lastName },
     { columnName: 'email', numeric: true, disablePadding: false, label: 'Email', value: d => d.email },

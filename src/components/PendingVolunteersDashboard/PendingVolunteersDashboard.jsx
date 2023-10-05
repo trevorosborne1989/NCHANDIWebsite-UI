@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Divider, Typography, } from '@mui/material';
-import { Done, DeleteForever, } from '@mui/icons-material';
+import { Done, DeleteForever, CheckCircle, CheckCircleOutline } from '@mui/icons-material';
 import Grid from '@mui/material/Unstable_Grid2';
 import { useSnackbar } from 'notistack';
 import snackbarMessages from '../../lib/snackbarMessages.json';
@@ -15,8 +15,8 @@ const generateTableConfig = (handleSave, handleDelete) => ({
   title: 'Pending Volunteers',
   dataKey: d => d.id,
   columns: [
-    { columnName: '', numeric: true, disablePadding: false, label: '', value: d => <Done color='success' onClick={e => handleSave(e, d)} data-cy='table-confirm-btn' /> },
-    { columnName: '', numeric: true, disablePadding: false, label: '', value: d => <DeleteForever color='error' onClick={e => handleDelete(e, d)} data-cy='table-delete-btn' /> },
+    { columnName: '', numeric: true, disablePadding: false, label: '', value: d => <CheckCircleOutline fontSize='large' color='success' onClick={e => handleSave(e, d)} data-cy='table-confirm-btn' /> },
+    { columnName: '', numeric: true, disablePadding: false, label: '', value: d => <DeleteForever fontSize='large'  color='error' onClick={e => handleDelete(e, d)} data-cy='table-delete-btn' /> },
     { columnName: 'fullName', numeric: true, disablePadding: false, label: 'Full Name', value: d => d.fullName },
     { columnName: 'email', numeric: true, disablePadding: false, label: 'Email', value: d => d.email },
     { columnName: 'phone', numeric: true, disablePadding: false, label: 'Phone', value: d => d.phone },

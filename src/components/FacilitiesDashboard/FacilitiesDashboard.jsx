@@ -1,22 +1,50 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Divider, Typography, IconButton, Box } from '@mui/material';
-import { Add } from '@mui/icons-material';
+import { Divider, Typography, IconButton } from '@mui/material';
+import { Add, DeleteForever } from '@mui/icons-material';
 import Grid from '@mui/material/Unstable_Grid2';
 import { useFormik } from 'formik';
 import { useSnackbar } from 'notistack';
 import snackbarMessages from '../../lib/snackbarMessages.json';
 import EnhancedTable from '../EnhancedTable/EnhancedTable';
 import FacilitiesDashboardDialog from '../FacilitiesDashboardDialog/FacilitiesDashboardDialog';
+import DeleteConfirmationDialog from '../DeleteConfirmationDialog/DeleteConfirmationDialog';
 import { yupSchema } from './ValidationSchema';
-import TableConfig from './TableConfig';
+import { nchandiTheme } from '../../App';
 // import NCHANDIWebsiteService from '../../lib/NCHANDIWebsiteService'
 
 // const nchandiWebsiteService = new NCHANDIWebsiteService();
 
-function createData(id, name, facilityType, address, city, state, website, primaryContactName, primaryContactEmail, primaryPhoneNumber, altContactName, altContactEmail, altPhoneNumber, active) {
+const generateTableConfig = (handleSelection, handleAdd, handleDelete) => ({
+  title: 'Facilities',
+  dataKey: d => d.id,
+  handleSelection: handleSelection,
+  toolbar: (
+    <IconButton color='primary' onClick={handleAdd} data-cy='table-add-button'>
+      <Add sx={{ color: nchandiTheme.handiGreen }} fontSize='large' />
+    </IconButton>
+  ),
+  columns: [
+    { columnName: '', numeric: true, disablePadding: false, label: '', value: d => <DeleteForever fontSize='large'  color='error' onClick={e => handleDelete(e, d)} data-cy='table-delete-btn' /> },
+    { columnName: 'facilityName', numeric: true, disablePadding: false, label: 'Facility Name', value: d => d.facilityName },
+    { columnName: 'facilityType', numeric: true, disablePadding: true, label: 'Facility Type', value: d => d.facilityType },
+    { columnName: 'address', numeric: true, disablePadding: false, label: 'Address', value: d => d.address },
+    { columnName: 'city', numeric: true, disablePadding: false, label: 'City', value: d => d.city },
+    { columnName: 'state', numeric: true, disablePadding: false, label: 'State', value: d => d.state },
+    { columnName: 'website', numeric: true, disablePadding: false, label: 'Website', value: d => d.website },
+    { columnName: 'primaryContactName', numeric: true, disablePadding: false, label: 'Primary Contact Name', value: d => d.primaryContactName },
+    { columnName: 'primaryContactEmail', numeric: true, disablePadding: false, label: 'Primary Contact Email', value: d => d.primaryContactEmail },
+    { columnName: 'primaryPhoneNumber', numeric: true, disablePadding: false, label: 'Primary Phone Number', value: d => d.primaryPhoneNumber },
+    { columnName: 'altContactName', numeric: true, disablePadding: false, label: 'Alternate Contact Name', value: d => d.altContactName },
+    { columnName: 'altContactEmail', numeric: true, disablePadding: false, label: 'Alternate Contact Email', value: d => d.altContactEmail },
+    { columnName: 'altPhoneNumber', numeric: true, disablePadding: false, label: 'Alternate Phone Number', value: d => d.altPhoneNumber },
+    { columnName: 'active', numeric: true, disablePadding: false, label: 'Active', value: d => d.active }
+  ]
+});
+
+function createData(id, facilityName, facilityType, address, city, state, website, primaryContactName, primaryContactEmail, primaryPhoneNumber, altContactName, altContactEmail, altPhoneNumber, active) {
   return {
     id,
-    name,
+    facilityName,
     facilityType,
     address,
     city,
@@ -33,30 +61,32 @@ function createData(id, name, facilityType, address, city, state, website, prima
 }
 
 const facilities = [
-  createData('1', 'Vista Jail', 'Correctional', '325 S Melrose Drive # 200', 'Vista', 'CA', 'Shalimar Jackson', 'shalimar.jackson@sdsheriff.org', '619-258-3031', 'Glenn Joiner', 'trailbosss@yahoo.com', '760-803-6026', 'fshnc.org', 'Yes'),
-  createData('1', 'Vista Jail', 'Correctional', '325 S Melrose Drive # 200', 'Vista', 'CA', 'Shalimar Jackson', 'shalimar.jackson@sdsheriff.org', '619-258-3031', 'Glenn Joiner', 'trailbosss@yahoo.com', '760-803-6026', 'fshnc.org', 'No'),
-  createData('1', 'Vista Jail', 'Correctional', '325 S Melrose Drive # 200', 'Vista', 'CA', 'Shalimar Jackson', 'shalimar.jackson@sdsheriff.org', '619-258-3031', 'Glenn Joiner', 'trailbosss@yahoo.com', '760-803-6026', 'fshnc.org', 'Yes'),
-  createData('1', 'Vista Jail', 'Correctional', '325 S Melrose Drive # 200', 'Vista', 'CA', 'Shalimar Jackson', 'shalimar.jackson@sdsheriff.org', '619-258-3031', 'Glenn Joiner', 'trailbosss@yahoo.com', '760-803-6026', 'fshnc.org', 'Yes'),
-  createData('1', 'Vista Jail', 'Correctional', '325 S Melrose Drive # 200', 'Vista', 'CA', 'Shalimar Jackson', 'shalimar.jackson@sdsheriff.org', '619-258-3031', 'Glenn Joiner', 'trailbosss@yahoo.com', '760-803-6026', 'fshnc.org', 'No'),
-  createData('1', 'Vista Jail', 'Correctional', '325 S Melrose Drive # 200', 'Vista', 'CA', 'Shalimar Jackson', 'shalimar.jackson@sdsheriff.org', '619-258-3031', 'Glenn Joiner', 'trailbosss@yahoo.com', '760-803-6026', 'fshnc.org', 'Yes'),
-  createData('1', 'Vista Jail', 'Correctional', '325 S Melrose Drive # 200', 'Vista', 'CA', 'Shalimar Jackson', 'shalimar.jackson@sdsheriff.org', '619-258-3031', 'Glenn Joiner', 'trailbosss@yahoo.com', '760-803-6026', 'fshnc.org', 'Yes'),
-  createData('1', 'Vista Jail', 'Correctional', '325 S Melrose Drive # 200', 'Vista', 'CA', 'Shalimar Jackson', 'shalimar.jackson@sdsheriff.org', '619-258-3031', 'Glenn Joiner', 'trailbosss@yahoo.com', '760-803-6026', 'fshnc.org', 'No'),
-  createData('1', 'Vista Jail', 'Correctional', '325 S Melrose Drive # 200', 'Vista', 'CA', 'Shalimar Jackson', 'shalimar.jackson@sdsheriff.org', '619-258-3031', 'Glenn Joiner', 'trailbosss@yahoo.com', '760-803-6026', 'fshnc.org', 'Yes'),
-  createData('1', 'Vista Jail', 'Correctional', '325 S Melrose Drive # 200', 'Vista', 'CA', 'Shalimar Jackson', 'shalimar.jackson@sdsheriff.org', '619-258-3031', 'Glenn Joiner', 'trailbosss@yahoo.com', '760-803-6026', 'fshnc.org', 'Yes'),
-  createData('1', 'Vista Jail', 'Correctional', '325 S Melrose Drive # 200', 'Vista', 'CA', 'Shalimar Jackson', 'shalimar.jackson@sdsheriff.org', '619-258-3031', 'Glenn Joiner', 'trailbosss@yahoo.com', '760-803-6026', 'fshnc.org', 'No'),
-  createData('1', 'Vista Jail', 'Correctional', '325 S Melrose Drive # 200', 'Vista', 'CA', 'Shalimar Jackson', 'shalimar.jackson@sdsheriff.org', '619-258-3031', 'Glenn Joiner', 'trailbosss@yahoo.com', '760-803-6026', 'fshnc.org', 'Yes'),
-  createData('1', 'Vista Jail', 'Correctional', '325 S Melrose Drive # 200', 'Vista', 'CA', 'Shalimar Jackson', 'shalimar.jackson@sdsheriff.org', '619-258-3031', 'Glenn Joiner', 'trailbosss@yahoo.com', '760-803-6026', 'fshnc.org', 'Yes'),
-  createData('1', 'Vista Jail', 'Correctional', '325 S Melrose Drive # 200', 'Vista', 'CA', 'Shalimar Jackson', 'shalimar.jackson@sdsheriff.org', '619-258-3031', 'Glenn Joiner', 'trailbosss@yahoo.com', '760-803-6026', 'fshnc.org', 'No'),
-  createData('1', 'Vista Jail', 'Correctional', '325 S Melrose Drive # 200', 'Vista', 'CA', 'Shalimar Jackson', 'shalimar.jackson@sdsheriff.org', '619-258-3031', 'Glenn Joiner', 'trailbosss@yahoo.com', '760-803-6026', 'fshnc.org', 'Yes'),
-  createData('1', 'Vista Jail', 'Correctional', '325 S Melrose Drive # 200', 'Vista', 'CA', 'Shalimar Jackson', 'shalimar.jackson@sdsheriff.org', '619-258-3031', 'Glenn Joiner', 'trailbosss@yahoo.com', '760-803-6026', 'fshnc.org', 'Yes'),
-  createData('1', 'Vista Jail', 'Correctional', '325 S Melrose Drive # 200', 'Vista', 'CA', 'Shalimar Jackson', 'shalimar.jackson@sdsheriff.org', '619-258-3031', 'Glenn Joiner', 'trailbosss@yahoo.com', '760-803-6026', 'fshnc.org', 'Yes'),
-  createData('1', 'Vista Jail', 'Correctional', '325 S Melrose Drive # 200', 'Vista', 'CA', 'Shalimar Jackson', 'shalimar.jackson@sdsheriff.org', '619-258-3031', 'Glenn Joiner', 'trailbosss@yahoo.com', '760-803-6026', 'fshnc.org', 'Yes'),
+  createData('1', 'Vista Jail', 'Correctional', '325 S Melrose Drive # 200', 'Vista', 'CA', 'fshnc.org', 'Shalimar Jackson', 'shalimar.jackson@sdsheriff.org', '619-258-3031', 'Glenn Joiner', 'trailbosss@yahoo.com', '760-803-6026', 'Yes'),
+  createData('1', 'Vista Jail', 'Correctional', '325 S Melrose Drive # 200', 'Vista', 'CA', 'fshnc.org', 'Shalimar Jackson', 'shalimar.jackson@sdsheriff.org', '619-258-3031', 'Glenn Joiner', 'trailbosss@yahoo.com', '760-803-6026', 'No'),
+  createData('1', 'Vista Jail', 'Correctional', '325 S Melrose Drive # 200', 'Vista', 'CA', 'fshnc.org', 'Shalimar Jackson', 'shalimar.jackson@sdsheriff.org', '619-258-3031', 'Glenn Joiner', 'trailbosss@yahoo.com', '760-803-6026', 'Yes'),
+  createData('1', 'Vista Jail', 'Correctional', '325 S Melrose Drive # 200', 'Vista', 'CA', 'fshnc.org', 'Shalimar Jackson', 'shalimar.jackson@sdsheriff.org', '619-258-3031', 'Glenn Joiner', 'trailbosss@yahoo.com', '760-803-6026', 'Yes'),
+  createData('1', 'Vista Jail', 'Correctional', '325 S Melrose Drive # 200', 'Vista', 'CA', 'fshnc.org', 'Shalimar Jackson', 'shalimar.jackson@sdsheriff.org', '619-258-3031', 'Glenn Joiner', 'trailbosss@yahoo.com', '760-803-6026', 'No'),
+  createData('1', 'Vista Jail', 'Correctional', '325 S Melrose Drive # 200', 'Vista', 'CA', 'fshnc.org', 'Shalimar Jackson', 'shalimar.jackson@sdsheriff.org', '619-258-3031', 'Glenn Joiner', 'trailbosss@yahoo.com', '760-803-6026', 'Yes'),
+  createData('1', 'Vista Jail', 'Correctional', '325 S Melrose Drive # 200', 'Vista', 'CA', 'fshnc.org', 'Shalimar Jackson', 'shalimar.jackson@sdsheriff.org', '619-258-3031', 'Glenn Joiner', 'trailbosss@yahoo.com', '760-803-6026', 'Yes'),
+  createData('1', 'Vista Jail', 'Correctional', '325 S Melrose Drive # 200', 'Vista', 'CA', 'fshnc.org', 'Shalimar Jackson', 'shalimar.jackson@sdsheriff.org', '619-258-3031', 'Glenn Joiner', 'trailbosss@yahoo.com', '760-803-6026', 'No'),
+  createData('1', 'Vista Jail', 'Correctional', '325 S Melrose Drive # 200', 'Vista', 'CA', 'fshnc.org', 'Shalimar Jackson', 'shalimar.jackson@sdsheriff.org', '619-258-3031', 'Glenn Joiner', 'trailbosss@yahoo.com', '760-803-6026', 'Yes'),
+  createData('1', 'Vista Jail', 'Correctional', '325 S Melrose Drive # 200', 'Vista', 'CA', 'fshnc.org', 'Shalimar Jackson', 'shalimar.jackson@sdsheriff.org', '619-258-3031', 'Glenn Joiner', 'trailbosss@yahoo.com', '760-803-6026', 'Yes'),
+  createData('1', 'Vista Jail', 'Correctional', '325 S Melrose Drive # 200', 'Vista', 'CA', 'fshnc.org', 'Shalimar Jackson', 'shalimar.jackson@sdsheriff.org', '619-258-3031', 'Glenn Joiner', 'trailbosss@yahoo.com', '760-803-6026', 'No'),
+  createData('1', 'Vista Jail', 'Correctional', '325 S Melrose Drive # 200', 'Vista', 'CA', 'fshnc.org', 'Shalimar Jackson', 'shalimar.jackson@sdsheriff.org', '619-258-3031', 'Glenn Joiner', 'trailbosss@yahoo.com', '760-803-6026', 'Yes'),
+  createData('1', 'Vista Jail', 'Correctional', '325 S Melrose Drive # 200', 'Vista', 'CA', 'fshnc.org', 'Shalimar Jackson', 'shalimar.jackson@sdsheriff.org', '619-258-3031', 'Glenn Joiner', 'trailbosss@yahoo.com', '760-803-6026', 'Yes'),
+  createData('1', 'Vista Jail', 'Correctional', '325 S Melrose Drive # 200', 'Vista', 'CA', 'fshnc.org', 'Shalimar Jackson', 'shalimar.jackson@sdsheriff.org', '619-258-3031', 'Glenn Joiner', 'trailbosss@yahoo.com', '760-803-6026', 'No'),
+  createData('1', 'Vista Jail', 'Correctional', '325 S Melrose Drive # 200', 'Vista', 'CA', 'fshnc.org', 'Shalimar Jackson', 'shalimar.jackson@sdsheriff.org', '619-258-3031', 'Glenn Joiner', 'trailbosss@yahoo.com', '760-803-6026', 'Yes'),
+  createData('1', 'Vista Jail', 'Correctional', '325 S Melrose Drive # 200', 'Vista', 'CA', 'fshnc.org', 'Shalimar Jackson', 'shalimar.jackson@sdsheriff.org', '619-258-3031', 'Glenn Joiner', 'trailbosss@yahoo.com', '760-803-6026', 'Yes'),
+  createData('1', 'Vista Jail', 'Correctional', '325 S Melrose Drive # 200', 'Vista', 'CA', 'fshnc.org', 'Shalimar Jackson', 'shalimar.jackson@sdsheriff.org', '619-258-3031', 'Glenn Joiner', 'trailbosss@yahoo.com', '760-803-6026', 'Yes'),
+  createData('1', 'Vista Jail', 'Correctional', '325 S Melrose Drive # 200', 'Vista', 'CA', 'fshnc.org', 'Shalimar Jackson', 'shalimar.jackson@sdsheriff.org', '619-258-3031', 'Glenn Joiner', 'trailbosss@yahoo.com', '760-803-6026', 'Yes'),
 ];
 
 const FacilitiesDashboard = () => {
-  const [dialogOpen, setDialogOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   // const [loading, setLoading] = useState(false);
   const [tableData, setTableData] = useState([]);
+  const [facility, setFacility] = useState(null);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
 
   const formik = useFormik({
@@ -81,10 +111,10 @@ const FacilitiesDashboard = () => {
 
         if (id) {
           // await ectsService.putEctsstaffWithEctsStaffId({}, id, values);
-          setDialogOpen(false);
+          setIsOpen(false);
         }else {
           // await ectsService.postEctsstaff({}, values);
-          setDialogOpen(false);
+          setIsOpen(false);
         }
         enqueueSnackbar('This facility was successfully submitted.', snackbarMessages.success.configuration);
       } catch (err) {
@@ -98,6 +128,9 @@ const FacilitiesDashboard = () => {
 
   // const fetchData = useCallback(params => ectsService.getEctsstaff(params), []); //Try This!!!
 
+  /**
+   *
+   */
   const fetchTableData = useCallback(async () => {
     try {
       // setLoading(true);
@@ -110,10 +143,16 @@ const FacilitiesDashboard = () => {
     }
   }, []);
 
+  /**
+   *
+   */
   useEffect(() => {
     fetchTableData();
   }, [fetchTableData]);
 
+  /**
+   *
+   */
   const handleDialogSave = () => {
     setTimeout( async () => { // Remove the onTimeout once the POST method in onSubmit is defined.
       formik.submitForm();
@@ -124,20 +163,68 @@ const FacilitiesDashboard = () => {
     }, 1000);
   };
 
+  /**
+   *
+   */
   const handleDialogClose = () => {
     formik.handleReset();
-    setDialogOpen(false);
+    setIsOpen(false);
   };
 
-  const handleNew = () => {
+  /**
+   *
+   */
+  const handleAdd = () => {
     formik.handleReset();
-    setDialogOpen(true);
+    setIsOpen(true);
   };
 
-  const handleRowSelection = (row) => {
+  /**
+   *
+   */
+  const handleSelection = (row) => {
     formik.setValues(row);
-    setDialogOpen(true);
+    setIsOpen(true);
   };
+
+  /**
+   *
+   */
+  const handleDelete = (e, id) => {
+    e.stopPropagation();
+    setIsDeleteDialogOpen(true);
+    setFacility(id);
+  };
+
+  /**
+   *
+   */
+  const handleDeleteDialogClose = () => {
+    setFacility(null);
+    setIsDeleteDialogOpen(false);
+  };
+
+  /**
+   *
+   */
+  const handleDeleteDialogConfirm = async () => {
+    // setLoading(true);
+    try {
+      // const { id } = facility;
+      // await nchandiWebsiteService.deleteFacilityById(id);
+      enqueueSnackbar('This facility was deleted.', snackbarMessages.success.configuration);
+    } catch (error) {
+      console.error(error);
+      enqueueSnackbar('There was an error deleting the facility!', snackbarMessages.error.configuration);
+    } finally {
+      // setLoading(false);
+      setFacility(null);
+      setIsDeleteDialogOpen(false);
+      // fetchRequests();
+    }
+  };
+
+  const tableConfig = generateTableConfig(handleSelection, handleAdd, handleDelete);
 
   return (
     <>
@@ -153,29 +240,26 @@ const FacilitiesDashboard = () => {
           <Divider sx={{background: 'white'}} />
         </Grid>
       </Grid>
-      <Box display='flex' alignItems='center' justifyContent='flex-end'>
-        <IconButton
-          color='primary'
-          onClick={handleNew}
-          data-cy='facilities-dashboard-add-button'
-        >
-          <Add sx={{ color: 'white' }} fontSize='large' />
-        </IconButton>
-      </Box>
       <Grid container sm={12} justifyContent={'center'}>
         <Grid sm={12}>
           <EnhancedTable
             data ={tableData}
-            handleSelection={handleRowSelection}
-            {...TableConfig}
+            {...tableConfig}
           />
         </Grid>
       </Grid>
       <FacilitiesDashboardDialog
         formik={formik}
-        isOpen={dialogOpen}
+        isOpen={isOpen}
         handleSave={handleDialogSave}
         handleClose={handleDialogClose}
+      />
+      <DeleteConfirmationDialog
+        isOpen={isDeleteDialogOpen}
+        entityName='Facility'
+        primaryText={facility?.facilityName}
+        handleClose={handleDeleteDialogClose}
+        handleDelete={handleDeleteDialogConfirm}
       />
     </>
   )

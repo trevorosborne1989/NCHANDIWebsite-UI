@@ -24,7 +24,7 @@ const generateTableConfig = (handleSelection, handleAdd, handleDelete) => ({
     </IconButton>
   ),
   columns: [
-    { columnName: '', numeric: true, disablePadding: false, label: '', value: d => <DeleteForever color='error' onClick={e => handleDelete(e, d)} data-cy='table-delete-btn' /> },
+    { columnName: '', numeric: true, disablePadding: false, label: '', value: d => <DeleteForever fontSize='large'  color='error' onClick={e => handleDelete(e, d)} data-cy='table-delete-btn' /> },
     { columnName: 'firstName', numeric: true, disablePadding: true, label: 'First Name', value: d => d.firstName },
     { columnName: 'lastName', numeric: true, disablePadding: false, label: 'Last Name', value: d => d.lastName },
     { columnName: 'email', numeric: true, disablePadding: false, label: 'Email', value: d => d.email },
@@ -186,10 +186,10 @@ const PanelMembersDashboard = () => {
     try {
       // const { id } = panelMember;
       // await nchandiWebsiteService.deletePanelMemberById(id);
-      enqueueSnackbar('This pending volunteer was deleted.', snackbarMessages.success.configuration);
+      enqueueSnackbar('This panel member was deleted.', snackbarMessages.success.configuration);
     } catch (error) {
       console.error(error);
-      enqueueSnackbar('There was an error deleting the pending volunteer!', snackbarMessages.error.configuration);
+      enqueueSnackbar('There was an error deleting the panel member!', snackbarMessages.error.configuration);
     } finally {
       // setLoading(false);
       setPanelMember(null);
