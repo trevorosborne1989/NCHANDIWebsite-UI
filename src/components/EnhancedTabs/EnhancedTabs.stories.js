@@ -1,19 +1,19 @@
 import React from 'react';
-import VerticalTabs from './VerticalTabs';
+import EnhancedTabs from './EnhancedTabs';
 
 
 export default {
-    title: 'VerticalTabs',
-    component: VerticalTabs,
+    title: 'EnhancedTabs',
+    component: EnhancedTabs,
   };
   
   export const Primary = ({...props}) => {
   
       return (
         <>
-          <VerticalTabs>
+          <EnhancedTabs>
 
-          </VerticalTabs>
+          </EnhancedTabs>
         </>
       );
     };
