@@ -49,34 +49,64 @@ export default function VerticalTabs({ direction, tabLabels, components, style }
   };
 
   return (
-    <Box
-      sx={{ flexGrow: 1, display: 'flex', height: '100%' }}
-    >
-      <Tabs
-        textColor='inherit'
-        orientation={direction}
-        variant='scrollable'
-        value={value}
-        onChange={handleChange}
-        aria-label="Vertical tabs example"
-        indicatorColor='secondary'
-        sx={style}
-      >
-        {tabLabels?.map((tabLabel, index) => (
-          <Tab key={index} label={tabLabel} {...a11yProps(index)} />
-        ))}
-      </Tabs>
-      <Grid container sm={12} justifyContent={'center'} >
-        <Grid sm={10}>
-          {components?.map((component, index) => (
-            <TabPanel key={index}  value={value} index={index}>
-              {component}
-            </TabPanel>
-          ))}
-        </Grid>
-
-      </Grid>
-    </Box>
+    <>
+      { direction === 'vertical' &&
+        <Box
+          sx={{ flexGrow: 1, display: 'flex', height: '100%' }}
+        >
+          <Tabs
+            textColor='inherit'
+            orientation={direction}
+            variant='scrollable'
+            value={value}
+            onChange={handleChange}
+            aria-label="Vertical tabs example"
+            indicatorColor='secondary'
+            sx={style}
+          >
+            {tabLabels?.map((tabLabel, index) => (
+              <Tab key={index} label={tabLabel} {...a11yProps(index)} />
+            ))}
+          </Tabs>
+          <Grid container sm={10} justifyContent={'center'} >
+            <Grid sm={11}>
+              {components?.map((component, index) => (
+                <TabPanel key={index}  value={value} index={index}>
+                  {component}
+                </TabPanel>
+              ))}
+            </Grid>
+          </Grid>
+        </Box>
+      }
+      { direction === 'horizontal' &&
+        <Box sx={{ width: '100%' }}>
+          <Tabs
+            textColor='inherit'
+            orientation={direction}
+            variant='fullWidth'
+            value={value}
+            onChange={handleChange}
+            aria-label="Vertical tabs example"
+            indicatorColor='secondary'
+            sx={style}
+          >
+            {tabLabels?.map((tabLabel, index) => (
+              <Tab key={index} label={tabLabel} {...a11yProps(index)} />
+            ))}
+          </Tabs>
+          <Grid container sm={12} justifyContent={'center'} >
+            <Grid sm={12}>
+              {components?.map((component, index) => (
+                <TabPanel key={index}  value={value} index={index}>
+                  {component}
+                </TabPanel>
+              ))}
+            </Grid>
+          </Grid>
+        </Box>
+      }
+    </>
   );
 }
 

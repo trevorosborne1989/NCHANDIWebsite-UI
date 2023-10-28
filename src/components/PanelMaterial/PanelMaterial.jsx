@@ -206,20 +206,8 @@ const PanelMaterial = () => {
 
   return (
     <>
-      <Grid Grid container sm={12} textAlign={'center'} justifyContent={'center'} py={3} pb={3}>
-        <Grid sm={10}>
-          <Typography variant="h4" color={'white'} >
-            Panel Material
-          </Typography>
-        </Grid>
-      </Grid>
-      <Grid container sm={12} justifyContent={'center'} pb={5}>
-        <Grid sm={8}>
-          <Divider sx={{background: 'white'}} />
-        </Grid>
-      </Grid>
       <Grid container sm={12} justifyContent={'center'}>
-        <Grid sm={12}>
+        <Grid sm={12} >
           <EnhancedTable
             data ={tableData}
             {...tableConfig}

@@ -17,7 +17,7 @@ const AdminDashboard = () => {
   const components = [
     <PanelMaterial/>
     ];
-  const style = { borderRight: 5, borderColor: 'divider', color: nchandiTheme.handiSecondaryWhite };
+  const style = { borderBottom: 3, borderColor: 'divider', color: nchandiTheme.handiYellow };
 
   const generateTabsConfig = (direction, tabLabels, components, style) => ({
     direction: direction,
@@ -30,16 +30,11 @@ const AdminDashboard = () => {
 
   return (
     <>
-      <Grid Grid container sm={12} textAlign={'center'} justifyContent={'center'} py={3} pb={3}>
+      <Grid Grid container sm={12} textAlign={'center'} justifyContent={'center'} pb={3}>
         <Grid sm={10}>
           <Typography variant="h4" color={'white'} >
             Admin Dashboard
           </Typography>
-        </Grid>
-      </Grid>
-      <Grid container sm={12} justifyContent={'center'} pb={3}>
-        <Grid sm={10}>
-          <Divider sx={{background: 'white'}} />
         </Grid>
       </Grid>
       <Grid container sm={12} justifyContent={'center'}>

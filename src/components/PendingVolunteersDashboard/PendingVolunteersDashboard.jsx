@@ -166,7 +166,7 @@ const PendingVolunteersDashboard = () => {
 
   return (
     <>
-      <Grid Grid container sm={12} textAlign={'center'} justifyContent={'center'} py={3} pb={3}>
+      <Grid Grid container sm={12} textAlign={'center'} justifyContent={'center'} pb={3}>
         <Grid sm={10}>
           <Typography variant="h4" color={'white'} >
             Pending Volunteers Dashboard
