@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Divider, Typography, } from '@mui/material';
-import { Done, DeleteForever, CheckCircle, CheckCircleOutline } from '@mui/icons-material';
+import { DeleteForever, CheckCircleOutline } from '@mui/icons-material';
 import Grid from '@mui/material/Unstable_Grid2';
 import { useSnackbar } from 'notistack';
 import snackbarMessages from '../../lib/snackbarMessages.json';
