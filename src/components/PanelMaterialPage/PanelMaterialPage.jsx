@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Divider, Typography, IconButton } from '@mui/material';
+import { Card ,CardContent, IconButton } from '@mui/material';
 import { Add, DeleteForever } from '@mui/icons-material';
 import Grid from '@mui/material/Unstable_Grid2';
 import { useFormik } from 'formik';
@@ -16,7 +16,7 @@ import { nchandiTheme } from '../../App';
 
 
 const generateTableConfig = (handleSelection, handleAdd, handleDelete) => ({
-  title: 'Committee Members',
+  title: 'Panel Materials',
   dataKey: d => d.id,
   handleSelection: handleSelection,
   toolbar: (
@@ -26,12 +26,7 @@ const generateTableConfig = (handleSelection, handleAdd, handleDelete) => ({
   ),
   columns: [
     { columnName: '', numeric: true, disablePadding: false, label: '', value: d => <DeleteForever fontSize='large' color='error' onClick={e => handleDelete(e, d)} data-cy='table-delete-btn' /> },
-    { columnName: 'firstName', numeric: true, disablePadding: true, label: 'First Name', value: d => d.firstName },
-    { columnName: 'lastName', numeric: true, disablePadding: false, label: 'Last Name', value: d => d.lastName },
-    { columnName: 'email', numeric: true, disablePadding: false, label: 'Email', value: d => d.email },
-    { columnName: 'phoneNumber', numeric: true, disablePadding: false, label: 'Phone Number', value: d => d.phoneNumber },
-    { columnName: 'contactMethod', numeric: true, disablePadding: false, label: 'Contact Method', value: d => d.contactMethod },
-    { columnName: 'commitment', numeric: true, disablePadding: false, label: 'Commitment', value: d => d.commitment }
+    { columnName: 'firstName', numeric: true, disablePadding: true, label: 'First Name', value: d => d.firstName }
   ]
 });
 
@@ -66,7 +61,7 @@ const committeeMembers = [
   createData('17', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'Panel Leader'),
 ];
 
-const PanelMaterial = () => {
+const PanelMaterialPage = () => {
   const [isOpen, setIsOpen] = useState(false);
   // const [loading, setLoading] = useState(false);
   const [tableData, setTableData] = useState([]);
@@ -207,7 +202,14 @@ const PanelMaterial = () => {
   return (
     <>
       <Grid container sm={12} justifyContent={'center'}>
-        <Grid sm={12} >
+        <Grid>
+          <Card>
+            <CardContent>
+
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid sm={6} >
           <EnhancedTable
             data ={tableData}
             {...tableConfig}
@@ -231,4 +233,4 @@ const PanelMaterial = () => {
   )
 }
 
-export default PanelMaterial;
+export default PanelMaterialPage;

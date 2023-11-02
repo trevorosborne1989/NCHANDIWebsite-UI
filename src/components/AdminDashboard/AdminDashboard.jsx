@@ -1,21 +1,21 @@
 import React from 'react';
-import { Divider, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import EnhancedTabs from '../EnhancedTabs/EnhancedTabs';
 import { nchandiTheme } from '../../App';
-import PanelMaterial from '../PanelMaterial/PanelMaterial';
+import PanelMaterialPage from '../PanelMaterialPage/PanelMaterialPage';
 
 const AdminDashboard = () => {
 
   const tabLabels = [
-    "Panel Material",
-    "General Resource",
-    "Monthly Report",
-    "Announcement",
-    "Archived Report"
+    "Panel Materials",
+    "General Resources",
+    "Monthly Reports",
+    "Announcements",
+    "Archived Reports"
   ];
   const components = [
-    <PanelMaterial/>
+    <PanelMaterialPage/>
     ];
   const style = { borderBottom: 3, borderColor: 'divider', color: nchandiTheme.handiYellow };
 
