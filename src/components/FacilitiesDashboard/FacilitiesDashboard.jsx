@@ -190,10 +190,10 @@ const FacilitiesDashboard = () => {
   /**
    *
    */
-  const handleDelete = (e, id) => {
+  const handleDelete = (e, entity) => {
     e.stopPropagation();
     setIsDeleteDialogOpen(true);
-    setFacility(id);
+    setFacility(entity);
   };
 
   /**

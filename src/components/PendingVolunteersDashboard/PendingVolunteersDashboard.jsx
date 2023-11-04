@@ -91,10 +91,10 @@ const PendingVolunteersDashboard = () => {
    /**
    *
    */
-  const handleSave = (e, id) => {
+  const handleSave = (e, entity) => {
     e.stopPropagation();
     setIsSaveDialogOpen(true);
-    setPendingVolunteer(id);
+    setPendingVolunteer(entity);
   };
 
   /**
@@ -128,10 +128,10 @@ const PendingVolunteersDashboard = () => {
   /**
    *
    */
-  const handleDelete = (e, id) => {
+  const handleDelete = (e, entity) => {
     e.stopPropagation();
     setIsDeleteDialogOpen(true);
-    setPendingVolunteer(id);
+    setPendingVolunteer(entity);
   };
 
   /**

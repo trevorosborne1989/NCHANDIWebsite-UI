@@ -164,10 +164,10 @@ const PanelMembersDashboard = () => {
   /**
    *
    */
-  const handleDelete = (e, id) => {
+  const handleDelete = (e, entity) => {
     e.stopPropagation();
     setIsDeleteDialogOpen(true);
-    setPanelMember(id);
+    setPanelMember(entity);
   };
 
   /**

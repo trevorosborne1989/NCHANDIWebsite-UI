@@ -28,7 +28,7 @@ const genderOptions =[
   },
 ]
 
-const PanelMembersDashboardDialog = ({ formik, facilityData, isOpen, handleSave, handleClose }) => {
+const PanelsDashboardDialog = ({ formik, facilityData, isOpen, handleSave, handleClose }) => {
 
   return (
     <>
@@ -247,4 +247,4 @@ const PanelMembersDashboardDialog = ({ formik, facilityData, isOpen, handleSave,
   );
 }
 
-export default PanelMembersDashboardDialog;
+export default PanelsDashboardDialog;

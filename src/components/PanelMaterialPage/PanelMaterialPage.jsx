@@ -1,71 +1,54 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Card ,CardContent, IconButton } from '@mui/material';
-import { Add, DeleteForever } from '@mui/icons-material';
+// import { IconButton } from '@mui/material';
+// import { Add, DeleteForever } from '@mui/icons-material';
 import Grid from '@mui/material/Unstable_Grid2';
 import { useFormik } from 'formik';
 import { useSnackbar } from 'notistack';
 import snackbarMessages from '../../lib/snackbarMessages.json';
-import EnhancedTable from '../EnhancedTable/EnhancedTable';
-import PanelMaterialDialog from '../PanelMaterialDialog/PanelMaterialDialog';
-import DeleteConfirmationDialog from '../DeleteConfirmationDialog/DeleteConfirmationDialog';
 import { yupSchema } from './ValidationSchema';
-import { nchandiTheme } from '../../App';
+import UploadCard from '../UploadCard/UploadCard';
+import ShowUploadsCard from '../ShowUploadsCard/ShowUploadsCard';
 // import NCHANDIWebsiteService from '../../lib/NCHANDIWebsiteService'
 
 // const nchandiWebsiteService = new NCHANDIWebsiteService();
 
 
-const generateTableConfig = (handleSelection, handleAdd, handleDelete) => ({
-  title: 'Panel Materials',
-  dataKey: d => d.id,
-  handleSelection: handleSelection,
-  toolbar: (
-    <IconButton color='primary' onClick={handleAdd} data-cy='table-add-button'>
-      <Add sx={{ color: nchandiTheme.handiGreen }} fontSize='large' />
-    </IconButton>
-  ),
-  columns: [
-    { columnName: '', numeric: true, disablePadding: false, label: '', value: d => <DeleteForever fontSize='large' color='error' onClick={e => handleDelete(e, d)} data-cy='table-delete-btn' /> },
-    { columnName: 'firstName', numeric: true, disablePadding: true, label: 'First Name', value: d => d.firstName }
-  ]
-});
+// const generateTableConfig = (handleSelection, handleAdd, handleDelete) => ({
+//   title: 'Panel Materials',
+//   dataKey: d => d.id,
+//   handleSelection: handleSelection,
+//   toolbar: (
+//     <IconButton color='primary' onClick={handleAdd} data-cy='table-add-button'>
+//       <Add sx={{ color: nchandiTheme.handiGreen }} fontSize='large' />
+//     </IconButton>
+//   ),
+//   columns: [
+//     { columnName: '', numeric: true, disablePadding: false, label: '', value: d => <DeleteForever fontSize='large' color='error' onClick={e => handleDelete(e, d)} data-cy='table-delete-btn' /> },
+//     { columnName: 'firstName', numeric: true, disablePadding: true, label: 'First Name', value: d => d.firstName }
+//   ]
+// });
 
-function createData(id, firstName, lastName, email, phoneNumber, contactMethod, commitment) {
+function createData(id, label) {
   return {
     id,
-    firstName,
-    lastName,
-    email,
-    phoneNumber,
-    contactMethod,
-    commitment
+    label,
   };
 }
 
-const committeeMembers = [
-  createData('1', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'Panel Leader'),
-  createData('2', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'Panel Leader'),
-  createData('3', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'Panel Leader'),
-  createData('4', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'Panel Leader'),
-  createData('5', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'Panel Leader'),
-  createData('6', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'Panel Leader'),
-  createData('7', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'Panel Leader'),
-  createData('8', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'Panel Leader'),
-  createData('9', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'Panel Leader'),
-  createData('10', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'Panel Leader'),
-  createData('12', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'Panel Leader'),
-  createData('13', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'Panel Leader'),
-  createData('14', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'Panel Leader'),
-  createData('15', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'Panel Leader'),
-  createData('16', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'Panel Leader'),
-  createData('17', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'Panel Leader'),
+const panelMaterials = [
+  createData('1', 'H&I Panel Guide'),
+  createData('2', 'A Vision For You'),
+  createData('3', '12x12'),
+  createData('4', 'How It Works'),
+  createData('5', 'Meeting Guide Instructions'),
+  createData('6', '12 Traditions'),
+  createData('7', 'Suggested Meeting Format'),
+  createData('8', 'October Grapevine')
 ];
 
 const PanelMaterialPage = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  // const [loading, setLoading] = useState(false);
-  const [tableData, setTableData] = useState([]);
-  const [committeeMember, setCommitteeMember] = useState(null);
+  const [listData, setListData] = useState(panelMaterials);
+  const [panelMaterial, setPanelMaterial] = useState(null);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
 
@@ -83,11 +66,9 @@ const PanelMaterialPage = () => {
       try {
 
         if (id) {
-          // await ectsService.putEctsstaffWithEctsStaffId({}, id, values);
-          setIsOpen(false);
+          // await nchandiWebsiteService.putPanelMaterialWithId({}, id, values);
         }else {
-          // await ectsService.postEctsstaff({}, values);
-          setIsOpen(false);
+          // await nchandiWebsiteService.postPanelMaterial({}, values);
         }
         enqueueSnackbar('This committee member was successfully submitted.', snackbarMessages.success.configuration);
       } catch (err) {
@@ -99,7 +80,7 @@ const PanelMaterialPage = () => {
     validateOnBlur: true,
   });
 
-  // const fetchData = useCallback(params => ectsService.getEctsstaff(params), []); //Try This!!!
+  // const fetchData = useCallback(params => nchandiWebsiteService.getPanelMaterials(params), []); //Try This!!!
 
   /**
    *
@@ -107,8 +88,8 @@ const PanelMaterialPage = () => {
   const fetchTableData = useCallback(async () => {
     try {
       // setLoading(true);
-      // const { data: committeeMembers } = await nchandiWebsiteService.getCommitteeMembers();
-      setTableData(committeeMembers);
+      // const { data: panelMaterials } = await nchandiWebsiteService.getPanelMaterials();
+      setListData(panelMaterials);
     } catch (err) {
       console.error(err);
     } finally {
@@ -126,30 +107,9 @@ const PanelMaterialPage = () => {
   /**
    *
    */
-  const handleSave = () => {
-    setTimeout( async () => { // Remove the onTimeout once the POST method in onSubmit is defined.
-      formik.submitForm();
-      if (!formik.isValid) {
-        enqueueSnackbar('There are fields missing in your form. Please fill out all the required * fields.', snackbarMessages.error.configuration);
-      }
-      formik.setSubmitting(false);
-    }, 1000);
-  };
-
-  /**
-   *
-   */
-  const handleClose = () => {
-    formik.handleReset();
-    setIsOpen(false);
-  };
-
-  /**
-   *
-   */
   const handleAdd = () => {
     formik.handleReset();
-    setIsOpen(true);
+
   };
 
   /**
@@ -157,23 +117,23 @@ const PanelMaterialPage = () => {
    */
   const handleSelection = (row) => {
     formik.setValues(row);
-    setIsOpen(true);
+
   };
 
   /**
    *
    */
-  const handleDelete = (e, id) => {
+  const handleDelete = (e, entity) => {
     e.stopPropagation();
     setIsDeleteDialogOpen(true);
-    setCommitteeMember(id);
+    setPanelMaterial(entity);
   };
 
   /**
    *
    */
   const handleDeleteDialogClose = () => {
-    setCommitteeMember(null);
+    setPanelMaterial(null);
     setIsDeleteDialogOpen(false);
   };
 
@@ -183,52 +143,42 @@ const PanelMaterialPage = () => {
   const handleDeleteDialogConfirm = async () => {
     // setLoading(true);
     try {
-      // const { id } = committeeMember;
-      // await nchandiWebsiteService.deleteCommitteeMemberById(id);
-      enqueueSnackbar('This pending volunteer was deleted.', snackbarMessages.success.configuration);
+      // const { id } = panelMaterial;
+      // await nchandiWebsiteService.deletePanelMaterialById(id);
+      enqueueSnackbar('This panel material was deleted.', snackbarMessages.success.configuration);
     } catch (error) {
       console.error(error);
-      enqueueSnackbar('There was an error deleting the pending volunteer!', snackbarMessages.error.configuration);
+      enqueueSnackbar('There was an error deleting the panel material!', snackbarMessages.error.configuration);
     } finally {
       // setLoading(false);
-      setCommitteeMember(null);
+      setPanelMaterial(null);
       setIsDeleteDialogOpen(false);
       // fetchRequests();
     }
   };
 
-  const tableConfig = generateTableConfig(handleSelection, handleAdd, handleDelete);
+  // const tableConfig = generateTableConfig(handleSelection, handleAdd, handleDelete);
 
   return (
     <>
-      <Grid container sm={12} justifyContent={'center'}>
-        <Grid>
-          <Card>
-            <CardContent>
-
-            </CardContent>
-          </Card>
+      <Grid container sm={12} spacing={3} justifyContent={'center'}>
+        <Grid sx={12} sm={6}>
+          <UploadCard
+            formik={formik}
+          />
         </Grid>
-        <Grid sm={6} >
-          <EnhancedTable
-            data ={tableData}
-            {...tableConfig}
+        <Grid sx={12} sm={6} >
+          <ShowUploadsCard
+            resourceData={listData}
+            isOpen={isDeleteDialogOpen}
+            entityName={'Panel Material'}
+            primaryText={panelMaterial?.label}
+            handleClose={handleDeleteDialogClose}
+            handleDelete={handleDelete}
+            handleDeleteConfirm={handleDeleteDialogConfirm}
           />
         </Grid>
       </Grid>
-      <PanelMaterialDialog
-        formik={formik}
-        isOpen={isOpen}
-        handleSave={handleSave}
-        handleClose={handleClose}
-      />
-      <DeleteConfirmationDialog
-        isOpen={isDeleteDialogOpen}
-        entityName='Committee Member'
-        primaryText={committeeMember?.firstName + ' ' + committeeMember?.lastName}
-        handleClose={handleDeleteDialogClose}
-        handleDelete={handleDeleteDialogConfirm}
-      />
     </>
   )
 }

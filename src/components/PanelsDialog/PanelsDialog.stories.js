@@ -68,11 +68,11 @@ export default {
             <Button variant='contained' onClick={handleClick}>Open Panel Dialog</Button>
           </Box>
           <PanelsDialog
-          formik={formik}
-          isOpen={dialogOpen}
-          handleSave={handleDialogSave}
-          handleClose={handleDialogClose}
-          >
+            formik={formik}
+            isOpen={dialogOpen}
+            handleSave={handleDialogSave}
+            handleClose={handleDialogClose}
+            >
           </PanelsDialog>
         </>
       );
