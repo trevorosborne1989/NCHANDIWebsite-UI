@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Card,
   CardContent,
@@ -8,17 +8,13 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
+  IconButton,
   } from '@mui/material';
   import { DeleteForever } from '@mui/icons-material';
   import DeleteConfirmationDialog from '../DeleteConfirmationDialog/DeleteConfirmationDialog';
   import { nchandiTheme } from '../../App';
 
 const ShowUploadsCard = ({resourceData, isOpen, entityName, primaryText, handleClose, handleDelete, handleDeleteConfirm}) => {
-  const [ highlight, setHighlight] = useState('');
-
-  const handleHover = () => {
-    setHighlight('info');
-  };
 
   return (
     <>
@@ -32,7 +28,15 @@ const ShowUploadsCard = ({resourceData, isOpen, entityName, primaryText, handleC
               {resourceData.map(resource => (
                 <ListItem key={resource.id} value={resource.label}>
                   <ListItemIcon>
-                    <DeleteForever onHover={handleHover} fontSize='large' color={highlight || 'error'} onClick={e => handleDelete(e, resource)} data-cy='list-delete-btn' />
+                    <IconButton>
+                      <DeleteForever
+                        fontSize='large'
+                        color={'error'}
+                        onClick={e => handleDelete(e, resource)}
+                        data-cy='list-delete-btn'
+                        sx={{"&:hover": { color: nchandiTheme.handiDarkRed }}}
+                      />
+                    </IconButton>
                   </ListItemIcon>
                   <ListItemText
                     sx={{ color: nchandiTheme.handiDarkYellow }}
@@ -50,7 +54,7 @@ const ShowUploadsCard = ({resourceData, isOpen, entityName, primaryText, handleC
         primaryText={primaryText}
         handleClose={handleClose}
         handleDelete={handleDeleteConfirm}
-        />
+      />
     </>
   )
 }

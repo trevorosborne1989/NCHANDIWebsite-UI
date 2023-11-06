@@ -1,6 +1,4 @@
 import React, { useState, useEffect, useCallback } from 'react';
-// import { IconButton } from '@mui/material';
-// import { Add, DeleteForever } from '@mui/icons-material';
 import Grid from '@mui/material/Unstable_Grid2';
 import { useFormik } from 'formik';
 import { useSnackbar } from 'notistack';
@@ -54,25 +52,15 @@ const PanelMaterialPage = () => {
 
   const formik = useFormik({
     initialValues: {
-      firstName: '',
-      lastName: '',
-      email: '',
-      phoneNumber: '',
-      contactMethod: '',
-      commitment: ''
+      resourceTitle: '',
+      file: null
     },
     onSubmit: async (values) => {
-      const { id } = values;
       try {
-
-        if (id) {
-          // await nchandiWebsiteService.putPanelMaterialWithId({}, id, values);
-        }else {
-          // await nchandiWebsiteService.postPanelMaterial({}, values);
-        }
-        enqueueSnackbar('This committee member was successfully submitted.', snackbarMessages.success.configuration);
+        // await nchandiWebsiteService.postPanelMaterial({}, values);
+        enqueueSnackbar('This resource was successfully uploaded.', snackbarMessages.success.configuration);
       } catch (err) {
-        enqueueSnackbar('There was an error when submitting this form, please try again later or contact the Technology Chair', snackbarMessages.error.configuration);
+        enqueueSnackbar('There was an error when uploading this resource, please try again later or contact the Technology Chair', snackbarMessages.error.configuration);
         console.error(err);
       }
     },
@@ -85,39 +73,38 @@ const PanelMaterialPage = () => {
   /**
    *
    */
-  const fetchTableData = useCallback(async () => {
+  const fetchListData = useCallback(async () => {
     try {
       // setLoading(true);
       // const { data: panelMaterials } = await nchandiWebsiteService.getPanelMaterials();
       setListData(panelMaterials);
     } catch (err) {
+      enqueueSnackbar('Unable to fetch current panel materials, please try again later or contact the Technology Chair', snackbarMessages.error.configuration);
       console.error(err);
     } finally {
       // setLoading(false);
     }
-  }, []);
+  }, [enqueueSnackbar]);
 
   /**
    *
    */
   useEffect(() => {
-    fetchTableData();
-  }, [fetchTableData]);
+    fetchListData();
+  }, [fetchListData]);
 
   /**
    *
    */
-  const handleAdd = () => {
-    formik.handleReset();
-
-  };
-
-  /**
-   *
-   */
-  const handleSelection = (row) => {
-    formik.setValues(row);
-
+  const handleSave = () => {
+    setTimeout( async () => { // Remove the onTimeout once the POST method in onSubmit is defined.
+      formik.submitForm();
+      if (!formik.isValid) {
+        enqueueSnackbar('There are fields missing in your form. Please fill out all the required * fields.', snackbarMessages.error.configuration);
+      }
+      formik.setSubmitting(false);
+      formik.resetForm();
+    }, 1000);
   };
 
   /**
@@ -145,10 +132,10 @@ const PanelMaterialPage = () => {
     try {
       // const { id } = panelMaterial;
       // await nchandiWebsiteService.deletePanelMaterialById(id);
-      enqueueSnackbar('This panel material was deleted.', snackbarMessages.success.configuration);
+      enqueueSnackbar('This resource was deleted.', snackbarMessages.success.configuration);
     } catch (error) {
       console.error(error);
-      enqueueSnackbar('There was an error deleting the panel material!', snackbarMessages.error.configuration);
+      enqueueSnackbar('There was an error deleting this resource!', snackbarMessages.error.configuration);
     } finally {
       // setLoading(false);
       setPanelMaterial(null);
@@ -165,6 +152,7 @@ const PanelMaterialPage = () => {
         <Grid sx={12} sm={6}>
           <UploadCard
             formik={formik}
+            onSave={handleSave}
           />
         </Grid>
         <Grid sx={12} sm={6} >
