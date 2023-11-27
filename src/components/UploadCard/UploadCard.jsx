@@ -37,11 +37,7 @@ const UploadCard = ({formik, onSave}) => {
   };
 
   const handleUploadClick = () => {
-    if (!formik.values.file) {
-      return;
-    }
     setLoading(true);
-    setTimeout( async () => {}, 1000);
     onSave();
     setLoading(false);
   };
@@ -62,6 +58,7 @@ const UploadCard = ({formik, onSave}) => {
               size='medium'
               color='secondary'
               focused
+              sx={{input: { color: nchandiTheme.handiSecondaryWhite }}}
               value={formik.values.resourceTitle}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -71,30 +68,29 @@ const UploadCard = ({formik, onSave}) => {
             />
           </Box>
           <Box pb={4}>
-            <LoadingButton
+            <Button
               component="label"
               onClick={handleFileChange}
               fullWidth
               startIcon={<CloudUpload />}
-              loading={loading}
-              loadingPosition="end"
               variant="contained"
             >
               <span>Upload File</span>
               <VisuallyHiddenInput type="file" />
-            </LoadingButton>
+            </Button>
           </Box>
           <Box display="flex" justifyContent="center">
-            <Button
-              disabled={!formik.values?.file}
+            <LoadingButton
               onClick={handleUploadClick}
+              loading={loading}
+              loadingPosition="end"
               variant='contained'
               size='large'
               color='secondary'
               sx={{ width: 100, height: 80 }}
               >
                 Send
-              </Button>
+              </LoadingButton>
           </Box>
         </CardContent>
       </Card>

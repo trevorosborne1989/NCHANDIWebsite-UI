@@ -102,6 +102,8 @@ const PanelMaterialPage = () => {
       if (!formik.isValid) {
         enqueueSnackbar('There are fields missing in your form. Please fill out all the required * fields.', snackbarMessages.error.configuration);
       }
+      console.log('fromik errors');
+      console.log(formik.errors.file);
       formik.setSubmitting(false);
       formik.resetForm();
     }, 1000);
