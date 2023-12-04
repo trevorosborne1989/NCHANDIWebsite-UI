@@ -6,6 +6,7 @@ import {
   Box,
   Button,
   TextField,
+  Chip,
   } from '@mui/material';
 import {
   CloudUpload,
@@ -31,9 +32,12 @@ const UploadCard = ({formik, onSave}) => {
 
   const handleFileChange = (e) => {
     if (e.target.files) {
-      console.log(e);
       formik.setFieldValue('file', e.target.files[0])
     }
+  };
+
+  const handleChipDelete = () => {
+    formik.setFieldValue('file', null);
   };
 
   const handleUploadClick = () => {
@@ -70,21 +74,21 @@ const UploadCard = ({formik, onSave}) => {
           <Box pb={4}>
             <Button
               component="label"
-              onClick={handleFileChange}
               fullWidth
               startIcon={<CloudUpload />}
               variant="contained"
             >
               <span>Upload File</span>
-              <VisuallyHiddenInput type="file" />
+              <VisuallyHiddenInput type="file" name='file' onChange={handleFileChange} />
             </Button>
           </Box>
           <Box display="flex" justifyContent="center">
             <LoadingButton
               onClick={handleUploadClick}
               loading={loading}
-              loadingPosition="end"
+              loadingPosition='center'
               variant='contained'
+              disabled={loading}
               size='large'
               color='secondary'
               sx={{ width: 100, height: 80 }}
@@ -92,6 +96,16 @@ const UploadCard = ({formik, onSave}) => {
                 Send
               </LoadingButton>
           </Box>
+          <Box textAlign={'center'} py={2}>
+            <Typography variant='h7' color={nchandiTheme.handiGrey}>
+              Max Upload Size 100KB
+            </Typography>
+          </Box>
+          {formik.values?.file &&
+            <Box textAlign={'center'} >
+              <Chip label={formik.values?.file.name}  color='primary' onDelete={handleChipDelete} />
+            </Box>
+          }
         </CardContent>
       </Card>
     </>

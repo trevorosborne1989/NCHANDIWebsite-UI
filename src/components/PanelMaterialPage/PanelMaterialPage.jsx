@@ -59,6 +59,7 @@ const PanelMaterialPage = () => {
       try {
         // await nchandiWebsiteService.postPanelMaterial({}, values);
         enqueueSnackbar('This resource was successfully uploaded.', snackbarMessages.success.configuration);
+        formik.handleReset();
       } catch (err) {
         enqueueSnackbar('There was an error when uploading this resource, please try again later or contact the Technology Chair', snackbarMessages.error.configuration);
         console.error(err);
@@ -99,14 +100,17 @@ const PanelMaterialPage = () => {
   const handleSave = () => {
     setTimeout( async () => { // Remove the onTimeout once the POST method in onSubmit is defined.
       formik.submitForm();
-      if (!formik.isValid) {
+      if (formik.errors?.resourceTitle) {
         enqueueSnackbar('There are fields missing in your form. Please fill out all the required * fields.', snackbarMessages.error.configuration);
       }
+      if (formik.errors?.file) {
+        enqueueSnackbar(formik.errors?.file, snackbarMessages.error.configuration);
+      };
       console.log('fromik errors');
+      console.log(formik.errors);
       console.log(formik.errors.file);
       formik.setSubmitting(false);
-      formik.resetForm();
-    }, 1000);
+    }, 5000);
   };
 
   /**
