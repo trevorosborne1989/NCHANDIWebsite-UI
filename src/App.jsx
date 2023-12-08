@@ -60,7 +60,8 @@ export const nchandiTheme = {
   handiSecondaryWhite: "#e6e6e6",
   handiGrey: "#747373",
   handiYellow: "#ffc107",
-  handiDarkYellow: "#c79100"
+  handiDarkYellow: "#c79100",
+  handiDarkRed: '	#8B0000'
 }
 
 const theme = createTheme({

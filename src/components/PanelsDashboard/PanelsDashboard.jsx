@@ -6,7 +6,7 @@ import { useFormik } from 'formik';
 import { useSnackbar } from 'notistack';
 import snackbarMessages from '../../lib/snackbarMessages.json';
 import EnhancedTable from '../EnhancedTable/EnhancedTable';
-import PanelDashboardDialog from '../PanelsDashboardDialog/PanelsDashboardDialog'
+import PanelsDashboardDialog from '../PanelsDashboardDialog/PanelsDashboardDialog'
 import DeleteConfirmationDialog from '../DeleteConfirmationDialog/DeleteConfirmationDialog';
 import { yupSchema } from './ValidationSchema';
 import { nchandiTheme } from '../../App';
@@ -263,10 +263,10 @@ const PanelsDashboard = () => {
    /**
    *
    */
-   const handleDelete = (e, id) => {
+   const handleDelete = (e, entity) => {
     e.stopPropagation();
     setIsDeleteDialogOpen(true);
-    setPanel(id);
+    setPanel(entity);
   };
 
   /**
@@ -321,7 +321,7 @@ const PanelsDashboard = () => {
           />
         </Grid>
       </Grid>
-      <PanelDashboardDialog
+      <PanelsDashboardDialog
         formik={formik}
         facilityData={facilities}
         isOpen={isOpen}

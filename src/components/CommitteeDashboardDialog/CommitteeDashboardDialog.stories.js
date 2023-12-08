@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import PanelsDialog from './PanelsDialog';
+import CommitteeDashboardDialog from './CommitteeDashboardDialog';
 import { useSnackbar } from 'notistack';
 import snackbarMessages from '../../lib/snackbarMessages.json';
 import { useFormik } from 'formik';
@@ -8,8 +8,8 @@ import { Box, Button } from '@mui/material';
 
 
 export default {
-    title: 'PanelsDialog',
-    component: PanelsDialog,
+    title: 'CommitteeDashboardDialog',
+    component: CommitteeDashboardDialog,
   };
 
   export const Primary = ({...props}) => {
@@ -20,10 +20,10 @@ export default {
       initialValues: {
         firstName: '',
         lastName: '',
-        commitment: '',
         email: '',
         phoneNumber: '',
-        contactMethod: ''
+        contactMethod: '',
+        commitment: ''
       },
       onSubmit: async () => {
         try {
@@ -67,13 +67,13 @@ export default {
           <Box textAlign={'center'} py={7}>
             <Button variant='contained' onClick={handleClick}>Open Committee Members Dialog</Button>
           </Box>
-          <PanelsDialog
+          <CommitteeDashboardDialog
           formik={formik}
           isOpen={dialogOpen}
           handleSave={handleDialogSave}
           handleClose={handleDialogClose}
           >
-          </PanelsDialog>
+          </CommitteeDashboardDialog>
         </>
       );
     };

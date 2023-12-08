@@ -168,10 +168,10 @@ const CommitteeDashboard = () => {
   /**
    *
    */
-  const handleDelete = (e, id) => {
+  const handleDelete = (e, entity) => {
     e.stopPropagation();
     setIsDeleteDialogOpen(true);
-    setCommitteeMember(id);
+    setCommitteeMember(entity);
   };
 
   /**

@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import PanelMembersDashboardDialog from './PanelMembersDashboardDialog';
+import PanelsDashboardDialog from './PanelsDashboardDialog';
 import { useSnackbar } from 'notistack';
 import snackbarMessages from '../../lib/snackbarMessages.json';
 import { useFormik } from 'formik';
@@ -8,8 +8,8 @@ import { Box, Button } from '@mui/material';
 
 
 export default {
-    title: 'PanelMembersDashboardDialog',
-    component: PanelMembersDashboardDialog,
+    title: 'PanelsDashboardDialog',
+    component: PanelsDashboardDialog,
   };
 
   export const Primary = ({...props}) => {
@@ -18,11 +18,22 @@ export default {
 
     const formik = useFormik({
       initialValues: {
-        firstName: '',
-        lastName: '',
-        commitment: '',
-        email: '',
-        phoneNumber: ''
+        id: '',
+        dayOfWeek: '',
+        weekOfMonth: '',
+        time: '',
+        facility: null,
+        gender: '',
+        membersAreNeeded: false,
+        numberNeeded: 0,
+        boardChampion: '',
+        panelCoordinator: '',
+        panelLeader: '',
+        panelMember1: '',
+        panelMember2: '',
+        panelMember3: '',
+        panelMember4: '',
+        panelMember5: ''
       },
       onSubmit: async () => {
         try {
@@ -66,13 +77,13 @@ export default {
           <Box textAlign={'center'} py={7}>
             <Button variant='contained' onClick={handleClick}>Open Panel Members Dialog</Button>
           </Box>
-          <PanelMembersDashboardDialog
+          <PanelsDashboardDialog
           formik={formik}
           isOpen={dialogOpen}
           handleSave={handleDialogSave}
           handleClose={handleDialogClose}
           >
-          </PanelMembersDashboardDialog>
+          </PanelsDashboardDialog>
         </>
       );
     };

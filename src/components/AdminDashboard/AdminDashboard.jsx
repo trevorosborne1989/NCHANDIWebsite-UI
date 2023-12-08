@@ -36,6 +36,11 @@ const AdminDashboard = () => {
             Admin Dashboard
           </Typography>
         </Grid>
+        <Grid sm={10} py={1}>
+          <Typography variant="h7" color={'white'} >
+            Please select a resource below to add or remove
+          </Typography>
+        </Grid>
       </Grid>
       <Grid container sm={12} justifyContent={'center'}>
         <Grid sm={12}>

@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import PanelsDialog from './PanelsDialog';
+import FacilitiesDashboardDialog from './FacilitiesDashboardDialog';
 import { useSnackbar } from 'notistack';
 import snackbarMessages from '../../lib/snackbarMessages.json';
 import { useFormik } from 'formik';
@@ -8,8 +8,8 @@ import { Box, Button } from '@mui/material';
 
 
 export default {
-    title: 'PanelsDialog',
-    component: PanelsDialog,
+    title: 'FacilitiesDashboardDialog',
+    component: FacilitiesDashboardDialog,
   };
 
   export const Primary = ({...props}) => {
@@ -74,13 +74,13 @@ export default {
           <Box textAlign={'center'} py={7}>
             <Button variant='contained' onClick={handleClick}>Open Facilities Dialog</Button>
           </Box>
-          <PanelsDialog
-          formik={formik}
-          isOpen={dialogOpen}
-          handleSave={handleDialogSave}
-          handleClose={handleDialogClose}
-          >
-          </PanelsDialog>
+          <FacilitiesDashboardDialog
+            formik={formik}
+            isOpen={dialogOpen}
+            handleSave={handleDialogSave}
+            handleClose={handleDialogClose}
+            >
+          </FacilitiesDashboardDialog>
         </>
       );
     };
