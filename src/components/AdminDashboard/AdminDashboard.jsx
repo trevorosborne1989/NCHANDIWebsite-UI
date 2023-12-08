@@ -3,7 +3,7 @@ import { Typography } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import EnhancedTabs from '../EnhancedTabs/EnhancedTabs';
 import { nchandiTheme } from '../../App';
-import PanelMaterialPage from '../PanelMaterialPage/PanelMaterialPage';
+import PanelMaterialsPage from '../PanelMaterialsPage/PanelMaterialsPage';
 
 const AdminDashboard = () => {
 
@@ -15,7 +15,7 @@ const AdminDashboard = () => {
     "Archived Reports"
   ];
   const components = [
-    <PanelMaterialPage/>
+    <PanelMaterialsPage/>
     ];
   const style = { borderBottom: 3, borderColor: 'divider', color: nchandiTheme.handiYellow };
 

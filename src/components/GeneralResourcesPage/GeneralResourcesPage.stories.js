@@ -1,5 +1,5 @@
 import React from 'react';
-import PanelMaterialPage from './PanelMaterialPage';
+import PanelMaterialPages from './PanelMaterialPages';
 
 
 export default {

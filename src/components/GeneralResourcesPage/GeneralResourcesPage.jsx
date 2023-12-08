@@ -44,7 +44,7 @@ const panelMaterials = [
   createData('8', 'October Grapevine')
 ];
 
-const PanelMaterialPage = () => {
+const PanelMaterialsPage = () => {
   const [listData, setListData] = useState(panelMaterials);
   const [panelMaterial, setPanelMaterial] = useState(null);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
@@ -174,4 +174,4 @@ const PanelMaterialPage = () => {
   )
 }
 
-export default PanelMaterialPage;
+export default PanelMaterialsPage;
