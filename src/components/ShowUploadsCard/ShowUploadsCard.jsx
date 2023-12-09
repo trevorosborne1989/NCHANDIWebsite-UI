@@ -14,14 +14,14 @@ import {
   import DeleteConfirmationDialog from '../DeleteConfirmationDialog/DeleteConfirmationDialog';
   import { nchandiTheme } from '../../App';
 
-const ShowUploadsCard = ({resourceData, isOpen, entityName, primaryText, handleClose, handleDelete, handleDeleteConfirm}) => {
+const ShowUploadsCard = ({resourceData, isOpen, entityName, cardTitle, primaryText, handleClose, handleDelete, handleDeleteConfirm}) => {
 
   return (
     <>
       <Card sx={{ backgroundColor: nchandiTheme.handiDarkBlue }} variant="elevation" elevation={10}>
         <CardContent>
           <Typography variant='h5' color='white' py={2} textAlign={'center'} >
-            Current Panel Materials
+            Current {cardTitle}
           </Typography>
           <Box display="flex" py={1.5} justifyContent="center">
             <List>
