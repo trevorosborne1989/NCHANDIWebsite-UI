@@ -5,6 +5,7 @@ import EnhancedTabs from '../EnhancedTabs/EnhancedTabs';
 import { nchandiTheme } from '../../App';
 import PanelMaterialsPage from '../PanelMaterialsPage/PanelMaterialsPage';
 import GeneralResourcesPage from '../GeneralResourcesPage/GeneralResourcesPage';
+import ArchivedReportsPage from '../ArchivedReportsPage/ArchivedReportsPage';
 
 const AdminDashboard = () => {
 
@@ -17,7 +18,10 @@ const AdminDashboard = () => {
   ];
   const components = [
     <PanelMaterialsPage />,
-    <GeneralResourcesPage />
+    <GeneralResourcesPage />,
+    <GeneralResourcesPage />,
+    <GeneralResourcesPage />,
+    <ArchivedReportsPage />
     ];
   const style = { borderBottom: 3, borderColor: 'divider', color: nchandiTheme.handiYellow };
 
