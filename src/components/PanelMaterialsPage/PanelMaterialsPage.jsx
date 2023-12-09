@@ -163,6 +163,7 @@ const PanelMaterialsPage = () => {
             resourceData={listData}
             isOpen={isDeleteDialogOpen}
             entityName={'Panel Material'}
+            cardTitle={'Panel Materials'}
             primaryText={panelMaterial?.label}
             handleClose={handleDeleteDialogClose}
             handleDelete={handleDelete}

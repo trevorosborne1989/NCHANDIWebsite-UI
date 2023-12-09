@@ -10,22 +10,6 @@ import ShowUploadsCard from '../ShowUploadsCard/ShowUploadsCard';
 
 // const nchandiWebsiteService = new NCHANDIWebsiteService();
 
-
-// const generateTableConfig = (handleSelection, handleAdd, handleDelete) => ({
-//   title: 'Panel Materials',
-//   dataKey: d => d.id,
-//   handleSelection: handleSelection,
-//   toolbar: (
-//     <IconButton color='primary' onClick={handleAdd} data-cy='table-add-button'>
-//       <Add sx={{ color: nchandiTheme.handiGreen }} fontSize='large' />
-//     </IconButton>
-//   ),
-//   columns: [
-//     { columnName: '', numeric: true, disablePadding: false, label: '', value: d => <DeleteForever fontSize='large' color='error' onClick={e => handleDelete(e, d)} data-cy='table-delete-btn' /> },
-//     { columnName: 'firstName', numeric: true, disablePadding: true, label: 'First Name', value: d => d.firstName }
-//   ]
-// });
-
 function createData(id, label) {
   return {
     id,
@@ -33,20 +17,20 @@ function createData(id, label) {
   };
 }
 
-const panelMaterials = [
-  createData('1', 'H&I Panel Guide'),
-  createData('2', 'A Vision For You'),
-  createData('3', '12x12'),
-  createData('4', 'How It Works'),
-  createData('5', 'Meeting Guide Instructions'),
-  createData('6', '12 Traditions'),
-  createData('7', 'Suggested Meeting Format'),
-  createData('8', 'October Grapevine')
+const generalResources = [
+  createData('1', 'North County H&I Policies'),
+  createData('2', 'H&I Informational Brochure'),
+  createData('3', 'Sign Up For Panel On Website Video'),
+  createData('4', 'Summer Service Fair Flyer'),
+  createData('5', 'Virtual Panel Flyer'),
+  createData('6', 'Green Can Label'),
+  createData('7', 'Orientation Checklist'),
+  createData('8', 'Green Can Description')
 ];
 
-const PanelMaterialsPage = () => {
-  const [listData, setListData] = useState(panelMaterials);
-  const [panelMaterial, setPanelMaterial] = useState(null);
+const GeneralResourcesPage = () => {
+  const [listData, setListData] = useState(generalResources);
+  const [generalResource, setGeneralResource] = useState(null);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
 
@@ -57,7 +41,7 @@ const PanelMaterialsPage = () => {
     },
     onSubmit: async (values) => {
       try {
-        // await nchandiWebsiteService.postPanelMaterial({}, values);
+        // await nchandiWebsiteService.postGeneralResource({}, values);
         enqueueSnackbar('This resource was successfully uploaded.', snackbarMessages.success.configuration);
         formik.handleReset();
       } catch (err) {
@@ -69,7 +53,7 @@ const PanelMaterialsPage = () => {
     validateOnBlur: true,
   });
 
-  // const fetchData = useCallback(params => nchandiWebsiteService.getPanelMaterials(params), []); //Try This!!!
+  // const fetchData = useCallback(params => nchandiWebsiteService.getGeneralResources(params), []); //Try This!!!
 
   /**
    *
@@ -77,10 +61,10 @@ const PanelMaterialsPage = () => {
   const fetchListData = useCallback(async () => {
     try {
       // setLoading(true);
-      // const { data: panelMaterials } = await nchandiWebsiteService.getPanelMaterials();
-      setListData(panelMaterials);
+      // const { data: generalResources } = await nchandiWebsiteService.getGeneralResources();
+      setListData(generalResources);
     } catch (err) {
-      enqueueSnackbar('Unable to fetch current panel materials, please try again later or contact the Technology Chair', snackbarMessages.error.configuration);
+      enqueueSnackbar('Unable to fetch current general resources, please try again later or contact the Technology Chair', snackbarMessages.error.configuration);
       console.error(err);
     } finally {
       // setLoading(false);
@@ -116,14 +100,14 @@ const PanelMaterialsPage = () => {
   const handleDelete = (e, entity) => {
     e.stopPropagation();
     setIsDeleteDialogOpen(true);
-    setPanelMaterial(entity);
+    setGeneralResource(entity);
   };
 
   /**
    *
    */
   const handleDeleteDialogClose = () => {
-    setPanelMaterial(null);
+    setGeneralResource(null);
     setIsDeleteDialogOpen(false);
   };
 
@@ -133,15 +117,15 @@ const PanelMaterialsPage = () => {
   const handleDeleteDialogConfirm = async () => {
     // setLoading(true);
     try {
-      // const { id } = panelMaterial;
-      // await nchandiWebsiteService.deletePanelMaterialById(id);
+      // const { id } = generalResource;
+      // await nchandiWebsiteService.deleteGeneralResourceById(id);
       enqueueSnackbar('This resource was deleted.', snackbarMessages.success.configuration);
     } catch (error) {
       console.error(error);
       enqueueSnackbar('There was an error deleting this resource!', snackbarMessages.error.configuration);
     } finally {
       // setLoading(false);
-      setPanelMaterial(null);
+      setGeneralResource(null);
       setIsDeleteDialogOpen(false);
       // fetchRequests();
     }
@@ -162,8 +146,9 @@ const PanelMaterialsPage = () => {
           <ShowUploadsCard
             resourceData={listData}
             isOpen={isDeleteDialogOpen}
-            entityName={'Panel Material'}
-            primaryText={panelMaterial?.label}
+            entityName={'General Resource'}
+            cardTitle={'General Resources'}
+            primaryText={generalResource?.label}
             handleClose={handleDeleteDialogClose}
             handleDelete={handleDelete}
             handleDeleteConfirm={handleDeleteDialogConfirm}
@@ -174,4 +159,4 @@ const PanelMaterialsPage = () => {
   )
 }
 
-export default PanelMaterialsPage;
+export default GeneralResourcesPage;

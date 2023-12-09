@@ -1,18 +1,16 @@
 import React from 'react';
-import PanelMaterialPages from './PanelMaterialPages';
+import PanelMaterialsPage from './PanelMaterialsPage';
 
 
 export default {
-    title: 'PanelMaterialPage',
-    component: PanelMaterialPage,
+    title: 'PanelMaterialsPage',
+    component: PanelMaterialsPage,
   };
 
   export const Primary = ({...props}) => {
     return (
       <>
-        <PanelMaterialPage>
-
-        </PanelMaterialPage>
+        <PanelMaterialsPage />
       </>
     );
   };
