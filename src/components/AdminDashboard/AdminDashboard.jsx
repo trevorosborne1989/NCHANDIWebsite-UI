@@ -6,6 +6,7 @@ import { nchandiTheme } from '../../App';
 import PanelMaterialsPage from '../PanelMaterialsPage/PanelMaterialsPage';
 import GeneralResourcesPage from '../GeneralResourcesPage/GeneralResourcesPage';
 import ArchivedReportsPage from '../ArchivedReportsPage/ArchivedReportsPage';
+import MonthlyReportsPage from '../MonthlyReportsPage/MonthlyReportsPage';
 
 const AdminDashboard = () => {
 
@@ -19,7 +20,7 @@ const AdminDashboard = () => {
   const components = [
     <PanelMaterialsPage />,
     <GeneralResourcesPage />,
-    <GeneralResourcesPage />,
+    <MonthlyReportsPage />,
     <GeneralResourcesPage />,
     <ArchivedReportsPage />
     ];
