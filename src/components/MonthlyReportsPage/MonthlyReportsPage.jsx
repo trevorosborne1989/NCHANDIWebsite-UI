@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import Grid from '@mui/material/Unstable_Grid2';
 import { useFormik } from 'formik';
 import { useSnackbar } from 'notistack';
-import snackbarMessages from '../../lib/snackbarMessages.json';
+import snackbarMessages from '../../lib/snackbarMessages';
 import { yupSchema } from './ValidationSchema';
 import UploadReportsCard from '../UploadReportsCard/UploadReportsCard';
 import ShowReportsCard from '../ShowReportsCard/ShowReportsCard';

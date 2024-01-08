@@ -1,7 +1,7 @@
 import React from 'react';
 import { useFormik } from 'formik';
 import { useSnackbar } from 'notistack';
-import snackbarMessages from '../../lib/snackbarMessages.json';
+import snackbarMessages from '../../lib/snackbarMessages';
 import { yupSchema } from './ValidationSchema';
 import UploadReportsCard from './UploadReportsCard';
 
