@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import CommitteeDashboardDialog from './CommitteeDashboardDialog';
 import { useSnackbar } from 'notistack';
-import snackbarMessages from '../../lib/snackbarMessages.json';
+import snackbarMessages from '../../lib/snackbarMessages';
 import { useFormik } from 'formik';
 import { yupSchema } from './ValidationSchema';
 import { Box, Button } from '@mui/material';

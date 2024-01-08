@@ -3,7 +3,7 @@ import { Divider, Typography, } from '@mui/material';
 import { DeleteForever, CheckCircleOutline } from '@mui/icons-material';
 import Grid from '@mui/material/Unstable_Grid2';
 import { useSnackbar } from 'notistack';
-import snackbarMessages from '../../lib/snackbarMessages.json';
+import snackbarMessages from '../../lib/snackbarMessages';
 import EnhancedTable from '../EnhancedTable/EnhancedTable';
 import SaveConfirmationDialog from '../SaveConfirmationDialog/SaveConfirmationDialog';
 import DeleteConfirmationDialog from '../DeleteConfirmationDialog/DeleteConfirmationDialog';

@@ -3,11 +3,11 @@ import { useFormik } from 'formik';
 import { useSnackbar } from 'notistack';
 import snackbarMessages from '../../lib/snackbarMessages';
 import { yupSchema } from './ValidationSchema';
-import UploadCard from './UploadCard';
+import UploadReportsCard from './UploadReportsCard';
 
 export default {
-    title: 'UploadCard',
-    component: UploadCard,
+    title: 'UploadReportsCard',
+    component: UploadReportsCard,
   };
 
 export const Primary = ({...props}) => {
@@ -50,7 +50,7 @@ export const Primary = ({...props}) => {
 
   return (
     <>
-      <UploadCard
+      <UploadReportsCard
         formik={formik}
         onSave={handleSave}
       />

@@ -5,7 +5,7 @@ import Grid from '@mui/material/Unstable_Grid2';
 import PanelsDialog from "../PanelsDialog/PanelsDialog";
 import { useFormik } from 'formik';
 import { useSnackbar } from 'notistack';
-import snackbarMessages from '../../lib/snackbarMessages.json';
+import snackbarMessages from '../../lib/snackbarMessages';
 import { yupSchema } from './ValidationSchema';
 import TableConfig from "./TableConfig";
 
