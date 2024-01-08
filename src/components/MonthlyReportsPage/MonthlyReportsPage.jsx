@@ -18,7 +18,7 @@ function createData(id, monthOfYear, financialReport, minutes) {
 
 const monthlyReports = [
   createData('1', 'January', Object.create(null), Object.create(null)),
-  createData('2', 'Februaray', Object.create(null), Object.create(null)),
+  createData('2', 'Febuary', Object.create(null), Object.create(null)),
   createData('3', 'March', Object.create(null), Object.create(null)),
   createData('4', 'April', Object.create(null), Object.create(null)),
   createData('5', 'May', Object.create(null), Object.create(null)),
@@ -31,9 +31,10 @@ const monthlyReports = [
   createData('12', 'December', Object.create(null), Object.create(null)),
 ];
 
-const MonthlyReportsPage2 = () => {
+const MonthlyReportsPage = () => {
   const [listData, setListData] = useState(monthlyReports);
   const [monthlyReport, setMonthlyReport] = useState(null);
+  const [reportType, setReportType] = useState(null);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
 
@@ -41,11 +42,12 @@ const MonthlyReportsPage2 = () => {
     initialValues: {
       monthOfYear: '',
       isFinancialReport: false,
-      financialReport: null,
       isMinutes: false,
+      financialReport: null,
       minutes: null
     },
     onSubmit: async (values) => {
+      console.log(values);
       try {
         // await nchandiWebsiteService.postMonthlyReport({}, values);
         enqueueSnackbar('This resource was successfully uploaded.', snackbarMessages.success.configuration);
@@ -67,7 +69,7 @@ const MonthlyReportsPage2 = () => {
   const fetchListData = useCallback(async () => {
     try {
       // setLoading(true);
-      // const { data: monthlyReports } = await nchandiWebsiteService.getAmonthlyReports();
+      // const { data: monthlyReports } = await nchandiWebsiteService.getMonthlyReports();
       setListData(monthlyReports);
     } catch (err) {
       enqueueSnackbar('Unable to fetch current monthly reports, please try again later or contact the Technology Chair', snackbarMessages.error.configuration);
@@ -90,23 +92,24 @@ const MonthlyReportsPage2 = () => {
   const handleSave = () => {
     setTimeout( async () => { // Remove the onTimeout once the POST method in onSubmit is defined.
       formik.submitForm();
-      if (formik.errors?.resourceTitle) {
-        enqueueSnackbar('There are fields missing in your form. Please fill out all the required * fields.', snackbarMessages.error.configuration);
-      }
       if (formik.errors?.file) {
         enqueueSnackbar(formik.errors?.file, snackbarMessages.error.configuration);
       };
+      if (formik.errors?.checkboxValidation) {
+        enqueueSnackbar(formik.errors?.checkboxValidation, snackbarMessages.error.configuration);
+      };
       formik.setSubmitting(false);
-    }, 5000);
+    }, 1000);
   };
 
   /**
    *
    */
-  const handleDelete = (e, entity) => {
+  const handleDelete = (e, entity, typeOfReport) => {
     e.stopPropagation();
     setIsDeleteDialogOpen(true);
     setMonthlyReport(entity);
+    setReportType(typeOfReport);
   };
 
   /**
@@ -114,6 +117,7 @@ const MonthlyReportsPage2 = () => {
    */
   const handleDeleteDialogClose = () => {
     setMonthlyReport(null);
+    setReportType(null);
     setIsDeleteDialogOpen(false);
   };
 
@@ -122,9 +126,9 @@ const MonthlyReportsPage2 = () => {
    */
   const handleDeleteDialogConfirm = async () => {
     // setLoading(true);
-    try {
-      // const { id } = monthlyReport;
-      // await nchandiWebsiteService.deleteMonthlyReportById(id);
+    try { // You need report type for api since each entity has two reports. You don't want to delete the whole entity, just do an update and null the respective report field.
+      // const { id, reportType } = monthlyReport;
+      // await nchandiWebsiteService.putMonthlyReportWithIdByReportType(id, reportType);
       enqueueSnackbar('This resource was deleted.', snackbarMessages.success.configuration);
     } catch (error) {
       console.error(error);
@@ -136,8 +140,6 @@ const MonthlyReportsPage2 = () => {
       // fetchRequests();
     }
   };
-
-  // const tableConfig = generateTableConfig(handleSelection, handleAdd, handleDelete);
 
   return (
     <>
@@ -154,7 +156,8 @@ const MonthlyReportsPage2 = () => {
             isOpen={isDeleteDialogOpen}
             entityName={'Monthly Report'}
             cardTitle={'Monthly Reports'}
-            primaryText={monthlyReport?.label}
+            primaryText={monthlyReport?.monthOfYear}
+            secondaryText={reportType}
             handleClose={handleDeleteDialogClose}
             handleDelete={handleDelete}
             handleDeleteConfirm={handleDeleteDialogConfirm}
@@ -165,4 +168,4 @@ const MonthlyReportsPage2 = () => {
   )
 }
 
-export default MonthlyReportsPage2;
+export default MonthlyReportsPage;

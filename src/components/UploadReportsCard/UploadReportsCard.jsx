@@ -5,11 +5,13 @@ import {
   Typography,
   Box,
   Button,
-  TextField,
+  InputLabel,
   Chip,
   MenuItem,
   FormControlLabel,
+  FormHelperText,
   Checkbox,
+  Select,
   } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import {
@@ -31,6 +33,20 @@ const VisuallyHiddenInput = styled('input')({
   width: 1,
 });
 
+const CustomSelect = styled(Select)(() => ({
+  "&.MuiOutlinedInput-root": {
+    "& fieldset": {
+      borderColor: nchandiTheme.handiDarkGreen
+    },
+    "&:hover fieldset": {
+      borderColor: nchandiTheme.handiGreen
+    },
+    "&.Mui-focused fieldset": {
+      borderColor: nchandiTheme.handiGreen
+    }
+  }
+}));
+
 const monthOptions = [
   {
     value: 'January',
@@ -42,7 +58,7 @@ const monthOptions = [
   },
   {
     value: 'March',
-    label: 'Macrh',
+    label: 'March',
   },
   {
     value: 'April',
@@ -87,10 +103,12 @@ const UploadReportsCard = ({formik, onSave}) => {
 
   const handleFileChange = (e) => {
     if (e.target.files) {
-      if (formik.values?.isFinancialReport) {
-        formik.setFieldValue('financialReport', e.target.files[0])
-      } else if (formik.values?.isMinutes) {
-          formik.setFieldValue('minutes', e.target.files[0])
+      formik.setFieldValue('file', e.target.files[0])
+      if (formik.values.isFinancialReport) {
+        formik.setFieldValue('financialReport', e.target.files[0]);
+      }
+      if (formik.values.isMinutes) {
+        formik.setFieldValue('minutes', e.target.files[0]);
       }
     }
   };
@@ -123,6 +141,8 @@ const UploadReportsCard = ({formik, onSave}) => {
                     value={formik.values.isFinancialReport}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
+                    helperText={formik.touched.isFinancialReport ? formik.errors.isFinancialReport : ""}
+                    error={formik.touched.isFinancialReport && Boolean(formik.errors.isFinancialReport)}
                     disabled={formik.values.isMinutes}
                     />}
                   label="Financial Report" sx={{ color: nchandiTheme.handiSecondaryWhite}}
@@ -137,6 +157,8 @@ const UploadReportsCard = ({formik, onSave}) => {
                     value={formik.values.isMinutes}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
+                    helperText={formik.touched.isMinutes ? formik.errors.isMinutes : ""}
+                    error={formik.touched.isMinutes && Boolean(formik.errors.isMinutes)}
                     disabled={formik.values.isFinancialReport}
                     />}
                   label="Minutes" sx={{ color: nchandiTheme.handiSecondaryWhite}}
@@ -144,16 +166,17 @@ const UploadReportsCard = ({formik, onSave}) => {
               </Grid>
             </Grid>
             <Grid sm={10} md={5}>
-              <TextField
-                select
-                label='Current Month'
+              <Box textAlign={'center'}>
+                <InputLabel id="select-helper-label" sx={{ color: nchandiTheme.handiSecondaryWhite }}>Select Month</InputLabel>
+              </Box>
+              <CustomSelect
+                labelId='select-helper-label'
                 name='monthOfYear'
                 fullWidth
-                variant='filled'
-                size='medium'
+                variant='outlined'
+                size='small'
                 color='secondary'
-                focused
-                sx={{input: { color: nchandiTheme.handiSecondaryWhite }}}
+                sx={{ color: nchandiTheme.handiSecondaryWhite }}
                 margin='dense'
                 value={formik.values.monthOfYear}
                 onChange={formik.handleChange}
@@ -167,7 +190,10 @@ const UploadReportsCard = ({formik, onSave}) => {
                     {option.label}
                   </MenuItem>
                 ))}
-              </TextField>
+              </CustomSelect>
+              <Box pl={2}>
+                <FormHelperText sx={{ color: 'red', fontSize: '15px' }} >{formik.touched.monthOfYear ? formik.errors.monthOfYear : ""}</FormHelperText>
+              </Box>
             </Grid>
           </Grid>
           <Box pb={4}>
@@ -176,6 +202,7 @@ const UploadReportsCard = ({formik, onSave}) => {
               fullWidth
               startIcon={<CloudUpload />}
               variant="contained"
+              disabled={!formik.values?.isFinancialReport && !formik.values?.isMinutes}
             >
               <span>Upload File</span>
               <VisuallyHiddenInput type="file" name='file' onChange={handleFileChange} />
