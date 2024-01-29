@@ -8,14 +8,14 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
+  Link,
   IconButton,
   } from '@mui/material';
   import { DeleteForever } from '@mui/icons-material';
   import DeleteConfirmationDialog from '../DeleteConfirmationDialog/DeleteConfirmationDialog';
   import { nchandiTheme } from '../../App';
 
-const ShowUploadsCard = ({resourceData, isOpen, entityName, cardTitle, primaryText, handleClose, handleDelete, handleDeleteConfirm}) => {
-
+const ListCard = ({resourceData, handleClick, isOpen, entityName, cardTitle, primaryText, handleClose, handleDelete, handleDeleteConfirm}) => {
   return (
     <>
       <Card sx={{ backgroundColor: nchandiTheme.handiDarkBlue }} variant="elevation" elevation={10}>
@@ -38,10 +38,9 @@ const ShowUploadsCard = ({resourceData, isOpen, entityName, cardTitle, primaryTe
                       />
                     </IconButton>
                   </ListItemIcon>
-                  <ListItemText
-                    sx={{ color: nchandiTheme.handiDarkYellow }}
-                    primary={resource.label}
-                  />
+                  <Link href={resource.link} underline='hover' color={nchandiTheme.handiDarkYellow} onClick={e => handleClick(e, resource)}>
+                    {resource.label}
+                  </Link>
                 </ListItem>
               ))}
             </List>
@@ -59,4 +58,4 @@ const ShowUploadsCard = ({resourceData, isOpen, entityName, cardTitle, primaryTe
   )
 }
 
-export default ShowUploadsCard;
+export default ListCard;

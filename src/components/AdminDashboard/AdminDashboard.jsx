@@ -7,6 +7,7 @@ import PanelMaterialsPage from '../PanelMaterialsPage/PanelMaterialsPage';
 import GeneralResourcesPage from '../GeneralResourcesPage/GeneralResourcesPage';
 import ArchivedReportsPage from '../ArchivedReportsPage/ArchivedReportsPage';
 import MonthlyReportsPage from '../MonthlyReportsPage/MonthlyReportsPage';
+import AnnouncementsPage from '../AnnouncementsPage/AnnouncementsPage';
 
 const AdminDashboard = () => {
 
@@ -21,7 +22,7 @@ const AdminDashboard = () => {
     <PanelMaterialsPage />,
     <GeneralResourcesPage />,
     <MonthlyReportsPage />,
-    <GeneralResourcesPage />,
+    <AnnouncementsPage />,
     <ArchivedReportsPage />
     ];
   const style = { borderBottom: 3, borderColor: 'divider', color: nchandiTheme.handiYellow };

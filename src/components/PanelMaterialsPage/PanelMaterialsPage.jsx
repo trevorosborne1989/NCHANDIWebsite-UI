@@ -5,7 +5,7 @@ import { useSnackbar } from 'notistack';
 import snackbarMessages from '../../lib/snackbarMessages';
 import { yupSchema } from './ValidationSchema';
 import UploadCard from '../UploadCard/UploadCard';
-import ShowUploadsCard from '../ShowUploadsCard/ShowUploadsCard';
+import ListCard from '../ListCard/ListCard';
 // import NCHANDIWebsiteService from '../../lib/NCHANDIWebsiteService'
 
 // const nchandiWebsiteService = new NCHANDIWebsiteService();
@@ -159,7 +159,7 @@ const PanelMaterialsPage = () => {
           />
         </Grid>
         <Grid sx={12} sm={6} >
-          <ShowUploadsCard
+          <ListCard
             resourceData={listData}
             isOpen={isDeleteDialogOpen}
             entityName={'Panel Material'}
