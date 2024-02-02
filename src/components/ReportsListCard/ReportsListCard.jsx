@@ -14,7 +14,7 @@ import {
   import DeleteConfirmationDialog from '../DeleteConfirmationDialog/DeleteConfirmationDialog';
   import { nchandiTheme } from '../../App';
 
-const ShowReportsCard = ({resourceData, isOpen, entityName, cardTitle, primaryText, secondaryText, handleClose, handleDelete, handleDeleteConfirm}) => {
+const ReportsListCard = ({resourceData, isOpen, entityName, cardTitle, primaryText, secondaryText, handleClose, handleDelete, handleDeleteConfirm}) => {
 
   return (
     <>
@@ -91,4 +91,4 @@ const ShowReportsCard = ({resourceData, isOpen, entityName, cardTitle, primaryTe
   )
 }
 
-export default ShowReportsCard;
+export default ReportsListCard;

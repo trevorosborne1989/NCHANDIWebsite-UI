@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useSnackbar } from 'notistack';
 import snackbarMessages from '../../lib/snackbarMessages';
-import ShowReportsCard from './ShowReportsCard';
+import ListCard from './ListCard';
 
 function createData(id, label) {
   return {
@@ -22,8 +22,8 @@ const panelMaterials = [
 ];
 
 export default {
-    title: 'ShowReportsCard',
-    component: ShowReportsCard,
+    title: 'ListCard',
+    component: ListCard,
   };
 
 export const Primary = ({...props}) => {
@@ -94,7 +94,7 @@ export const Primary = ({...props}) => {
 
   return (
     <>
-      <ShowReportsCard
+      <ListCard
         resourceData={listData}
         isOpen={isDeleteDialogOpen}
         entityName={'Panel Material'}

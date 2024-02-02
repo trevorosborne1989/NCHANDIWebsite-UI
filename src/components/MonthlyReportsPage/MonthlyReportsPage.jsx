@@ -5,7 +5,7 @@ import { useSnackbar } from 'notistack';
 import snackbarMessages from '../../lib/snackbarMessages';
 import { yupSchema } from './ValidationSchema';
 import UploadReportsCard from '../UploadReportsCard/UploadReportsCard';
-import ShowReportsCard from '../ShowReportsCard/ShowReportsCard';
+import ReportsListCard from '../ReportsListCard/ReportsListCard';
 
 function createData(id, monthOfYear, financialReport, minutes) {
   return {
@@ -151,7 +151,7 @@ const MonthlyReportsPage = () => {
           />
         </Grid>
         <Grid sx={12} sm={6} >
-          <ShowReportsCard
+          <ReportsListCard
             resourceData={listData}
             isOpen={isDeleteDialogOpen}
             entityName={'Monthly Report'}

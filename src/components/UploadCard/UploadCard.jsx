@@ -94,7 +94,7 @@ const UploadCard = ({formik, onSave}) => {
               sx={{ width: 100, height: 80 }}
               >
                 Send
-              </LoadingButton>
+            </LoadingButton>
           </Box>
           <Box textAlign={'center'} py={2}>
             <Typography variant='h7' color={nchandiTheme.handiGrey}>
