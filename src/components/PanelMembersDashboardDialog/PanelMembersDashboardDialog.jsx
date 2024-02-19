@@ -25,19 +25,16 @@ const contactOptions = [
   }
 ];
 
-const PanelsDialog = ({ formik, data, isOpen, handleSave, handleClose }) => {
-
-  // const { dayOfWeek, weekOfMomth, time, facility } = data;
+const PanelMembersDashboardDialog = ({ formik, isOpen, handleSave, handleClose }) => {
 
   return (
     <>
       <Dialog open={isOpen} onClose={handleClose}>
-        <DialogTitle>Volunteer</DialogTitle>
+        <DialogTitle>Panel Member</DialogTitle>
         <DialogContent>
           <DialogContentText pb={3}>
-            Please fill out the volunteer information below.
+            Please fill out the panel member information below.
           </DialogContentText>
-          {data && <DialogContentText pb={5}> {data.dayOfWeek + '     -     ' + data.weekOfMonth + '     -    ' + data.time + '     -     ' + data.facility} </DialogContentText>}
           <TextField
             label='First Name'
             name='firstName'
@@ -120,4 +117,4 @@ const PanelsDialog = ({ formik, data, isOpen, handleSave, handleClose }) => {
   );
 }
 
-export default PanelsDialog;
+export default PanelMembersDashboardDialog;

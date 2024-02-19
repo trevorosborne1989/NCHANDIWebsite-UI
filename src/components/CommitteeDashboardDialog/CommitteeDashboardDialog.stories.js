@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import PanelsDialog from './PanelsDialog';
+import CommitteeDashboardDialog from './CommitteeDashboardDialog';
 import { useSnackbar } from 'notistack';
 import snackbarMessages from '../../lib/snackbarMessages';
 import { useFormik } from 'formik';
@@ -8,8 +8,8 @@ import { Box, Button } from '@mui/material';
 
 
 export default {
-    title: 'PanelsDialog',
-    component: PanelsDialog,
+    title: 'CommitteeDashboardDialog',
+    component: CommitteeDashboardDialog,
   };
 
   export const Primary = ({...props}) => {
@@ -20,15 +20,15 @@ export default {
       initialValues: {
         firstName: '',
         lastName: '',
-        commitment: '',
         email: '',
         phoneNumber: '',
-        contactMethod: ''
+        contactMethod: '',
+        commitment: ''
       },
       onSubmit: async () => {
         try {
           // await post method()   Use await here.
-          enqueueSnackbar('Your volunteer request was successfully submitted.', snackbarMessages.success.configuration);
+          enqueueSnackbar('This committee member was successfully submitted.', snackbarMessages.success.configuration);
           handleDialogClose();
         } catch (err) {
           enqueueSnackbar('There was an error when submitting this form, please try again later or contact the Technology Chair', snackbarMessages.error.configuration);
@@ -65,15 +65,15 @@ export default {
       return (
         <>
           <Box textAlign={'center'} py={7}>
-            <Button variant='contained' onClick={handleClick}>Open Panel Dialog</Button>
+            <Button variant='contained' onClick={handleClick}>Open Committee Members Dialog</Button>
           </Box>
-          <PanelsDialog
-            formik={formik}
-            isOpen={dialogOpen}
-            handleSave={handleDialogSave}
-            handleClose={handleDialogClose}
-            >
-          </PanelsDialog>
+          <CommitteeDashboardDialog
+          formik={formik}
+          isOpen={dialogOpen}
+          handleSave={handleDialogSave}
+          handleClose={handleDialogClose}
+          >
+          </CommitteeDashboardDialog>
         </>
       );
     };

@@ -24,20 +24,31 @@ const contactOptions = [
     label: 'Email'
   }
 ];
+const commitmentOptions = [
+  {
+    value: 'Panel Leader',
+    label: 'Panel Leader',
+  },
+  {
+    value: 'Panel Coordinator',
+    label: 'Panel Coordinator',
+  },
+  {
+    value: 'Board Member',
+    label: 'Board Member',
+  }
+];
 
-const PanelsDialog = ({ formik, data, isOpen, handleSave, handleClose }) => {
-
-  // const { dayOfWeek, weekOfMomth, time, facility } = data;
+const CommitteeDashboardDialog = ({ formik, isOpen, handleSave, handleClose }) => {
 
   return (
     <>
       <Dialog open={isOpen} onClose={handleClose}>
-        <DialogTitle>Volunteer</DialogTitle>
+        <DialogTitle>Committee Member</DialogTitle>
         <DialogContent>
           <DialogContentText pb={3}>
-            Please fill out the volunteer information below.
+            Please fill out the committee information below.
           </DialogContentText>
-          {data && <DialogContentText pb={5}> {data.dayOfWeek + '     -     ' + data.weekOfMonth + '     -    ' + data.time + '     -     ' + data.facility} </DialogContentText>}
           <TextField
             label='First Name'
             name='firstName'
@@ -110,14 +121,34 @@ const PanelsDialog = ({ formik, data, isOpen, handleSave, handleClose }) => {
               </MenuItem>
             ))}
           </TextField>
+          <TextField
+            select
+            label='H&I Commitment'
+            name='commitment'
+            fullWidth
+            variant='outlined'
+            margin='dense'
+            value={formik.values.commitment}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            helperText={formik.touched.commitment ? formik.errors.commitment : ""}
+            error={formik.touched.commitment && Boolean(formik.errors.commitment)}
+            required
+          >
+            {commitmentOptions.map(option => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button variant='contained' color='secondary' onClick={handleSave}>Volunteer</Button>
+          <Button variant='contained' color='secondary' onClick={handleSave}>Submit</Button>
         </DialogActions>
       </Dialog>
     </>
   );
 }
 
-export default PanelsDialog;
+export default CommitteeDashboardDialog;
