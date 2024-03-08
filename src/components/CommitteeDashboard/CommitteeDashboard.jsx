@@ -10,10 +10,9 @@ import CommitteeDashboardDialog from '../CommitteeDashboardDialog/CommitteeDashb
 import DeleteConfirmationDialog from '../DeleteConfirmationDialog/DeleteConfirmationDialog';
 import { yupSchema } from './ValidationSchema';
 import { nchandiTheme } from '../../App';
-// import NCHANDIWebsiteService from '../../lib/NCHANDIWebsiteService'
+import NCHANDIWebsiteService from '../../lib/NCHANDIWebsiteService'
 
-// const nchandiWebsiteService = new NCHANDIWebsiteService();
-
+const nchandiWebsiteService = new NCHANDIWebsiteService();
 
 const generateTableConfig = (handleSelection, handleAdd, handleDelete) => ({
   title: 'Committee Members',
@@ -29,46 +28,15 @@ const generateTableConfig = (handleSelection, handleAdd, handleDelete) => ({
     { columnName: 'firstName', numeric: true, disablePadding: true, label: 'First Name', value: d => d.firstName },
     { columnName: 'lastName', numeric: true, disablePadding: false, label: 'Last Name', value: d => d.lastName },
     { columnName: 'email', numeric: true, disablePadding: false, label: 'Email', value: d => d.email },
-    { columnName: 'phoneNumber', numeric: true, disablePadding: false, label: 'Phone Number', value: d => d.phoneNumber },
-    { columnName: 'contactMethod', numeric: true, disablePadding: false, label: 'Contact Method', value: d => d.contactMethod },
+    { columnName: 'phone', numeric: true, disablePadding: false, label: 'Phone Number', value: d => d.phone },
+    { columnName: 'preferredContactMethod', numeric: true, disablePadding: false, label: 'Contact Method', value: d => d.preferredContactMethod },
     { columnName: 'commitment', numeric: true, disablePadding: false, label: 'Commitment', value: d => d.commitment }
   ]
 });
 
-function createData(id, firstName, lastName, email, phoneNumber, contactMethod, commitment) {
-  return {
-    id,
-    firstName,
-    lastName,
-    email,
-    phoneNumber,
-    contactMethod,
-    commitment
-  };
-}
-
-const committeeMembers = [
-  createData('1', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'Panel Leader'),
-  createData('2', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'Panel Leader'),
-  createData('3', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'Panel Leader'),
-  createData('4', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'Panel Leader'),
-  createData('5', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'Panel Leader'),
-  createData('6', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'Panel Leader'),
-  createData('7', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'Panel Leader'),
-  createData('8', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'Panel Leader'),
-  createData('9', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'Panel Leader'),
-  createData('10', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'Panel Leader'),
-  createData('12', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'Panel Leader'),
-  createData('13', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'Panel Leader'),
-  createData('14', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'Panel Leader'),
-  createData('15', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'Panel Leader'),
-  createData('16', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'Panel Leader'),
-  createData('17', 'Bill', 'Johnson', 'bjognson@gmail.com', '760-561-6754', 'Text', 'Panel Leader'),
-];
-
 const CommitteeDashboard = () => {
   const [isOpen, setIsOpen] = useState(false);
-  // const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [tableData, setTableData] = useState([]);
   const [committeeMember, setCommitteeMember] = useState(null);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
@@ -79,8 +47,8 @@ const CommitteeDashboard = () => {
       firstName: '',
       lastName: '',
       email: '',
-      phoneNumber: '',
-      contactMethod: '',
+      phone: '',
+      preferredContactMethod: '',
       commitment: ''
     },
     onSubmit: async (values) => {
@@ -88,13 +56,14 @@ const CommitteeDashboard = () => {
       try {
 
         if (id) {
-          // await ectsService.putEctsstaffWithEctsStaffId({}, id, values);
+          await nchandiWebsiteService.putPersonWithPersonId({}, id, values);
           setIsOpen(false);
         }else {
-          // await ectsService.postEctsstaff({}, values);
+          await nchandiWebsiteService.postPerson({}, values);
           setIsOpen(false);
         }
         enqueueSnackbar('This committee member was successfully submitted.', snackbarMessages.success.configuration);
+        fetchTableData();
       } catch (err) {
         enqueueSnackbar('There was an error when submitting this form, please try again later or contact the Technology Chair', snackbarMessages.error.configuration);
         console.error(err);
@@ -104,20 +73,18 @@ const CommitteeDashboard = () => {
     validateOnBlur: true,
   });
 
-  // const fetchData = useCallback(params => ectsService.getEctsstaff(params), []); //Try This!!!
-
   /**
    *
    */
   const fetchTableData = useCallback(async () => {
     try {
-      // setLoading(true);
-      // const { data: committeeMembers } = await nchandiWebsiteService.getCommitteeMembers();
+      setLoading(true);
+      const committeeMembers = (await nchandiWebsiteService.getPeople()).data.filter(person => person.commitment !== 'Panel Member' );
       setTableData(committeeMembers);
     } catch (err) {
       console.error(err);
     } finally {
-      // setLoading(false);
+      setLoading(false);
     }
   }, []);
 
@@ -186,19 +153,19 @@ const CommitteeDashboard = () => {
    *
    */
   const handleDeleteDialogConfirm = async () => {
-    // setLoading(true);
+    setLoading(true);
     try {
-      // const { id } = committeeMember;
-      // await nchandiWebsiteService.deleteCommitteeMemberById(id);
+      const { id } = committeeMember;
+      await nchandiWebsiteService.deletePersonWithPersonId({}, id);
       enqueueSnackbar('This pending volunteer was deleted.', snackbarMessages.success.configuration);
+      fetchTableData();
     } catch (error) {
       console.error(error);
       enqueueSnackbar('There was an error deleting the pending volunteer!', snackbarMessages.error.configuration);
     } finally {
-      // setLoading(false);
+      setLoading(false);
       setCommitteeMember(null);
       setIsDeleteDialogOpen(false);
-      // fetchRequests();
     }
   };
 
@@ -206,6 +173,7 @@ const CommitteeDashboard = () => {
 
   return (
     <>
+    {loading}
       <Grid Grid container sm={12} textAlign={'center'} justifyContent={'center'} pb={3}>
         <Grid sm={10}>
           <Typography variant="h4" color={'white'} >
