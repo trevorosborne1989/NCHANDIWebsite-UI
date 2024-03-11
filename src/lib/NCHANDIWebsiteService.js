@@ -262,64 +262,6 @@ class NCHANDIWebsiteService {
    * } 
    * @return Check http://localhost:8080/api/NCHANDIWebsite/swagger-ui/index.html#/ for more information on the response body 
    */ 
-  getMembers(params, body) {
-            
-    return this.instance.get('http://localhost:8080/api/NCHANDIWebsite/members', params) 
-  } 
-
-  /**
-   * Valid Query Parameters:
-   * { 
-   * } 
-   * @return Check http://localhost:8080/api/NCHANDIWebsite/swagger-ui/index.html#/ for more information on the response body 
-   */ 
-  postMembers(params, body) {
-            
-    return this.instance.post('http://localhost:8080/api/NCHANDIWebsite/members', body, params) 
-  } 
-
-  /**
-   * Valid Query Parameters:
-   * { 
-   * string : memberId, 
-   * } 
-   * @return Check http://localhost:8080/api/NCHANDIWebsite/swagger-ui/index.html#/ for more information on the response body 
-   */ 
-  getMembersWithMemberId(params, memberId , body) {
-            
-    return this.instance.get('http://localhost:8080/api/NCHANDIWebsite/members/' + memberId + '', params) 
-  } 
-
-  /**
-   * Valid Query Parameters:
-   * { 
-   * string : memberId, 
-   * } 
-   * @return Check http://localhost:8080/api/NCHANDIWebsite/swagger-ui/index.html#/ for more information on the response body 
-   */ 
-  putMembersWithMemberId(params, memberId , body) {
-            
-    return this.instance.put('http://localhost:8080/api/NCHANDIWebsite/members/' + memberId + '', body, params) 
-  } 
-
-  /**
-   * Valid Query Parameters:
-   * { 
-   * string : memberId, 
-   * } 
-   * @return Check http://localhost:8080/api/NCHANDIWebsite/swagger-ui/index.html#/ for more information on the response body 
-   */ 
-  deleteMembersWithMemberId(params, memberId , body) {
-            
-    return this.instance.delete('http://localhost:8080/api/NCHANDIWebsite/members/' + memberId + '', params) 
-  } 
-
-  /**
-   * Valid Query Parameters:
-   * { 
-   * } 
-   * @return Check http://localhost:8080/api/NCHANDIWebsite/swagger-ui/index.html#/ for more information on the response body 
-   */ 
   getGeneralresources(params, body) {
             
     return this.instance.get('http://localhost:8080/api/NCHANDIWebsite/general-resources', params) 
@@ -505,9 +447,9 @@ class NCHANDIWebsiteService {
    * } 
    * @return Check http://localhost:8080/api/NCHANDIWebsite/swagger-ui/index.html#/ for more information on the response body 
    */ 
-  getAdmins(params, body) {
+  getPeople(params, body) {
             
-    return this.instance.get('http://localhost:8080/api/NCHANDIWebsite/admins', params) 
+    return this.instance.get('http://localhost:8080/api/NCHANDIWebsite/people', params) 
   } 
 
   /**
@@ -516,45 +458,45 @@ class NCHANDIWebsiteService {
    * } 
    * @return Check http://localhost:8080/api/NCHANDIWebsite/swagger-ui/index.html#/ for more information on the response body 
    */ 
-  postAdmins(params, body) {
+  postPerson(params, body) {
             
-    return this.instance.post('http://localhost:8080/api/NCHANDIWebsite/admins', body, params) 
+    return this.instance.post('http://localhost:8080/api/NCHANDIWebsite/people', body, params) 
   } 
 
   /**
    * Valid Query Parameters:
    * { 
-   * string : adminId, 
+   * string : peopleId, 
    * } 
    * @return Check http://localhost:8080/api/NCHANDIWebsite/swagger-ui/index.html#/ for more information on the response body 
    */ 
-  getAdminsWithAdminId(params, adminId , body) {
+  getPersonWithPersonId(params, personId, body) {
             
-    return this.instance.get('http://localhost:8080/api/NCHANDIWebsite/admins/' + adminId + '', params) 
+    return this.instance.get('http://localhost:8080/api/NCHANDIWebsite/people/' + personId + '', params) 
   } 
 
   /**
    * Valid Query Parameters:
    * { 
-   * string : adminId, 
+   * string : peopleId, 
    * } 
    * @return Check http://localhost:8080/api/NCHANDIWebsite/swagger-ui/index.html#/ for more information on the response body 
    */ 
-  putAdminsWithAdminId(params, adminId , body) {
+  putPersonWithPersonId(params, personId , body) {
             
-    return this.instance.put('http://localhost:8080/api/NCHANDIWebsite/admins/' + adminId + '', body, params) 
+    return this.instance.put('http://localhost:8080/api/NCHANDIWebsite/people/' + personId + '', body, params) 
   } 
 
   /**
    * Valid Query Parameters:
    * { 
-   * string : adminId, 
+   * string : personId, 
    * } 
    * @return Check http://localhost:8080/api/NCHANDIWebsite/swagger-ui/index.html#/ for more information on the response body 
    */ 
-  deleteAdminsWithAdminId(params, adminId , body) {
+  deletePersonWithPersonId(params, personId , body) {
             
-    return this.instance.delete('http://localhost:8080/api/NCHANDIWebsite/admins/' + adminId + '', params) 
+    return this.instance.delete('http://localhost:8080/api/NCHANDIWebsite/people/' + personId + '', params)
   } 
 
  
