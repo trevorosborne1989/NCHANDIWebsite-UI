@@ -54,7 +54,6 @@ const CommitteeDashboard = () => {
     onSubmit: async (values) => {
       const { id } = values;
       try {
-
         if (id) {
           await nchandiWebsiteService.putPersonWithPersonId({}, id, values);
           setIsOpen(false);
@@ -99,13 +98,11 @@ const CommitteeDashboard = () => {
    *
    */
   const handleSave = () => {
-    setTimeout( async () => { // Remove the onTimeout once the POST method in onSubmit is defined.
-      formik.submitForm();
-      if (!formik.isValid) {
-        enqueueSnackbar('There are fields missing in your form. Please fill out all the required * fields.', snackbarMessages.error.configuration);
-      }
-      formik.setSubmitting(false);
-    }, 1000);
+    formik.submitForm();
+    if (!formik.isValid) {
+      enqueueSnackbar('There are fields missing in your form. Please fill out all the required * fields.', snackbarMessages.error.configuration);
+    }
+    formik.setSubmitting(false);
   };
 
   /**
