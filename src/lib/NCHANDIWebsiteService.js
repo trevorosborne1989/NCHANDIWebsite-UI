@@ -30,7 +30,7 @@ class NCHANDIWebsiteService {
    * } 
    * @return Check http://localhost:8080/api/NCHANDIWebsite/swagger-ui/index.html#/ for more information on the response body 
    */ 
-  postPendings(params, body) {
+  savePending(params, body) {
             
     return this.instance.post('http://localhost:8080/api/NCHANDIWebsite/pendings', body, params) 
   } 
@@ -42,7 +42,7 @@ class NCHANDIWebsiteService {
    * } 
    * @return Check http://localhost:8080/api/NCHANDIWebsite/swagger-ui/index.html#/ for more information on the response body 
    */ 
-  getPendingsWithPendingId(params, pendingId , body) {
+  getPendingWithPendingId(params, pendingId , body) {
             
     return this.instance.get('http://localhost:8080/api/NCHANDIWebsite/pendings/' + pendingId + '', params) 
   } 
@@ -54,7 +54,7 @@ class NCHANDIWebsiteService {
    * } 
    * @return Check http://localhost:8080/api/NCHANDIWebsite/swagger-ui/index.html#/ for more information on the response body 
    */ 
-  putPendingsWithPendingId(params, pendingId , body) {
+  putPendingWithPendingId(params, pendingId , body) {
             
     return this.instance.put('http://localhost:8080/api/NCHANDIWebsite/pendings/' + pendingId + '', body, params) 
   } 
@@ -66,9 +66,21 @@ class NCHANDIWebsiteService {
    * } 
    * @return Check http://localhost:8080/api/NCHANDIWebsite/swagger-ui/index.html#/ for more information on the response body 
    */ 
-  deletePendingsWithPendingId(params, pendingId , body) {
+  deletePendingWithPendingId(params, pendingId , body) {
             
     return this.instance.delete('http://localhost:8080/api/NCHANDIWebsite/pendings/' + pendingId + '', params) 
+  } 
+
+  /**
+   * Valid Query Parameters:
+   * { 
+   * string : pendingId, 
+   * } 
+   * @return Check http://localhost:8080/api/NCHANDIWebsite/swagger-ui/index.html#/ for more information on the response body 
+   */ 
+  approvePending(params, pendingId , body) {
+            
+    return this.instance.put('http://localhost:8080/api/NCHANDIWebsite/pendings/' + pendingId + '/approve', body, params) 
   } 
 
   /**

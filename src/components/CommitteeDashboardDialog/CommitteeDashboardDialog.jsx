@@ -30,8 +30,8 @@ const commitmentOptions = [
     label: 'Chair',
   },
   {
-    value: 'Co-Chair',
-    label: 'Co-Chair',
+    value: 'CoChair',
+    label: 'CoChair',
   },
   {
     value: 'Librarian',
@@ -48,15 +48,7 @@ const commitmentOptions = [
   {
     value: 'Facilities',
     label: 'Facilities',
-  },
-  {
-    value: 'Panel Leader',
-    label: 'Panel Leader',
-  },
-  {
-    value: 'Panel Coordinator',
-    label: 'Panel Coordinator',
-  },
+  }
 ];
 
 const CommitteeDashboardDialog = ({ formik, isOpen, handleSave, handleClose }) => {

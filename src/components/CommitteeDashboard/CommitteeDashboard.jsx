@@ -78,7 +78,7 @@ const CommitteeDashboard = () => {
   const fetchTableData = useCallback(async () => {
     try {
       setLoading(true);
-      const committeeMembers = (await nchandiWebsiteService.getPeople()).data.filter(person => person.commitment !== 'Panel Member' );
+      const committeeMembers = (await nchandiWebsiteService.getPeople()).data.filter(person => person.commitment);
       setTableData(committeeMembers);
     } catch (err) {
       console.error(err);
@@ -100,7 +100,7 @@ const CommitteeDashboard = () => {
   const handleSave = () => {
     formik.submitForm();
     if (!formik.isValid) {
-      enqueueSnackbar('There are fields missing in your form. Please fill out all the required * fields.', snackbarMessages.error.configuration);
+      enqueueSnackbar('There are fields missing in your form. Please fill out all the required fields.', snackbarMessages.error.configuration);
     }
     formik.setSubmitting(false);
   };

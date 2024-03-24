@@ -7,9 +7,9 @@ import snackbarMessages from '../../lib/snackbarMessages';
 import EnhancedTable from '../EnhancedTable/EnhancedTable';
 import SaveConfirmationDialog from '../SaveConfirmationDialog/SaveConfirmationDialog';
 import DeleteConfirmationDialog from '../DeleteConfirmationDialog/DeleteConfirmationDialog';
-// import NCHANDIWebsiteService from '../../lib/NCHANDIWebsiteService'
+import NCHANDIWebsiteService from '../../lib/NCHANDIWebsiteService'
 
-// const nchandiWebsiteService = new NCHANDIWebsiteService();
+const nchandiWebsiteService = new NCHANDIWebsiteService();
 
 const generateTableConfig = (handleSave, handleDelete) => ({
   title: 'Pending Volunteers',
@@ -17,70 +17,43 @@ const generateTableConfig = (handleSave, handleDelete) => ({
   columns: [
     { columnName: '', numeric: true, disablePadding: false, label: '', value: d => <CheckCircleOutline fontSize='large' color='success' onClick={e => handleSave(e, d)} data-cy='table-confirm-btn' /> },
     { columnName: '', numeric: true, disablePadding: false, label: '', value: d => <DeleteForever fontSize='large'  color='error' onClick={e => handleDelete(e, d)} data-cy='table-delete-btn' /> },
-    { columnName: 'fullName', numeric: true, disablePadding: false, label: 'Full Name', value: d => d.fullName },
+    { columnName: 'fullName', numeric: true, disablePadding: false, label: 'Full Name', value: d => d.firstName + ' ' + d.lastName },
     { columnName: 'email', numeric: true, disablePadding: false, label: 'Email', value: d => d.email },
     { columnName: 'phone', numeric: true, disablePadding: false, label: 'Phone', value: d => d.phone },
-    { columnName: 'facility', numeric: true, disablePadding: false, label: 'Facility', value: d => d.facility },
+    { columnName: 'preferredContactMethod', numeric: true, disablePadding: false, label: 'Preferred Contact Method', value: d => d.preferredContactMethod },
+    { columnName: 'facilityName', numeric: true, disablePadding: false, label: 'Facility', value: d => d.facilityName },
     { columnName: 'dayOfWeek', numeric: true, disablePadding: true, label: 'Day of Week', value: d => d.dayOfWeek },
     { columnName: 'weekOfMonth', numeric: true, disablePadding: true, label: 'Week of Month', value: d => d.weekOfMonth },
-    { columnName: 'time', numeric: true, disablePadding: false, label: 'Time', value: d => d.time }
+    { columnName: 'eventTime', numeric: true, disablePadding: false, label: 'Time', value: d => d.eventTime },
+    { columnName: 'numberNeeded', numeric: true, disablePadding: false, label: 'Number Needed', value: d => d.numberNeeded },
+    { columnName: 'gender', numeric: true, disablePadding: false, label: 'Panel Gender', value: d => d.gender },
   ]
 });
 
-function createData(id, fullName, email, phone, facility, dayOfWeek, weekOfMonth, time) {
-  return {
-    id,
-    fullName,
-    email,
-    phone,
-    facility,
-    dayOfWeek,
-    weekOfMonth,
-    time
-  };
-}
-
-const pendingVolunteers = [
-  createData('1', 'Theresa Johnston', 'tjohnston@gmail.com', '858-432-5617', 'First Step House', 'Tuesday', 1, '9:00 AM'),
-  createData('2', 'Monica Johnston', 'tjohnston@gmail.com', '760-432-5617', 'First Step House', 'Wednesday', 2, '6:00 AM'),
-  createData('3', 'Brad Terry', 'tjohnston@gmail.com', '123-432-5617', 'First Step House', 'Friday', 3, '10:00 AM'),
-  createData('4', 'Philip Mueson', 'tjohnston@gmail.com', '760-432-1232', 'First Step House', 'Sunday', 4, '11:00 AM'),
-  createData('5', 'Greg Orlando', 'tjohnston@gmail.com', '760-432-1222', 'First Step House', 'Wednesday', 1, '8:00 AM'),
-  createData('6', 'Thomas Fernando', 'tjohnston@gmail.com', '250-432-5617', 'First Step House', 'Saturday', 2, '7:00 AM'),
-  createData('7', 'Hans Somar', 'tjohnston@gmail.com', '760-546-5617', 'First Step House', 'Tuesday', 3, '7:00 AM'),
-  createData('8', 'Garry Hue', 'tjohnston@gmail.com', '760-432-6786', 'First Step House', 'Friday', 4, '7:00 PM'),
-  createData('9', 'Sara Clark', 'tjohnston@gmail.com', '760-432-5617', 'First Step House', 'Monday', 3, '9:00 PM'),
-  createData('10', 'Don Johnston', 'tjohnston@gmail.com', '760-432-9098', 'First Step House', 'Tuesday', 2, '10:00 PM'),
-  createData('11', 'Gary Winnis', 'tjohnston@gmail.com', '858-432-5617', 'First Step House', 'Wednesday', 1, '12:00 PM'),
-  createData('12', 'Tommy Hunt', 'tjohnston@gmail.com', '760-432-5617', 'First Step House', 'Tuesday', 1, '7:00 AM')
-];
-
 const PendingVolunteersDashboard = () => {
-  // const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [tableData, setTableData] = useState([]);
-  const [pendingVolunteer, setPendingVolunteer] = useState(null);
+  const [pending, setPending] = useState(null);
   const [isSaveDialogOpen, setIsSaveDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
 
-  // const fetchData = useCallback(params => ectsService.getEctsstaff(params), []); //Try This!!!
-
-   /**
+  /**
    *
    */
   const fetchTableData = useCallback(async () => {
     try {
-      // setLoading(true);
-      // const { data: facilities } = await nchandiWebsiteService.getFacilities);
-      setTableData(pendingVolunteers);
+      setLoading(true);
+      const { data: pendings } = await nchandiWebsiteService.getPendings();
+      setTableData(pendings);
     } catch (err) {
       console.error(err);
     } finally {
-      // setLoading(No);
+      setLoading(false);
     }
   }, []);
 
-   /**
+  /**
    *
    */
   useEffect(() => {
@@ -88,20 +61,20 @@ const PendingVolunteersDashboard = () => {
   }, [fetchTableData]);
 
 
-   /**
+  /**
    *
    */
   const handleSave = (e, entity) => {
     e.stopPropagation();
     setIsSaveDialogOpen(true);
-    setPendingVolunteer(entity);
+    setPending(entity);
   };
 
   /**
    *
    */
   const handleSaveDialogClose = () => {
-    setPendingVolunteer(null);
+    setPending(null);
     setIsSaveDialogOpen(false);
   };
 
@@ -109,19 +82,19 @@ const PendingVolunteersDashboard = () => {
    *
    */
   const handleSaveDialogConfirm = async () => {
-    // setLoading(true);
+    setLoading(true);
     try {
-      // const { id } = pendingVolunteer;
-      // await nchandiWebsiteService.saveRequestById(id);
+      const { id } = pending;
+      await nchandiWebsiteService.approvePending({}, id, pending);
+      fetchTableData();
       enqueueSnackbar('This pending volunteer has been added.', snackbarMessages.success.configuration);
     } catch (error) {
       console.error(error);
       enqueueSnackbar('There was an error adding the pending volunteer!', snackbarMessages.error.configuration);
     } finally {
-      // setLoading(false);
-      setPendingVolunteer(null);
+      setLoading(false);
+      setPending(null);
       setIsSaveDialogOpen(false);
-      // fetchRequests();
     }
   };
 
@@ -131,14 +104,14 @@ const PendingVolunteersDashboard = () => {
   const handleDelete = (e, entity) => {
     e.stopPropagation();
     setIsDeleteDialogOpen(true);
-    setPendingVolunteer(entity);
+    setPending(entity);
   };
 
   /**
    *
    */
   const handleDeleteDialogClose = () => {
-    setPendingVolunteer(null);
+    setPending(null);
     setIsDeleteDialogOpen(false);
   };
 
@@ -146,19 +119,20 @@ const PendingVolunteersDashboard = () => {
    *
    */
   const handleDeleteDialogConfirm = async () => {
-    // setLoading(true);
+    setLoading(true);
     try {
-      // const { id } = pendingVolunteer;
-      // await nchandiWebsiteService.deletePendingVolunteerById(id);
+      const { id } = pending;
+      await nchandiWebsiteService.deletePendingWithPendingId({}, id);
       enqueueSnackbar('This pending volunteer was deleted.', snackbarMessages.success.configuration);
+      fetchTableData();
     } catch (error) {
       console.error(error);
       enqueueSnackbar('There was an error deleting the pending volunteer!', snackbarMessages.error.configuration);
     } finally {
-      // setLoading(false);
-      setPendingVolunteer(null);
+      setLoading(false);
+      setPending(null);
       setIsDeleteDialogOpen(false);
-      // fetchRequests();
+      fetchTableData();
     }
   };
 
@@ -166,6 +140,7 @@ const PendingVolunteersDashboard = () => {
 
   return (
     <>
+    {loading}
       <Grid Grid container sm={12} textAlign={'center'} justifyContent={'center'} pb={3}>
         <Grid sm={10}>
           <Typography variant="h4" color={'white'} >
@@ -189,14 +164,14 @@ const PendingVolunteersDashboard = () => {
       <SaveConfirmationDialog
         isOpen={isSaveDialogOpen}
         entityName='Pending Volunteer'
-        primaryText={pendingVolunteer?.fullName}
+        primaryText={pending?.firstName + ' ' + pending?.lastName}
         handleClose={handleSaveDialogClose}
         handleSave={handleSaveDialogConfirm}
       />
       <DeleteConfirmationDialog
         isOpen={isDeleteDialogOpen}
         entityName='Pending Volunteer'
-        primaryText={pendingVolunteer?.fullName}
+        primaryText={pending?.firstName + ' ' + pending?.lastName}
         handleClose={handleDeleteDialogClose}
         handleDelete={handleDeleteDialogConfirm}
       />

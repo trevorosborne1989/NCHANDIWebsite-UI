@@ -7,42 +7,31 @@ import { useFormik } from 'formik';
 import { useSnackbar } from 'notistack';
 import snackbarMessages from '../../lib/snackbarMessages';
 import { yupSchema } from './ValidationSchema';
-import TableConfig from "./TableConfig";
+import NCHANDIWebsiteService from '../../lib/NCHANDIWebsiteService'
 
-function createData(id, dayOfWeek, weekOfMonth, time, facility, gender, numberNeeded) {
-  return {
-    id,
-    dayOfWeek,
-    weekOfMonth,
-    time,
-    facility,
-    gender,
-    numberNeeded,
-  };
-}
+const nchandiWebsiteService = new NCHANDIWebsiteService();
 
-const panels = [
-  createData('1', 'Tuesday', 1, '7:00 AM', 'First Step House', 'Male', 5),
-  createData('2','Friday', 3, '8:00 AM', 'First Step House', 'Female', 1),
-  createData('3','Wednesday', 2, '7:00 PM', 'Tri-City', 'Male/Female', 4),
-  createData('4','Saturday', 1, '5:00 PM', 'First Step House', 'Female', 5),
-  createData('5','Thrsday', 1, '10:00 AM', 'Crown View', 'Male', 2),
-  createData('6','Monday', 3, '7:00 PM', 'Sober Recovery', 'Male', 3),
-  createData('7','Wednesday', 3, '7:00 AM', 'Recovered Sisters', 'Female', 3),
-  createData('8','Friday', 2, '7:00 AM', 'First Step House', 'Male', 5),
-  createData('9','Tuesday', 4, '5:00 PM', 'Tri-City', 'Male', 4),
-  createData('10','Saturday', 5, '10:00 AM', 'Sober Recovery', 'Male', 1),
-  createData('11','Friday', 1, '12:30 PM', 'First Step House', 'Male', 2),
-  createData('12','Monday', 2, '4:00 PM', 'Tri-City', 'Female', 1),
-  createData('13','Wednsesday', 3, '9:00 AM', 'Crown View', 'Male/Female', 3),
-  createData('14','Thursday', 1, '10:00 AM', 'Carlsbad Recovery', 'Male', 1),
-  createData('15','Sunday', 4, '12:00 PM', 'Recovered Sisters', 'Female', 5),
-  createData('16','Saturday', 2, '8:00 AM', 'Carlsbad Recovery', 'Male', 4)
-];
+const generateTableConfig = (handleSelection) => ({
+  tableTitle: 'Open Panels',
+  dataKey: d => d.id,
+  handleSelection: handleSelection,
+  columns: [
+    { columnName: 'dayOfWeek', numeric: true, disablePadding: false, label: 'Day of Week', value: d => d.dayOfWeek },
+    { columnName: 'weekOfMonth', numeric: true, disablePadding: false, label: 'Week of Month', value: d => d.weekOfMonth },
+    { columnName: 'eventTime', numeric: false, disablePadding: false, label: 'Time', value: d => d.eventTime },
+    { columnName: 'facility', numeric: true, disablePadding: false, label: 'Facility', value: d => d.facility?.name },
+    { columnName: 'gender', numeric: true, disablePadding: false, label: 'Gender', value: d => d.gender },
+    { columnName: 'numberNeeded', numeric: true, disablePadding: false, label: '# Needed', value: d => d.numberNeeded},
+    { columnName: 'address', numeric: true, disablePadding: false, label: 'Address', value: d => d.facility?.address },
+    { columnName: 'city', numeric: true, disablePadding: false, label: 'City', value: d => d.facility?.city },
+    { columnName: 'website', numeric: true, disablePadding: false, label: 'Website', value: d => d.facility?.website }
+  ]
+});
 
 const Panels = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [facilityData, setFacilityData] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [panel, setPanel] = useState('');
   const [tableData, setTableData] = useState([]);
   const { enqueueSnackbar } = useSnackbar();
 
@@ -51,13 +40,14 @@ const Panels = () => {
       firstName: '',
       lastName: '',
       email: '',
-      phoneNumber: '',
-      contactMethod: ''
+      phone: '',
+      preferredContactMethod: '',
+      commitment: 'Panel Member'
     },
-    onSubmit: async () => {
+    onSubmit: async (values) => {
       try {
-        // await post method()   Use await here.
-        enqueueSnackbar('Your volunteer request was successfully submitted.', snackbarMessages.success.configuration);
+        await nchandiWebsiteService.savePending({}, values);
+        enqueueSnackbar('Your volunteer request was successfully submitted. Our facilities chair will contact you.', snackbarMessages.success.configuration);
         handleDialogClose();
       } catch (err) {
         enqueueSnackbar('There was an error when submitting this form, please try again later or contact the Technology Chair', snackbarMessages.error.configuration);
@@ -68,30 +58,35 @@ const Panels = () => {
     validateOnBlur: true,
   });
 
-  const fetchPanelData = useCallback(async () => {
+  const fetchTableData = useCallback(async () => {
     try {
-      // setLoading(true);
-      // const { data: committeeMembers } = await nchandiWebsiteService.getCommitteeMembers();
+      setLoading(true);
+      const { data: panels } = await nchandiWebsiteService.getPanels();
       setTableData(panels);
     } catch (err) {
       console.error(err);
     } finally {
-      // setLoading(false);
+      setLoading(false);
     }
   }, []);
 
   useEffect(() => {
-    fetchPanelData();
-  }, [fetchPanelData]);
+    fetchTableData();
+  }, [fetchTableData]);
 
   const handleDialogSave = () => {
-    setTimeout( async () => { // Remove the onTimeout once the POST method in onSubmit is defined.
-      formik.submitForm();
+    formik.setFieldValue('panelId', panel.id);
+    formik.setFieldValue('facilityName', panel?.facility?.name);
+    formik.setFieldValue('numberNeeded', panel.numberNeeded);
+    formik.setFieldValue('dayOfWeek', panel.dayOfWeek);
+    formik.setFieldValue('weekOfMonth', panel.weekOfMonth);
+    formik.setFieldValue('eventTime', panel.eventTime);
+    formik.setFieldValue('gender', panel.gender);
+    formik.submitForm();
       if (!formik.isValid) {
-        enqueueSnackbar('There are fields missing in your form. Please fill out all the required * fields.', snackbarMessages.error.configuration);
+        enqueueSnackbar('There are fields missing in your form. Please fill out all the required fields.', snackbarMessages.error.configuration);
       }
       formik.setSubmitting(false);
-    }, 1000);
   };
 
   const handleDialogClose = () => {
@@ -99,13 +94,17 @@ const Panels = () => {
     setDialogOpen(false);
   };
 
-  const handleRowSelection = (row) => {
-    setFacilityData(row);
+  const handleSelection = (row) => {
+    setPanel(row);
     setDialogOpen(true);
   };
 
+  const tableConfig = generateTableConfig(handleSelection);
+
   return (
     <>
+    {loading}
+    {console.log(tableData)}
       <Grid container sm={12} textAlign={'center'} justifyContent={'center'} py={3} pb={7}>
         <Grid sm={10}>
           <Typography variant="h3" color={'white'} >
@@ -122,14 +121,13 @@ const Panels = () => {
         <Grid sm={11}>
           <EnhancedTable
             data={tableData}
-            handleSelection={handleRowSelection}
-            {...TableConfig}
+            {...tableConfig}
           />
         </Grid>
       </Grid>
       <PanelsDialog
         formik={formik}
-        data={facilityData}
+        data={panel}
         isOpen={dialogOpen}
         handleSave={handleDialogSave}
         handleClose={handleDialogClose}

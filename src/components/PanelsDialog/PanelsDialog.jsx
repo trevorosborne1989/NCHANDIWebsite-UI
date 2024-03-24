@@ -27,8 +27,6 @@ const contactOptions = [
 
 const PanelsDialog = ({ formik, data, isOpen, handleSave, handleClose }) => {
 
-  // const { dayOfWeek, weekOfMomth, time, facility } = data;
-
   return (
     <>
       <Dialog open={isOpen} onClose={handleClose}>
@@ -37,7 +35,7 @@ const PanelsDialog = ({ formik, data, isOpen, handleSave, handleClose }) => {
           <DialogContentText pb={3}>
             Please fill out the volunteer information below.
           </DialogContentText>
-          {data && <DialogContentText pb={5}> {data.dayOfWeek + '     -     ' + data.weekOfMonth + '     -    ' + data.time + '     -     ' + data.facility} </DialogContentText>}
+          {data && <DialogContentText pb={5}> {data.dayOfWeek + '     -     ' + data.weekOfMonth + '     -    ' + data.eventTime + '     -     ' + data.facility?.name} </DialogContentText>}
           <TextField
             label='First Name'
             name='firstName'
@@ -78,30 +76,30 @@ const PanelsDialog = ({ formik, data, isOpen, handleSave, handleClose }) => {
             required
           />
           <TextField
-            label='Phone Number'
-            name='phoneNumber'
+            label='Phone'
+            name='phone'
             fullWidth
             variant='outlined'
             margin='dense'
-            value={formik.values.phoneNumber}
+            value={formik.values.phone}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            helperText={formik.touched.phoneNumber ? formik.errors.phoneNumber : ""}
-            error={formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber)}
+            helperText={formik.touched.phone ? formik.errors.phone : ""}
+            error={formik.touched.phone && Boolean(formik.errors.phone)}
             required
           />
           <TextField
             select
-            label='Contact Method'
-            name='contactMethod'
+            label='Preferred Contact Method'
+            name='preferredContactMethod'
             fullWidth
             variant='outlined'
             margin='dense'
-            value={formik.values.contactMethod}
+            value={formik.values.preferredContactMethod}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            helperText={formik.touched.contactMethod ? formik.errors.contactMethod : ""}
-            error={formik.touched.contactMethod && Boolean(formik.errors.contactMethod)}
+            helperText={formik.touched.preferredContactMethod ? formik.errors.preferredContactMethod : ""}
+            error={formik.touched.preferredContactMethod && Boolean(formik.errors.preferredContactMethod)}
             required
           >
             {contactOptions.map(option => (
