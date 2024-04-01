@@ -61,7 +61,7 @@ const Panels = () => {
   const fetchTableData = useCallback(async () => {
     try {
       setLoading(true);
-      const { data: panels } = await nchandiWebsiteService.getPanels();
+      const { data: panels } = await nchandiWebsiteService.getOpenPanels();
       setTableData(panels);
     } catch (err) {
       console.error(err);

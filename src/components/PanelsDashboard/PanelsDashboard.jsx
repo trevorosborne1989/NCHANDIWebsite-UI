@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Divider, Typography, IconButton } from '@mui/material';
+import { Divider, Typography, IconButton, CircularProgress } from '@mui/material';
 import { Add, DeleteForever } from '@mui/icons-material';
 import Grid from '@mui/material/Unstable_Grid2';
 import { useFormik } from 'formik';
@@ -10,9 +10,9 @@ import PanelsDashboardDialog from '../PanelsDashboardDialog/PanelsDashboardDialo
 import DeleteConfirmationDialog from '../DeleteConfirmationDialog/DeleteConfirmationDialog';
 import { yupSchema } from './ValidationSchema';
 import { nchandiTheme } from '../../App';
-// import NCHANDIWebsiteService from '../../lib/NCHANDIWebsiteService'
+import NCHANDIWebsiteService from '../../lib/NCHANDIWebsiteService'
 
-// const nchandiWebsiteService = new NCHANDIWebsiteService();
+const nchandiWebsiteService = new NCHANDIWebsiteService();
 
 const generateTableConfig = (handleSelection, handleAdd, handleDelete) => ({
   title: 'Panels',
@@ -24,117 +24,35 @@ const generateTableConfig = (handleSelection, handleAdd, handleDelete) => ({
     </IconButton>
   ),
   columns: [
-    { columnName: '', numeric: true, disablePadding: false, label: '', value: d => <DeleteForever fontSize='large'  color='error' onClick={e => handleDelete(e, d)} data-cy='table-delete-btn' /> },
+    { columnName: '', numeric: true, disablePadding: false, label: '', value: d => <DeleteForever fontSize='large' color='error' onClick={e => handleDelete(e, d)} data-cy='table-delete-btn' /> },
     { columnName: 'dayOfWeek', numeric: true, disablePadding: false, label: 'Day of Week', value: d => d.dayOfWeek },
     { columnName: 'weekOfMonth', numeric: true, disablePadding: true, label: 'Week of Month', value: d => d.weekOfMonth },
-    { columnName: 'time', numeric: true, disablePadding: false, label: 'Time', value: d => d.time },
-    { columnName: 'facility', numeric: true, disablePadding: false, label: 'Facility', value: d => d.facility.name },
-    { columnName: 'address', numeric: true, disablePadding: false, label: 'Address', value: d => d.facility.address },
-    { columnName: 'city', numeric: true, disablePadding: false, label: 'City', value: d => d.facility.city },
+    { columnName: 'eventTime', numeric: true, disablePadding: false, label: 'Time', value: d => d.eventTime },
+    { columnName: 'facility', numeric: true, disablePadding: false, label: 'Facility', value: d => d.facility?.name },
+    { columnName: 'address', numeric: true, disablePadding: false, label: 'Address', value: d => d.facility?.address },
+    { columnName: 'city', numeric: true, disablePadding: false, label: 'City', value: d => d.facility?.city },
     { columnName: 'gender', numeric: true, disablePadding: false, label: 'Gender', value: d => d.gender },
-    { columnName: 'membersAreNeeded', numeric: true, disablePadding: false, label: 'Members are Needed?', value: d => d.membersAreNeeded ? 'true' : 'false' },
+    { columnName: 'markAsMembersNeeded', numeric: true, disablePadding: false, label: 'Members are Needed?', value: d => d.markAsMembersNeeded ? 'true' : 'false' },
     { columnName: 'numberNeeded', numeric: true, disablePadding: false, label: '# Needed', value: d => d.numberNeeded },
-    { columnName: 'boardChampion', numeric: true, disablePadding: false, label: 'Board Champion', value: d => d.boardChampion },
-    { columnName: 'panelCoordinator', numeric: true, disablePadding: false, label: 'Panel Coordinator', value: d => d.panelCoordinator },
-    { columnName: 'panelLeader', numeric: true, disablePadding: false, label: 'Panel Leader', value: d => d.panelLeader },
-    { columnName: 'panelMember1', numeric: true, disablePadding: false, label: 'Panel Member 1', value: d => d.panelMember1 },
-    { columnName: 'panelMember2', numeric: true, disablePadding: false, label: 'Panel Member 2', value: d => d.panelMember2 },
-    { columnName: 'panelMember3', numeric: true, disablePadding: false, label: 'Panel Member 3', value: d => d.panelMember3 },
-    { columnName: 'panelMember4', numeric: true, disablePadding: false, label: 'Panel Member 4', value: d => d.panelMember4 },
-    { columnName: 'panelMember5', numeric: true, disablePadding: false, label: 'Panel Member 5', value: d => d.panelMember5 }
+    { columnName: 'boardChampion', numeric: true, disablePadding: false, label: 'Board Champion', value: d => d.boardChampion ? d.boardChampion?.firstName + ' ' + d.boardChampion?.lastName : 'empty' },
+    { columnName: 'panelCoordinator', numeric: true, disablePadding: false, label: 'Panel Coordinator', value: d => d.panelCoordinator ? d.panelCoordinator?.firstName + ' ' + d.panelCoordinator?.lastName : 'empty' },
+    { columnName: 'panelLeader', numeric: true, disablePadding: false, label: 'Panel Leader', value: d => d.panelLeader ? d.panelLeader?.firstName + ' ' + d.panelLeader?.lastName : 'empty' },
+    { columnName: 'panelMember1', numeric: true, disablePadding: false, label: 'Panel Member 1', value: d => d.panelMember1 ? d.panelMember1?.firstName + ' ' + d.panelMember1?.lastName : 'empty' },
+    { columnName: 'panelMember2', numeric: true, disablePadding: false, label: 'Panel Member 2', value: d => d.panelMember2 ? d.panelMember2?.firstName + ' ' + d.panelMember2?.lastName : 'empty' },
+    { columnName: 'panelMember3', numeric: true, disablePadding: false, label: 'Panel Member 3', value: d => d.panelMember3 ? d.panelMember3?.firstName + ' ' + d.panelMember3?.lastName : 'empty' },
+    { columnName: 'panelMember4', numeric: true, disablePadding: false, label: 'Panel Member 4', value: d => d.panelMember4 ? d.panelMember4?.firstName + ' ' + d.panelMember4?.lastName : 'empty' },
+    { columnName: 'panelMember5', numeric: true, disablePadding: false, label: 'Panel Member 5', value: d => d.panelMember5 ? d.panelMember5?.firstName + ' ' + d.panelMember5?.lastName : 'empty' }
   ]
 });
 
-const facilities = [ // Remove once API is plugged in. This data from service works for dropdowns with javascript map() because service doesn't return a big javascript object. It returns a List of javascript objects.
-  {
-    name: "Freedom House",
-    address: "432 1st Avenue",
-    city: "Oceanside"
-  },
-  {
-    name: "1st Step House",
-    address: "2nd Street",
-    city: "Carlsbad"
-  },
-  {
-    name: "Tri-city",
-    address: "Vista Way",
-    city: "Vista"
-  },
-  {
-    name: "New Beginnings",
-    address: "1343 Fire Mountain Road",
-    city: "Oceanside"
-  },
-  {
-    name: "Aurora",
-    address: "345 Winston Ave",
-    city: "Carlsbad"
-  },
-  {
-    name: "Interfaith Community Services",
-    address: "550 W Washington Blvd",
-    city: "Escondido"
-  },
-  {
-    name: "VA Hospital",
-    address: "3350 La Jolla Village Drive",
-    city: "San Diego"
-  },
-];
-
-function createData(id, dayOfWeek, weekOfMonth, time, facility, gender, membersAreNeeded, numberNeeded, boardChampion, panelCoordinator, panelLeader,
-  panelMember1, panelMember2, panelMember3, panelMember4, panelMember5) {
-    return {
-    id,
-    dayOfWeek,
-    weekOfMonth,
-    time,
-    facility,
-    gender,
-    membersAreNeeded,
-    numberNeeded,
-    boardChampion,
-    panelCoordinator,
-    panelLeader,
-    panelMember1,
-    panelMember2,
-    panelMember3,
-    panelMember4,
-    panelMember5
-  };
-}
-
-const panels = [
-createData("1","KACK","2","2:51 PM",facilities[0],"Female", false,"0","Marsha","Cecile","Zora","Nelle","Christyna","Marcelia","Lynnette","Casi"),
-createData("2","VVVH","4","6:43 AM",facilities[1],"Male", false,"0","Etienne","Lydon","Buddy","Lonnard","Thor","Arri","Clywd","Nickolaus"),
-createData("3","KGDV","3","12:35 AM",facilities[2],"Male", false,"0","Gail","Yardley","Sandor","Julie","Bryant","William","Noak","Gearalt"),
-createData("4","ZSCN","3","6:18 AM",facilities[3],"Male/Female", true,"5","Ricky","Courtney","Natal","Bradly","Cathe","Aggie","Sasha","Reina"),
-createData("5","CFC4","2","2:51 PM",facilities[4],"Male", false,"0","Gunther","Lefty","Freddie","Huey","Stanly","Mohandis","Beale","Cooper"),
-createData("6","ZUWX","3","8:58 PM",facilities[5],"Male", false,"0","Gene","Sim","Alejandro","Rurik","Ashlin","Abbe","Kristos","Noland"),
-createData("7","ZYDQ","1","10:17 AM",facilities[6],"Female", true,"4","Reba","Lilyan","Ursola","Elsy","Remy","Peggi","Ania","Lenora"),
-createData("8","SASO","1","11:43 PM",facilities[5],"Male", false,"0","Quillan","Jakie","Wendel","Gregorio","Husein","Dore","Leigh","Garrard"),
-createData("9","KOGS","2","11:08 AM",facilities[4],"Male", true,"3","Jory","Klement","Egbert","Brook","Herby","Arte","Elvyn","Sauncho"),
-createData("10","VOCP","2","1:36 AM",facilities[3],"Female", true,"1","Christin","Josephine","Tessie","Wynn","Debbi","Oralee","Jacquenette","Silvia"),
-createData("11","SSXD","4","7:19 AM",facilities[2],"Male/Female", false,"0","Rozina","Audy","Deidre","Eimile","Kaela","Roselia","Delia","Cornela"),
-createData("12","LTAU","4","7:23 AM",facilities[1],"Male", true,"5","Micah","Cristobal","Niles","Ricard","Abba","Simone","Langston","Nap"),
-createData("13","KATY","4","1:09 PM",facilities[0],"Male/Female", true,"2","Amberly","Reyna","Roana","Kora","Deeyn","Siana","Mary","Idalina"),
-createData("14","SOOG","3","9:55 PM",facilities[1],"Male", true,"5","Homerus","Jamison","Charlie","Rusty","Konrad","Darius","Leland","Gal"),
-createData("15","ZGOW","3","4:31 PM",facilities[2],"Female", true,"4","Christian","Maure","Cornelle","Jeanna","Orly","Joannes","Bibby","Beryl"),
-createData("16","YAMT","4","1:42 PM",facilities[3],"Male/Female", true,"3","Aggie","Tessa","Sharyl","Chrysler","Gillian","Lindsay","Anabel","Fionnula"),
-createData("17","KLEM","3","6:42 PM",facilities[4],"Male/Female", false,"0","Fionna","Fleurette","Cesya","Teddie","Aubrie","Doreen","Joleen","Lavinie"),
-createData("18","NFCS","1","2:17 PM",facilities[5],"Male", false,"0","Alvin","Hart","Kimble","Marcel","Eldredge","Clevey","Claudian","Ogdan"),
-createData("19","LGSA","2","2:07 AM",facilities[6],"Female", true,"2","Chandra","Ingeberg","Koral","Raven","Deborah","Illa","Jodee","Marj"),
-createData("20","SKVV","4","5:28 PM",facilities[5],"Male", false,"0","Neel","Iorgo","Skye","Read","Ashby","Bartholomeus","Kerry","Padgett")
-];
-
 const PanelsDashboard = () => {
   const [isOpen, setisOpen] = useState(false);
-  // const [loading, setLoading] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [tableData, setTableData] = useState([]);
   const [panel, setPanel] = useState(null);
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  // const [facilities, setFacilties] = useState([]);
+  const [facilities, setFacilties] = useState([]);
+  const [people, setPeople] = useState([]);
+  const [loading, setLoading] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
 
   const formik = useFormik({
@@ -142,29 +60,28 @@ const PanelsDashboard = () => {
       id: '',
       dayOfWeek: '',
       weekOfMonth: '',
-      time: '',
+      eventTime: '',
       facility: null,
       gender: '',
-      membersAreNeeded: false,
+      markAsMembersNeeded: false,
       numberNeeded: 0,
-      boardChampion: '',
-      panelCoordinator: '',
-      panelLeader: '',
-      panelMember1: '',
-      panelMember2: '',
-      panelMember3: '',
-      panelMember4: '',
-      panelMember5: ''
+      boardChampion: null,
+      panelCoordinator: null,
+      panelLeader: null,
+      panelMember1: null,
+      panelMember2: null,
+      panelMember3: null,
+      panelMember4: null,
+      panelMember5: null
     },
     onSubmit: async (values) => {
       const { id } = values;
       try {
-
         if (id) {
-          // await ectsService.putEctsstaffWithEctsStaffId({}, id, values);
+          await nchandiWebsiteService.putPanelWithPanelId({}, id, values);
           setisOpen(false);
-        }else {
-          // await ectsService.postEctsstaff({}, values);
+        } else {
+          await nchandiWebsiteService.postPanel({}, values);
           setisOpen(false);
         }
         enqueueSnackbar('This panel was successfully submitted.', snackbarMessages.success.configuration);
@@ -172,25 +89,24 @@ const PanelsDashboard = () => {
         enqueueSnackbar('There was an error when submitting this form, please try again later or contact the Technology Chair', snackbarMessages.error.configuration);
         console.error(err);
       }
+      fetchTableData();
     },
     validationSchema: yupSchema,
     validateOnBlur: true,
   });
-
-  // const fetchData = useCallback(params => ectsService.getEctsstaff(params), []); //Try This!!!
 
   /**
    *
    */
   const fetchTableData = useCallback(async () => {
     try {
-      // setLoading(true);
-      // const { data: panels } = await nchandiWebsiteService.getPanels();
+      setLoading(true);
+      const { data: panels } = await nchandiWebsiteService.getAllPanels();
       setTableData(panels);
     } catch (err) {
       console.error(err);
     } finally {
-      // setLoading(false);
+      setLoading(false);
     }
   }, []);
 
@@ -206,13 +122,13 @@ const PanelsDashboard = () => {
    */
   const fetchFacilityData = useCallback(async () => {
     try {
-      // setLoading(true);
-      // const { data: facilities } = await nchandiWebsiteService.getFacilities();
-      // setFacilties(facilities);
+      setLoading(true);
+      const { data: facilities } = await nchandiWebsiteService.getFacilities();
+      setFacilties(facilities);
     } catch (err) {
       console.error(err);
     } finally {
-      // setLoading(false);
+      setLoading(false);
     }
   }, []);
 
@@ -226,14 +142,35 @@ const PanelsDashboard = () => {
   /**
    *
    */
+  const fetchPeopleData = useCallback(async () => {
+    try {
+      setLoading(true);
+      const { data: people } = await nchandiWebsiteService.getPeople();
+      setPeople(people);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  /**
+   *
+   */
+  useEffect(() => {
+    fetchPeopleData();
+  }, [fetchPeopleData]);
+
+  /**
+   *
+   */
   const handleSave = () => {
-    setTimeout( async () => { // Remove the onTimeout once the POST method in onSubmit is defined.
-      formik.submitForm();
-      if (!formik.isValid) {
-        enqueueSnackbar('There are fields missing in your form. Please fill out all the required * fields.', snackbarMessages.error.configuration);
-      }
-      formik.setSubmitting(false);
-    }, 1000);
+    formik.setFieldValue('active', true);
+    formik.submitForm();
+    if (!formik.isValid) {
+      enqueueSnackbar('There are fields missing in your form. Please fill out all the required * fields.', snackbarMessages.error.configuration);
+    }
+    formik.setSubmitting(false);
   };
 
   /**
@@ -259,11 +196,18 @@ const PanelsDashboard = () => {
     formik.setValues(row);
     setisOpen(true);
   };
-
-   /**
+  
+  /**
    *
    */
-   const handleDelete = (e, entity) => {
+  const handleClear = (e, field) => {
+    formik.setFieldValue(field, null);
+  };
+
+  /**
+  *
+  */
+  const handleDelete = (e, entity) => {
     e.stopPropagation();
     setIsDeleteDialogOpen(true);
     setPanel(entity);
@@ -281,26 +225,27 @@ const PanelsDashboard = () => {
    *
    */
   const handleDeleteDialogConfirm = async () => {
-    // setLoading(true);
+    setLoading(true);
     try {
-      // const { id } = panelMember;
-      // await nchandiWebsiteService.deletePanelById(id);
+      const { id } = panel;
+      await nchandiWebsiteService.deletePanelsWithPanelId({}, id);
       enqueueSnackbar('This panel was deleted.', snackbarMessages.success.configuration);
     } catch (error) {
       console.error(error);
       enqueueSnackbar('There was an error deleting the panel!', snackbarMessages.error.configuration);
     } finally {
-      // setLoading(false);
+      setLoading(false);
       setPanel(null);
       setIsDeleteDialogOpen(false);
-      // fetchRequests();
+      fetchTableData();
     }
   };
 
   const tableConfig = generateTableConfig(handleSelection, handleAdd, handleDelete);
-  
+
   return (
     <>
+    {loading && <CircularProgress />}
       <Grid Grid container sm={12} textAlign={'center'} justifyContent={'center'} pb={3}>
         <Grid sm={10}>
           <Typography variant="h4" color={'white'} >
@@ -310,13 +255,13 @@ const PanelsDashboard = () => {
       </Grid>
       <Grid container sm={12} justifyContent={'center'} pb={5}>
         <Grid sm={8}>
-          <Divider sx={{background: 'white'}} />
+          <Divider sx={{ background: 'white' }} />
         </Grid>
       </Grid>
       <Grid container sm={12} justifyContent={'center'}>
         <Grid sm={12}>
           <EnhancedTable
-            data ={tableData}
+            data={tableData}
             {...tableConfig}
           />
         </Grid>
@@ -324,7 +269,9 @@ const PanelsDashboard = () => {
       <PanelsDashboardDialog
         formik={formik}
         facilityData={facilities}
+        peopleData={people}
         isOpen={isOpen}
+        handleClear={handleClear}
         handleSave={handleSave}
         handleClose={handleClose}
       />
@@ -332,6 +279,7 @@ const PanelsDashboard = () => {
         isOpen={isDeleteDialogOpen}
         entityName='Panel'
         primaryText={panel?.facility.name}
+        secondaryText={panel?.weekOfMonth + ' - ' + panel?.dayOfWeek + ' at ' + panel?.eventTime}
         handleClose={handleDeleteDialogClose}
         handleDelete={handleDeleteDialogConfirm}
       />
