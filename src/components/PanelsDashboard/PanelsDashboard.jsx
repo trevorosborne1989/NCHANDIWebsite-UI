@@ -60,7 +60,7 @@ const PanelsDashboard = () => {
       id: '',
       dayOfWeek: '',
       weekOfMonth: '',
-      eventTime: '',
+      eventTime: null,
       facility: null,
       gender: '',
       markAsMembersNeeded: false,
@@ -197,6 +197,14 @@ const PanelsDashboard = () => {
     setisOpen(true);
   };
   
+   /**
+   *
+   */
+  const handleCheckbox = (e) => {
+    formik.setFieldValue('numberNeeded', 0);
+    formik.setFieldValue('markAsMembersNeeded', e.target.value ? false : true)
+  };
+
   /**
    *
    */
@@ -271,6 +279,7 @@ const PanelsDashboard = () => {
         facilityData={facilities}
         peopleData={people}
         isOpen={isOpen}
+        handleCheckbox={handleCheckbox}
         handleClear={handleClear}
         handleSave={handleSave}
         handleClose={handleClose}

@@ -12,9 +12,68 @@ import {
   Checkbox,
   IconButton,
   Box,
+  Typography,
 } from '@mui/material';
 import { Clear } from '@mui/icons-material';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { TimePicker } from '@mui/x-date-pickers/TimePicker';
+import dayjs from 'dayjs';
 import { nchandiTheme } from '../../App';
+
+const dayOfWeekOptions = [
+  {
+    value: 'Monday',
+    label: 'Monday'
+  },
+  {
+    value: 'Tuesday',
+    label: 'Tuesday'
+  },
+  {
+    value: 'Wednesday',
+    label: 'Wednesday'
+  },
+  {
+    value: 'Thursday',
+    label: 'Thursday'
+  },
+  {
+    value: 'Friday',
+    label: 'Friday'
+  },
+  {
+    value: 'Saturday',
+    label: 'Saturday'
+  },
+  {
+    value: 'Sunday',
+    label: 'Sunday'
+  },
+];
+
+const fiveOptions = [
+  {
+    value: '1',
+    label: '1'
+  },
+  {
+    value: '2',
+    label: '2'
+  },
+  {
+    value: '3',
+    label: '3'
+  },
+  {
+    value: '4',
+    label: '4'
+  },
+  {
+    value: '5',
+    label: '5'
+  },
+];
 
 const genderOptions = [
   {
@@ -31,10 +90,14 @@ const genderOptions = [
   },
 ]
 
-const PanelsDashboardDialog = ({ formik, facilityData, peopleData, isOpen, handleClear, handleSave, handleClose }) => {
+const PanelsDashboardDialog = ({ formik, facilityData, peopleData, isOpen, handleCheckbox, handleClear, handleSave, handleClose }) => {
 
   return (
     <>
+    {console.log(new Date(2024, 10, 20, Number(formik.values?.eventTime?.slice(0, 3)), Number(formik.values?.eventTime?.slice(3, 5))))}
+    {console.log(Number(formik.values?.eventTime?.split(':')[0]))}
+    {console.log(Number(formik.values?.eventTime?.split(':')[1].slice(2,3)))}
+    {console.log(formik.values?.eventTime?.split(':')[1].slice(-2))}
       <Dialog open={isOpen} onClose={handleClose}>
         <DialogTitle>Panel</DialogTitle>
         <DialogContent>
@@ -42,7 +105,8 @@ const PanelsDashboardDialog = ({ formik, facilityData, peopleData, isOpen, handl
             Please fill out the panel information below.
           </DialogContentText>
           <TextField
-            label='Day of Week'
+            select
+            label='Day Of Week'
             name='dayOfWeek'
             fullWidth
             variant='outlined'
@@ -53,9 +117,16 @@ const PanelsDashboardDialog = ({ formik, facilityData, peopleData, isOpen, handl
             helperText={formik.touched.dayOfWeek ? formik.errors.dayOfWeek : ""}
             error={formik.touched.dayOfWeek && Boolean(formik.errors.dayOfWeek)}
             required
-          />
+          >
+            {dayOfWeekOptions.map(option => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
           <TextField
-            label='Week of Month'
+            select
+            label='Week Of Month'
             name='weekOfMonth'
             fullWidth
             variant='outlined'
@@ -66,20 +137,25 @@ const PanelsDashboardDialog = ({ formik, facilityData, peopleData, isOpen, handl
             helperText={formik.touched.weekOfMonth ? formik.errors.weekOfMonth : ""}
             error={formik.touched.weekOfMonth && Boolean(formik.errors.weekOfMonth)}
             required
-          />
-          <TextField
-            label='Time'
-            name='eventTime'
-            fullWidth
-            variant='outlined'
-            margin='dense'
-            value={formik.values.eventTime}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            helperText={formik.touched.eventTime ? formik.errors.eventTime : ""}
-            error={formik.touched.eventTime && Boolean(formik.errors.eventTime)}
-            required
-          />
+          >
+            {fiveOptions.map(option => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <TimePicker
+              name='eventTime'
+              value={formik.values?.eventTime?.split(':')[1].slice(-2) === 'PM' ?
+                dayjs(new Date(2024, 10, 20, Number(formik.values?.eventTime?.split(':')[0]) + 12, Number(formik.values?.eventTime?.split(':')[1].slice(0, 2))))
+                :
+                dayjs(new Date(2024, 10, 20, Number(formik.values?.eventTime?.split(':')[0]), Number(formik.values?.eventTime?.split(':')[1].slice(0, 2))))}
+              onChange={(value => formik.setFieldValue('eventTime', value?.toDate().toLocaleTimeString().replace(/(.*)\D\d+/, '$1'))) }
+              slotProps={{ textField: { fullWidth: true } }}
+              label={<Typography py={1}>Time of Event</Typography>}
+            />
+          </LocalizationProvider>
           <Box display={'flex'}>
             <TextField
               select
@@ -87,7 +163,7 @@ const PanelsDashboardDialog = ({ formik, facilityData, peopleData, isOpen, handl
               name='facility'
               fullWidth
               variant='outlined'
-              margin='dense'
+              margin='normal'
               value={formik.values.facility?.name}
               onChange={e => formik.setFieldValue('facility', facilityData.find(facility => facility.name === e.target.value))}
               onBlur={formik.handleBlur}
@@ -112,7 +188,7 @@ const PanelsDashboardDialog = ({ formik, facilityData, peopleData, isOpen, handl
             fullWidth
             variant='outlined'
             margin='dense'
-            value={formik.values.gender}
+            value={formik.values.gender ? formik.values.gender : ''}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             helperText={formik.touched.gender ? formik.errors.gender : ""}
@@ -131,13 +207,14 @@ const PanelsDashboardDialog = ({ formik, facilityData, peopleData, isOpen, handl
               name='markAsMembersNeeded'
               checked={formik.values.markAsMembersNeeded}
               value={formik.values.markAsMembersNeeded}
-              onChange={formik.handleChange}
+              onChange={handleCheckbox}
               onBlur={formik.handleBlur}
             />}
             label="Members are Needed?" sx={{ color: nchandiTheme.handiDarkBlue }}
           />
           {formik.values.markAsMembersNeeded &&
             <TextField
+              select
               label='# Needed'
               name='numberNeeded'
               fullWidth
@@ -148,7 +225,14 @@ const PanelsDashboardDialog = ({ formik, facilityData, peopleData, isOpen, handl
               onBlur={formik.handleBlur}
               helperText={formik.touched.numberNeeded ? formik.errors.numberNeeded : ""}
               error={formik.touched.numberNeeded && Boolean(formik.errors.numberNeeded)}
-            />}
+              required
+            >
+              {fiveOptions.map(option => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </TextField>}
           <Box display={'flex'}>
             <TextField
               select
@@ -157,7 +241,7 @@ const PanelsDashboardDialog = ({ formik, facilityData, peopleData, isOpen, handl
               fullWidth
               variant='outlined'
               margin='dense'
-              value={formik.values.boardChampion?.firstName + formik.values?.boardChampion?.lastName}
+              value={formik.values?.boardChampion ? formik.values.boardChampion?.firstName + formik.values?.boardChampion?.lastName : ''}
               onChange={e => formik.setFieldValue('boardChampion', peopleData.find(person => person.firstName + person.lastName === e.target.value))}
               onBlur={formik.handleBlur}
               helperText={formik.touched.boardChampion ? formik.errors.boardChampion : ""}
@@ -181,7 +265,7 @@ const PanelsDashboardDialog = ({ formik, facilityData, peopleData, isOpen, handl
               fullWidth
               variant='outlined'
               margin='dense'
-              value={formik.values?.panelCoordinator?.firstName + formik.values?.panelCoordinator?.lastName}
+              value={formik.values?.panelCoordinator ? formik.values?.panelCoordinator?.firstName + formik.values?.panelCoordinator?.lastName : ''}
               onChange={e => formik.setFieldValue('panelCoordinator', peopleData.find(person => person.firstName + person.lastName === e.target.value))}
               onBlur={formik.handleBlur}
               helperText={formik.touched.panelCoordinator ? formik.errors.panelCoordinator : ""}
@@ -205,7 +289,7 @@ const PanelsDashboardDialog = ({ formik, facilityData, peopleData, isOpen, handl
               fullWidth
               variant='outlined'
               margin='dense'
-              value={formik.values?.panelLeader?.firstName + formik.values?.panelLeader?.lastName}
+              value={formik.values?.panelLeader ? formik.values?.panelLeader?.firstName + formik.values?.panelLeader?.lastName : ''}
               onChange={e => formik.setFieldValue('panelLeader', peopleData.find(person => person.firstName + person.lastName === e.target.value))}
               onBlur={formik.handleBlur}
               helperText={formik.touched.panelLeader ? formik.errors.panelLeader : ""}
@@ -229,7 +313,7 @@ const PanelsDashboardDialog = ({ formik, facilityData, peopleData, isOpen, handl
               fullWidth
               variant='outlined'
               margin='dense'
-              value={formik.values?.panelMember1?.firstName + formik.values?.panelMember1?.lastName}
+              value={formik.values?.panelMember1 ? formik.values?.panelMember1?.firstName + formik.values?.panelMember1?.lastName : ''}
               onChange={e => formik.setFieldValue('panelMember1', peopleData.find(person => person.firstName + person.lastName === e.target.value))}
               onBlur={formik.handleBlur}
               helperText={formik.touched.panelMember1 ? formik.errors.panelMember1 : ""}
@@ -253,7 +337,7 @@ const PanelsDashboardDialog = ({ formik, facilityData, peopleData, isOpen, handl
             fullWidth
             variant='outlined'
             margin='dense'
-            value={formik.values?.panelMember2?.firstName + formik.values?.panelMember2?.lastName}
+            value={formik.values?.panelMember2 ? formik.values?.panelMember2?.firstName + formik.values?.panelMember2?.lastName : ''}
             onChange={e => formik.setFieldValue('panelMember2', peopleData.find(person => person.firstName + person.lastName === e.target.value))}
             onBlur={formik.handleBlur}
             helperText={formik.touched.panelMember2 ? formik.errors.panelMember2 : ""}
@@ -277,7 +361,7 @@ const PanelsDashboardDialog = ({ formik, facilityData, peopleData, isOpen, handl
               fullWidth
               variant='outlined'
               margin='dense'
-              value={formik.values?.panelMember3?.firstName + formik.values?.panelMember3?.lastName}
+              value={formik.values?.panelMember3 ? formik.values?.panelMember3?.firstName + formik.values?.panelMember3?.lastName : ''}
               onChange={e => formik.setFieldValue('panelMember3', peopleData.find(person => person.firstName + person.lastName === e.target.value))}
               onBlur={formik.handleBlur}
               helperText={formik.touched.panelMember3 ? formik.errors.panelMember3 : ""}
@@ -301,7 +385,7 @@ const PanelsDashboardDialog = ({ formik, facilityData, peopleData, isOpen, handl
               fullWidth
               variant='outlined'
               margin='dense'
-              value={formik.values?.panelMember4?.firstName + formik.values?.panelMember4?.lastName}
+              value={formik.values?.panelMember4 ? formik.values?.panelMember4?.firstName + formik.values?.panelMember4?.lastName : ''}
               onChange={e => formik.setFieldValue('panelMember4', peopleData.find(person => person.firstName + person.lastName === e.target.value))}
               onBlur={formik.handleBlur}
               helperText={formik.touched.panelMember4 ? formik.errors.panelMember4 : ""}
@@ -325,7 +409,7 @@ const PanelsDashboardDialog = ({ formik, facilityData, peopleData, isOpen, handl
               fullWidth
               variant='outlined'
               margin='dense'
-              value={formik.values?.panelMember5?.firstName + formik.values?.panelMember5?.lastName}
+              value={formik.values?.panelMember5 ? formik.values?.panelMember5?.firstName + formik.values?.panelMember5?.lastName : ''}
               onChange={e => formik.setFieldValue('panelMember5', peopleData.find(person => person.firstName + person.lastName === e.target.value))}
               onBlur={formik.handleBlur}
               helperText={formik.touched.panelMember5 ? formik.errors.panelMember5 : ""}
