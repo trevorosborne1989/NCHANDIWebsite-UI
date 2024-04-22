@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Divider, Typography, IconButton, CircularProgress } from '@mui/material';
-import { Add, DeleteForever } from '@mui/icons-material';
+import { Divider, Typography, IconButton, CircularProgress, Box } from '@mui/material';
+import { Add, DeleteForever, Female, Male, Wc } from '@mui/icons-material';
 import Grid from '@mui/material/Unstable_Grid2';
 import { useFormik } from 'formik';
 import { useSnackbar } from 'notistack';
@@ -14,6 +14,31 @@ import NCHANDIWebsiteService from '../../lib/NCHANDIWebsiteService'
 
 const nchandiWebsiteService = new NCHANDIWebsiteService();
 
+const handleGenderColumn = (gender) => {
+  if (gender === 'Male') {
+    return <IconButton sx={{ color: nchandiTheme.handiGreen }} >
+        <Box>
+        <Male fontSize='large' />
+        <Typography>M</Typography>
+        </Box>
+      </IconButton>
+  } else if (gender === 'Female') {
+      return <IconButton sx={{ color: nchandiTheme.handiDarkYellow }}>
+          <Box>
+          <Female fontSize='large' />
+          <Typography>F</Typography>
+          </Box>
+        </IconButton>
+  } else {
+    return <IconButton sx={{ color: nchandiTheme.handiYellow }}  >
+        <Box>
+        <Wc fontSize='large' />
+        <Typography>M/F</Typography>
+        </Box>
+      </IconButton>
+  }
+};
+
 const generateTableConfig = (handleSelection, handleAdd, handleDelete) => ({
   title: 'Panels',
   dataKey: d => d.id,
@@ -24,16 +49,16 @@ const generateTableConfig = (handleSelection, handleAdd, handleDelete) => ({
     </IconButton>
   ),
   columns: [
-    { columnName: '', numeric: true, disablePadding: false, label: '', value: d => <DeleteForever fontSize='large' color='error' onClick={e => handleDelete(e, d)} data-cy='table-delete-btn' /> },
+    { columnName: '', numeric: true, disablePadding: false, label: '', value: d => <IconButton><DeleteForever fontSize='large' color='error' onClick={e => handleDelete(e, d)} data-cy='table-delete-btn' /></IconButton> },
     { columnName: 'dayOfWeek', numeric: true, disablePadding: false, label: 'Day of Week', value: d => d.dayOfWeek },
     { columnName: 'weekOfMonth', numeric: true, disablePadding: true, label: 'Week of Month', value: d => d.weekOfMonth },
     { columnName: 'eventTime', numeric: true, disablePadding: false, label: 'Time', value: d => d.eventTime },
     { columnName: 'facility', numeric: true, disablePadding: false, label: 'Facility', value: d => d.facility?.name },
     { columnName: 'address', numeric: true, disablePadding: false, label: 'Address', value: d => d.facility?.address },
     { columnName: 'city', numeric: true, disablePadding: false, label: 'City', value: d => d.facility?.city },
-    { columnName: 'gender', numeric: true, disablePadding: false, label: 'Gender', value: d => d.gender },
+    { columnName: 'gender', numeric: true, disablePadding: false, label: 'Gender', value: d => handleGenderColumn(d.gender) },
     { columnName: 'markAsMembersNeeded', numeric: true, disablePadding: false, label: 'Members are Needed?', value: d => d.markAsMembersNeeded ? 'true' : 'false' },
-    { columnName: 'numberNeeded', numeric: true, disablePadding: false, label: '# Needed', value: d => d.numberNeeded },
+    { columnName: 'numberNeeded', numeric: true, disablePadding: false, label: '# Needed', value: d => d.numberNeeded ? d.numberNeeded : 0 },
     { columnName: 'boardChampion', numeric: true, disablePadding: false, label: 'Board Champion', value: d => d.boardChampion ? d.boardChampion?.firstName + ' ' + d.boardChampion?.lastName : 'empty' },
     { columnName: 'panelCoordinator', numeric: true, disablePadding: false, label: 'Panel Coordinator', value: d => d.panelCoordinator ? d.panelCoordinator?.firstName + ' ' + d.panelCoordinator?.lastName : 'empty' },
     { columnName: 'panelLeader', numeric: true, disablePadding: false, label: 'Panel Leader', value: d => d.panelLeader ? d.panelLeader?.firstName + ' ' + d.panelLeader?.lastName : 'empty' },
@@ -64,7 +89,7 @@ const PanelsDashboard = () => {
       facility: null,
       gender: '',
       markAsMembersNeeded: false,
-      numberNeeded: 0,
+      numberNeeded: null,
       boardChampion: null,
       panelCoordinator: null,
       panelLeader: null,
@@ -201,8 +226,8 @@ const PanelsDashboard = () => {
    *
    */
   const handleCheckbox = (e) => {
-    formik.setFieldValue('numberNeeded', 0);
-    formik.setFieldValue('markAsMembersNeeded', e.target.value ? false : true)
+    formik.setFieldValue('numberNeeded', '');
+    formik.setFieldValue('markAsMembersNeeded', e.target.checked);
   };
 
   /**
