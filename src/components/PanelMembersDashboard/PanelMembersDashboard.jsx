@@ -50,9 +50,7 @@ const PanelMembersDashboard = () => {
       lastName: '',
       email: '',
       phone: '',
-      preferredContactMethod: '',
-      commitment: 'Panel Member',
-      active: false
+      preferredContactMethod: ''
     },
     onSubmit: async (values) => {
       const { id } = values;
@@ -81,7 +79,7 @@ const PanelMembersDashboard = () => {
   const fetchTableData = useCallback(async () => {
     try {
       setLoading(true);
-      const panelMembers = (await nchandiWebsiteService.getPeople()).data;
+      const { data: panelMembers } = (await nchandiWebsiteService.getPeople()).data.filter(person => person.active);
       setTableData(panelMembers);
     } catch (err) {
       console.error(err);

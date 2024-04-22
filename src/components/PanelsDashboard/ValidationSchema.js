@@ -3,14 +3,12 @@ import * as yup from 'yup';
 export const yupSchema = yup.object().shape({
   dayOfWeek: yup.string().required('Required').typeError('Required'),
   weekOfMonth: yup.number().max(5, "Week of Month must be less than or equal to 5").typeError('Numbers only'),
-  time: yup.string().required('Required').typeError('Required'),
-  facility: yup.object().shape({
-    name:yup.string().required('Required').typeError('Required'),
-  }),
+  eventTime: yup.string().required('Required').typeError('Required'),
+  facility: yup.object().shape({}).required('Required').typeError('Required'),
   gender: yup.string().required('Required').typeError('Required'),
-  membersAreNeeded: yup.boolean().nullable(),
+  markAsMembersNeeded: yup.boolean().nullable(),
   numberNeeded: yup.number().max(5,  "# Needed must be less than or equal to 5").typeError('Numbers only')
-  .when('membersAreNeeded', {
+  .when('markAsMembersNeeded', {
     is: true,
     then: schema => schema.test(
       'numberNeeded validation',
@@ -28,12 +26,12 @@ export const yupSchema = yup.object().shape({
       }
     )
   }).nullable(),
-  boardChampion: yup.string().nullable(),
-  panelCoordinator: yup.string().nullable(),
-  panelLeader: yup.string().nullable(),
-  panelMember1: yup.string().nullable(),
-  panelMember2: yup.string().nullable(),
-  panelMember3: yup.string().nullable(),
-  panelMember4: yup.string().nullable(),
-  panelMember5: yup.string().nullable(),
+  boardChampion: yup.object().shape({}).nullable(),
+  panelCoordinator: yup.object().shape({}).nullable(),
+  panelLeader: yup.object().shape({}).nullable(),
+  panleMember1: yup.object().shape({}).nullable(),
+  panleMember2: yup.object().shape({}).nullable(),
+  panleMember3: yup.object().shape({}).nullable(),
+  panleMember4: yup.object().shape({}).nullable(),
+  panleMember5: yup.object().shape({}).nullable()
 });

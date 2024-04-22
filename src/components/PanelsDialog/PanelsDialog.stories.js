@@ -20,10 +20,11 @@ export default {
       initialValues: {
         firstName: '',
         lastName: '',
-        commitment: '',
         email: '',
-        phoneNumber: '',
-        contactMethod: ''
+        phone: '',
+        preferredContactMethod: '',
+        commitment: '',
+        active: false
       },
       onSubmit: async () => {
         try {
