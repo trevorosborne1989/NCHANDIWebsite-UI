@@ -22,11 +22,11 @@ const facilityOptions = [
 ];
 const activeOptions = [
   {
-    value: 'Yes',
+    value: true,
     label: 'Yes',
   },
   {
-    value: 'No',
+    value: false,
     label: 'No',
   }
 ];
@@ -42,30 +42,30 @@ const FacilitiesDashboardDialog = ({ formik, isOpen, handleSave, handleClose }) 
             Please fill out the facility information below.
           </DialogContentText>
           <TextField
-            label='Facility Name'
-            name='facilityName'
+            label='Name'
+            name='name'
             fullWidth
             variant='outlined'
             margin='dense'
-            value={formik.values.facilityName}
+            value={formik.values.name}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            helperText={formik.touched.facilityName ? formik.errors.facilityName : ""}
-            error={formik.touched.facilityName && Boolean(formik.errors.facilityName)}
+            helperText={formik.touched.name ? formik.errors.name : ""}
+            error={formik.touched.name && Boolean(formik.errors.name)}
             required
           />
           <TextField
             select
-            label='Facility Type'
-            name='facilityType'
+            label='Type'
+            name='type'
             fullWidth
             variant='outlined'
             margin='dense'
-            value={formik.values.facilityType}
+            value={formik.values.type}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            helperText={formik.touched.facilityType ? formik.errors.facilityType : ""}
-            error={formik.touched.facilityType && Boolean(formik.errors.facilityType)}
+            helperText={formik.touched.type ? formik.errors.type : ""}
+            error={formik.touched.type && Boolean(formik.errors.type)}
             required
           >
           {facilityOptions.map(option => (
@@ -98,6 +98,19 @@ const FacilitiesDashboardDialog = ({ formik, isOpen, handleSave, handleClose }) 
             onBlur={formik.handleBlur}
             helperText={formik.touched.city ? formik.errors.city : ""}
             error={formik.touched.city && Boolean(formik.errors.city)}
+            required
+          />
+          <TextField
+            label='State'
+            name='state'
+            fullWidth
+            variant='outlined'
+            margin='dense'
+            value={formik.values.state}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            helperText={formik.touched.state ? formik.errors.state : ""}
+            error={formik.touched.state && Boolean(formik.errors.state)}
             required
           />
           <TextField
@@ -140,55 +153,55 @@ const FacilitiesDashboardDialog = ({ formik, isOpen, handleSave, handleClose }) 
             required
           />
           <TextField
-            label='Primary Phone Number'
-            name='primaryPhoneNumber'
+            label='Primary Contact Phone'
+            name='primaryContactPhone'
             fullWidth
             variant='outlined'
             margin='dense'
-            value={formik.values.primaryPhoneNumber}
+            value={formik.values.primaryContactPhone}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            helperText={formik.touched.primaryPhoneNumber ? formik.errors.primaryPhoneNumber : ""}
-            error={formik.touched.primaryPhoneNumber && Boolean(formik.errors.primaryPhoneNumber)}
+            helperText={formik.touched.primaryContactPhone ? formik.errors.primaryContactPhone : ""}
+            error={formik.touched.primaryContactPhone && Boolean(formik.errors.primaryContactPhone)}
             required
           />
           <TextField
             label='Alternate Contact Name'
-            name='altContactName'
+            name='alternateContactName'
             fullWidth
             variant='outlined'
             margin='dense'
-            value={formik.values.altContactName}
+            value={formik.values.alternateContactName}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            helperText={formik.touched.altContactName ? formik.errors.altContactName : ""}
-            error={formik.touched.altContactName && Boolean(formik.errors.altContactName)}
+            helperText={formik.touched.alternateContactName ? formik.errors.alternateContactName : ""}
+            error={formik.touched.alternateContactName && Boolean(formik.errors.alternateContactName)}
             required
           />
           <TextField
             label='Alternate Contact Email'
-            name='altContactEmail'
+            name='alternateContactEmail'
             fullWidth
             variant='outlined'
             margin='dense'
-            value={formik.values.altContactEmail}
+            value={formik.values.alternateContactEmail}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            helperText={formik.touched.altContactEmail ? formik.errors.altContactEmail : ""}
-            error={formik.touched.altContactEmail && Boolean(formik.errors.altContactEmail)}
+            helperText={formik.touched.alternateContactEmail ? formik.errors.alternateContactEmail : ""}
+            error={formik.touched.alternateContactEmail && Boolean(formik.errors.alternateContactEmail)}
             required
           />
           <TextField
-            label='Alternate Phone Number'
-            name='altPhoneNumber'
+            label='Alternate Contact Phone'
+            name='alternateContactPhone'
             fullWidth
             variant='outlined'
             margin='dense'
-            value={formik.values.altPhoneNumber}
+            value={formik.values.alternateContactPhone}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            helperText={formik.touched.altPhoneNumber ? formik.errors.altPhoneNumber : ""}
-            error={formik.touched.altPhoneNumber && Boolean(formik.errors.altPhoneNumber)}
+            helperText={formik.touched.alternateContactPhone ? formik.errors.alternateContactPhone : ""}
+            error={formik.touched.alternateContactPhone && Boolean(formik.errors.alternateContactPhone)}
             required
           />
           <TextField

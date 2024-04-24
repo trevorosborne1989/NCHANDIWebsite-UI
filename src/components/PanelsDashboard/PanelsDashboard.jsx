@@ -221,8 +221,8 @@ const PanelsDashboard = () => {
     formik.setValues(row);
     setisOpen(true);
   };
-  
-   /**
+
+  /**
    *
    */
   const handleCheckbox = (e) => {
