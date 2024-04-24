@@ -1,5 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Divider, Typography, IconButton } from '@mui/material';
+import {
+  Divider,
+  Typography,
+  IconButton
+} from '@mui/material';
 import { Add } from '@mui/icons-material';
 import { DeleteForever } from '@mui/icons-material';
 import { Circle } from '@mui/icons-material';
@@ -26,13 +30,13 @@ const generateTableConfig = (handleSelection, handleAdd, handleDelete) => ({
     </IconButton>
   ),
   columns: [
-    { columnName: '', numeric: true, disablePadding: false, label: '', value: d => <DeleteForever fontSize='large' color='error' onClick={e => handleDelete(e, d)} data-cy='table-delete-btn' /> },
+    { columnName: '', numeric: true, disablePadding: false, label: '', value: d => <IconButton><DeleteForever fontSize='large' color='error' onClick={e => handleDelete(e, d)} data-cy='table-delete-btn' /></IconButton> },
     { columnName: 'firstName', numeric: true, disablePadding: true, label: 'First Name', value: d => d.firstName },
     { columnName: 'lastName', numeric: true, disablePadding: false, label: 'Last Name', value: d => d.lastName },
     { columnName: 'email', numeric: true, disablePadding: false, label: 'Email', value: d => d.email },
     { columnName: 'phone', numeric: true, disablePadding: false, label: 'Phone Number', value: d => d.phone },
     { columnName: 'preferredContactMethod', numeric: true, disablePadding: false, label: 'Contact Method', value: d => d.preferredContactMethod },
-    { columnName: '', numeric: true, disablePadding: false, label: 'Active', value: d => d.active ?  <Circle color='success'  /> : <Circle color='disabled' />},
+    { columnName: '', numeric: true, disablePadding: false, label: 'Active', value: d => d.active ? <IconButton><Circle color='success'  /></IconButton> : <IconButton><Circle color='disabled' /></IconButton> },
   ]
 });
 
@@ -79,7 +83,9 @@ const PanelMembersDashboard = () => {
   const fetchTableData = useCallback(async () => {
     try {
       setLoading(true);
-      const { data: panelMembers } = (await nchandiWebsiteService.getPeople()).data.filter(person => person.active);
+      const { data: members } = await nchandiWebsiteService.getPeople();
+      const { data: panels } = await nchandiWebsiteService.getAllPanels();
+      const panelMembers = markActiveMembers(members, panels);
       setTableData(panelMembers);
     } catch (err) {
       console.error(err);
@@ -94,6 +100,23 @@ const PanelMembersDashboard = () => {
   useEffect(() => {
     fetchTableData();
   }, [fetchTableData]);
+
+  /**
+   *
+   */
+  const markActiveMembers = (members, panels) => {
+    const allActiveMembers = [];
+    panels.forEach((panel) => {
+      let panelActiveMembers = ['boardChampion', 'panelCoordinator', 'panelLeader', 'panelMember1', 'panelMember2', 'panelMember3', 'panelMember4', 'panelMember5'].map(k => panel[k]).filter((member) => member !== null);
+      panelActiveMembers.forEach((activeMember) => {
+        activeMember['active'] = true
+        allActiveMembers.push(activeMember);
+      });
+    });
+    const activeAndInactive = allActiveMembers.concat(...members);
+    return activeAndInactive.filter((elem, index, self) => self.findIndex(
+      (t) => {return (t.firstName === elem.firstName && t.lastName === elem.lastName)}) === index)
+  };
 
   /**
    *
@@ -164,6 +187,7 @@ const PanelMembersDashboard = () => {
       setLoading(false);
       setPanelMember(null);
       setIsDeleteDialogOpen(false);
+      fetchTableData();
     }
   };
 

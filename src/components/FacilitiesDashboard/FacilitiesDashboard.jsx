@@ -1,6 +1,12 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Divider, Typography, IconButton } from '@mui/material';
-import { Add, DeleteForever } from '@mui/icons-material';
+import {
+  Divider,
+  Typography,
+  IconButton
+} from '@mui/material';
+import { Add } from '@mui/icons-material';
+import { DeleteForever } from '@mui/icons-material';
+import { Circle } from '@mui/icons-material';
 import Grid from '@mui/material/Unstable_Grid2';
 import { useFormik } from 'formik';
 import { useSnackbar } from 'notistack';
@@ -10,9 +16,9 @@ import FacilitiesDashboardDialog from '../FacilitiesDashboardDialog/FacilitiesDa
 import DeleteConfirmationDialog from '../DeleteConfirmationDialog/DeleteConfirmationDialog';
 import { yupSchema } from './ValidationSchema';
 import { nchandiTheme } from '../../App';
-// import NCHANDIWebsiteService from '../../lib/NCHANDIWebsiteService'
+import NCHANDIWebsiteService from '../../lib/NCHANDIWebsiteService'
 
-// const nchandiWebsiteService = new NCHANDIWebsiteService();
+const nchandiWebsiteService = new NCHANDIWebsiteService();
 
 const generateTableConfig = (handleSelection, handleAdd, handleDelete) => ({
   title: 'Facilities',
@@ -24,66 +30,26 @@ const generateTableConfig = (handleSelection, handleAdd, handleDelete) => ({
     </IconButton>
   ),
   columns: [
-    { columnName: '', numeric: true, disablePadding: false, label: '', value: d => <DeleteForever fontSize='large'  color='error' onClick={e => handleDelete(e, d)} data-cy='table-delete-btn' /> },
-    { columnName: 'facilityName', numeric: true, disablePadding: false, label: 'Facility Name', value: d => d.name },
-    { columnName: 'facilityType', numeric: true, disablePadding: true, label: 'Facility Type', value: d => d.type },
+    { columnName: '', numeric: true, disablePadding: false, label: '', value: d => <IconButton><DeleteForever fontSize='large'  color='error' onClick={e => handleDelete(e, d)} data-cy='table-delete-btn' /></IconButton> },
+    { columnName: 'name', numeric: true, disablePadding: false, label: 'Facility Name', value: d => d.name },
+    { columnName: 'type', numeric: true, disablePadding: true, label: 'Facility Type', value: d => d.type },
     { columnName: 'address', numeric: true, disablePadding: false, label: 'Address', value: d => d.address },
     { columnName: 'city', numeric: true, disablePadding: false, label: 'City', value: d => d.city },
     { columnName: 'state', numeric: true, disablePadding: false, label: 'State', value: d => d.state },
     { columnName: 'website', numeric: true, disablePadding: false, label: 'Website', value: d => d.website },
     { columnName: 'primaryContactName', numeric: true, disablePadding: false, label: 'Primary Contact Name', value: d => d.primaryContactName },
     { columnName: 'primaryContactEmail', numeric: true, disablePadding: false, label: 'Primary Contact Email', value: d => d.primaryContactEmail },
-    { columnName: 'primaryPhoneNumber', numeric: true, disablePadding: false, label: 'Primary Phone Number', value: d => d.primaryPhoneNumber },
-    { columnName: 'altContactName', numeric: true, disablePadding: false, label: 'Alternate Contact Name', value: d => d.altContactName },
-    { columnName: 'altContactEmail', numeric: true, disablePadding: false, label: 'Alternate Contact Email', value: d => d.altContactEmail },
-    { columnName: 'altPhoneNumber', numeric: true, disablePadding: false, label: 'Alternate Phone Number', value: d => d.altPhoneNumber },
-    { columnName: 'active', numeric: true, disablePadding: false, label: 'Active', value: d => d.active }
+    { columnName: 'primaryContactPhone', numeric: true, disablePadding: false, label: 'Primary Phone Number', value: d => d.primaryContactPhone },
+    { columnName: 'alternateContactName', numeric: true, disablePadding: false, label: 'Alternate Contact Name', value: d => d.alternateContactName },
+    { columnName: 'alternateContactEmail', numeric: true, disablePadding: false, label: 'Alternate Contact Email', value: d => d.alternateContactEmail },
+    { columnName: 'alternateContactPhone', numeric: true, disablePadding: false, label: 'Alternate Contact Phone', value: d => d.alternateContactPhone },
+    { columnName: '', numeric: true, disablePadding: false, label: 'Active', value: d => d.active ? <IconButton><Circle color='success'  /></IconButton> : <IconButton><Circle color='disabled' /></IconButton> },
   ]
 });
 
-function createData(id, facilityName, facilityType, address, city, state, website, primaryContactName, primaryContactEmail, primaryPhoneNumber, altContactName, altContactEmail, altPhoneNumber, active) {
-  return {
-    id,
-    facilityName,
-    facilityType,
-    address,
-    city,
-    state,
-    website,
-    primaryContactName,
-    primaryContactEmail,
-    primaryPhoneNumber,
-    altContactName,
-    altContactEmail,
-    altPhoneNumber,
-    active
-  };
-}
-
-const facilities = [
-  createData('1', 'Vista Jail', 'Correctional', '325 S Melrose Drive # 200', 'Vista', 'CA', 'fshnc.org', 'Shalimar Jackson', 'shalimar.jackson@sdsheriff.org', '619-258-3031', 'Glenn Joiner', 'trailbosss@yahoo.com', '760-803-6026', 'Yes'),
-  createData('1', 'Vista Jail', 'Correctional', '325 S Melrose Drive # 200', 'Vista', 'CA', 'fshnc.org', 'Shalimar Jackson', 'shalimar.jackson@sdsheriff.org', '619-258-3031', 'Glenn Joiner', 'trailbosss@yahoo.com', '760-803-6026', 'No'),
-  createData('1', 'Vista Jail', 'Correctional', '325 S Melrose Drive # 200', 'Vista', 'CA', 'fshnc.org', 'Shalimar Jackson', 'shalimar.jackson@sdsheriff.org', '619-258-3031', 'Glenn Joiner', 'trailbosss@yahoo.com', '760-803-6026', 'Yes'),
-  createData('1', 'Vista Jail', 'Correctional', '325 S Melrose Drive # 200', 'Vista', 'CA', 'fshnc.org', 'Shalimar Jackson', 'shalimar.jackson@sdsheriff.org', '619-258-3031', 'Glenn Joiner', 'trailbosss@yahoo.com', '760-803-6026', 'Yes'),
-  createData('1', 'Vista Jail', 'Correctional', '325 S Melrose Drive # 200', 'Vista', 'CA', 'fshnc.org', 'Shalimar Jackson', 'shalimar.jackson@sdsheriff.org', '619-258-3031', 'Glenn Joiner', 'trailbosss@yahoo.com', '760-803-6026', 'No'),
-  createData('1', 'Vista Jail', 'Correctional', '325 S Melrose Drive # 200', 'Vista', 'CA', 'fshnc.org', 'Shalimar Jackson', 'shalimar.jackson@sdsheriff.org', '619-258-3031', 'Glenn Joiner', 'trailbosss@yahoo.com', '760-803-6026', 'Yes'),
-  createData('1', 'Vista Jail', 'Correctional', '325 S Melrose Drive # 200', 'Vista', 'CA', 'fshnc.org', 'Shalimar Jackson', 'shalimar.jackson@sdsheriff.org', '619-258-3031', 'Glenn Joiner', 'trailbosss@yahoo.com', '760-803-6026', 'Yes'),
-  createData('1', 'Vista Jail', 'Correctional', '325 S Melrose Drive # 200', 'Vista', 'CA', 'fshnc.org', 'Shalimar Jackson', 'shalimar.jackson@sdsheriff.org', '619-258-3031', 'Glenn Joiner', 'trailbosss@yahoo.com', '760-803-6026', 'No'),
-  createData('1', 'Vista Jail', 'Correctional', '325 S Melrose Drive # 200', 'Vista', 'CA', 'fshnc.org', 'Shalimar Jackson', 'shalimar.jackson@sdsheriff.org', '619-258-3031', 'Glenn Joiner', 'trailbosss@yahoo.com', '760-803-6026', 'Yes'),
-  createData('1', 'Vista Jail', 'Correctional', '325 S Melrose Drive # 200', 'Vista', 'CA', 'fshnc.org', 'Shalimar Jackson', 'shalimar.jackson@sdsheriff.org', '619-258-3031', 'Glenn Joiner', 'trailbosss@yahoo.com', '760-803-6026', 'Yes'),
-  createData('1', 'Vista Jail', 'Correctional', '325 S Melrose Drive # 200', 'Vista', 'CA', 'fshnc.org', 'Shalimar Jackson', 'shalimar.jackson@sdsheriff.org', '619-258-3031', 'Glenn Joiner', 'trailbosss@yahoo.com', '760-803-6026', 'No'),
-  createData('1', 'Vista Jail', 'Correctional', '325 S Melrose Drive # 200', 'Vista', 'CA', 'fshnc.org', 'Shalimar Jackson', 'shalimar.jackson@sdsheriff.org', '619-258-3031', 'Glenn Joiner', 'trailbosss@yahoo.com', '760-803-6026', 'Yes'),
-  createData('1', 'Vista Jail', 'Correctional', '325 S Melrose Drive # 200', 'Vista', 'CA', 'fshnc.org', 'Shalimar Jackson', 'shalimar.jackson@sdsheriff.org', '619-258-3031', 'Glenn Joiner', 'trailbosss@yahoo.com', '760-803-6026', 'Yes'),
-  createData('1', 'Vista Jail', 'Correctional', '325 S Melrose Drive # 200', 'Vista', 'CA', 'fshnc.org', 'Shalimar Jackson', 'shalimar.jackson@sdsheriff.org', '619-258-3031', 'Glenn Joiner', 'trailbosss@yahoo.com', '760-803-6026', 'No'),
-  createData('1', 'Vista Jail', 'Correctional', '325 S Melrose Drive # 200', 'Vista', 'CA', 'fshnc.org', 'Shalimar Jackson', 'shalimar.jackson@sdsheriff.org', '619-258-3031', 'Glenn Joiner', 'trailbosss@yahoo.com', '760-803-6026', 'Yes'),
-  createData('1', 'Vista Jail', 'Correctional', '325 S Melrose Drive # 200', 'Vista', 'CA', 'fshnc.org', 'Shalimar Jackson', 'shalimar.jackson@sdsheriff.org', '619-258-3031', 'Glenn Joiner', 'trailbosss@yahoo.com', '760-803-6026', 'Yes'),
-  createData('1', 'Vista Jail', 'Correctional', '325 S Melrose Drive # 200', 'Vista', 'CA', 'fshnc.org', 'Shalimar Jackson', 'shalimar.jackson@sdsheriff.org', '619-258-3031', 'Glenn Joiner', 'trailbosss@yahoo.com', '760-803-6026', 'Yes'),
-  createData('1', 'Vista Jail', 'Correctional', '325 S Melrose Drive # 200', 'Vista', 'CA', 'fshnc.org', 'Shalimar Jackson', 'shalimar.jackson@sdsheriff.org', '619-258-3031', 'Glenn Joiner', 'trailbosss@yahoo.com', '760-803-6026', 'Yes'),
-];
-
 const FacilitiesDashboard = () => {
   const [isOpen, setIsOpen] = useState(false);
-  // const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [tableData, setTableData] = useState([]);
   const [facility, setFacility] = useState(null);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
@@ -92,7 +58,7 @@ const FacilitiesDashboard = () => {
   const formik = useFormik({
     initialValues: {
       name: '',
-      facilityType: '',
+      type: '',
       address: '',
       city: '',
       state: '',
@@ -108,15 +74,15 @@ const FacilitiesDashboard = () => {
     onSubmit: async (values) => {
       const { id } = values;
       try {
-
         if (id) {
-          // await ectsService.putEctsstaffWithEctsStaffId({}, id, values);
+          await nchandiWebsiteService.putFacilitiesWithFacilityId({}, id, values);
           setIsOpen(false);
         }else {
-          // await ectsService.postEctsstaff({}, values);
+          await nchandiWebsiteService.postFacilities({}, values);
           setIsOpen(false);
         }
         enqueueSnackbar('This facility was successfully submitted.', snackbarMessages.success.configuration);
+        fetchTableData();
       } catch (err) {
         enqueueSnackbar('There was an error when submitting this form, please try again later or contact the Technology Chair', snackbarMessages.error.configuration);
         console.error(err);
@@ -126,20 +92,18 @@ const FacilitiesDashboard = () => {
     validateOnBlur: true,
   });
 
-  // const fetchData = useCallback(params => ectsService.getEctsstaff(params), []); //Try This!!!
-
   /**
    *
    */
   const fetchTableData = useCallback(async () => {
     try {
-      // setLoading(true);
-      // const { data: facilities } = await nchandiWebsiteService.getFacilities);
+      setLoading(true);
+      const { data: facilities } = await nchandiWebsiteService.getFacilities();
       setTableData(facilities);
     } catch (err) {
       console.error(err);
     } finally {
-      // setLoading(No);
+      setLoading(false);
     }
   }, []);
 
@@ -154,13 +118,11 @@ const FacilitiesDashboard = () => {
    *
    */
   const handleDialogSave = () => {
-    setTimeout( async () => { // Remove the onTimeout once the POST method in onSubmit is defined.
-      formik.submitForm();
-      if (!formik.isValid) {
-        enqueueSnackbar('There are fields missing in your form. Please fill out all required * fields.', snackbarMessages.error.configuration);
-      }
-      formik.setSubmitting(false);
-    }, 1000);
+    formik.submitForm();
+    if (!formik.isValid) {
+      enqueueSnackbar('There are fields missing in your form. Please fill out all required * fields.', snackbarMessages.error.configuration);
+    }
+    formik.setSubmitting(false);
   };
 
   /**
@@ -208,19 +170,19 @@ const FacilitiesDashboard = () => {
    *
    */
   const handleDeleteDialogConfirm = async () => {
-    // setLoading(true);
+    setLoading(true);
     try {
-      // const { id } = facility;
-      // await nchandiWebsiteService.deleteFacilityById(id);
+      const { id } = facility;
+      await nchandiWebsiteService.deleteFacilitiesWithFacilityId({}, id);
       enqueueSnackbar('This facility was deleted.', snackbarMessages.success.configuration);
     } catch (error) {
       console.error(error);
       enqueueSnackbar('There was an error deleting the facility!', snackbarMessages.error.configuration);
     } finally {
-      // setLoading(false);
+      setLoading(false);
       setFacility(null);
       setIsDeleteDialogOpen(false);
-      // fetchRequests();
+      fetchTableData();
     }
   };
 
@@ -228,6 +190,7 @@ const FacilitiesDashboard = () => {
 
   return (
     <>
+    {loading}
       <Grid Grid container sm={12} textAlign={'center'} justifyContent={'center'} pb={3}>
         <Grid sm={10}>
           <Typography variant="h4" color={'white'} >
@@ -257,7 +220,7 @@ const FacilitiesDashboard = () => {
       <DeleteConfirmationDialog
         isOpen={isDeleteDialogOpen}
         entityName='Facility'
-        primaryText={facility?.facilityName}
+        primaryText={facility?.name}
         handleClose={handleDeleteDialogClose}
         handleDelete={handleDeleteDialogConfirm}
       />

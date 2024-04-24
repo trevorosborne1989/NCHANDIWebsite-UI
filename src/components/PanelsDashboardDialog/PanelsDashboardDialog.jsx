@@ -92,12 +92,12 @@ const genderOptions = [
 
 const PanelsDashboardDialog = ({ formik, facilityData, peopleData, isOpen, handleCheckbox, handleClear, handleSave, handleClose }) => {
 
+  const handlePanelMemberChange = (e, panelMember) => {
+    formik.setFieldValue(panelMember, peopleData.find(person => person.firstName + person.lastName === e.target.value));
+  }
+
   return (
     <>
-    {console.log(new Date(2024, 10, 20, Number(formik.values?.eventTime?.slice(0, 3)), Number(formik.values?.eventTime?.slice(3, 5))))}
-    {console.log(Number(formik.values?.eventTime?.split(':')[0]))}
-    {console.log(Number(formik.values?.eventTime?.split(':')[1].slice(2,3)))}
-    {console.log(formik.values?.eventTime?.split(':')[1].slice(-2))}
       <Dialog open={isOpen} onClose={handleClose}>
         <DialogTitle>Panel</DialogTitle>
         <DialogContent>
@@ -205,6 +205,7 @@ const PanelsDashboardDialog = ({ formik, facilityData, peopleData, isOpen, handl
             control={<Checkbox
               sx={{ color: nchandiTheme.handiDarkGreen, '&.Mui-checked': { color: nchandiTheme.handiGreen } }}
               name='markAsMembersNeeded'
+              size='large'
               checked={formik.values.markAsMembersNeeded}
               value={formik.values.markAsMembersNeeded}
               onChange={handleCheckbox}
@@ -242,7 +243,7 @@ const PanelsDashboardDialog = ({ formik, facilityData, peopleData, isOpen, handl
               variant='outlined'
               margin='dense'
               value={formik.values?.boardChampion ? formik.values.boardChampion?.firstName + formik.values?.boardChampion?.lastName : ''}
-              onChange={e => formik.setFieldValue('boardChampion', peopleData.find(person => person.firstName + person.lastName === e.target.value))}
+              onChange={e => handlePanelMemberChange(e, 'boardChampion')}
               onBlur={formik.handleBlur}
               helperText={formik.touched.boardChampion ? formik.errors.boardChampion : ""}
               error={formik.touched.boardChampion && Boolean(formik.errors.boardChampion)}
@@ -266,7 +267,7 @@ const PanelsDashboardDialog = ({ formik, facilityData, peopleData, isOpen, handl
               variant='outlined'
               margin='dense'
               value={formik.values?.panelCoordinator ? formik.values?.panelCoordinator?.firstName + formik.values?.panelCoordinator?.lastName : ''}
-              onChange={e => formik.setFieldValue('panelCoordinator', peopleData.find(person => person.firstName + person.lastName === e.target.value))}
+              onChange={e => handlePanelMemberChange(e, 'panelCoordinator')}
               onBlur={formik.handleBlur}
               helperText={formik.touched.panelCoordinator ? formik.errors.panelCoordinator : ""}
               error={formik.touched.panelCoordinator && Boolean(formik.errors.panelCoordinator)}
@@ -290,7 +291,7 @@ const PanelsDashboardDialog = ({ formik, facilityData, peopleData, isOpen, handl
               variant='outlined'
               margin='dense'
               value={formik.values?.panelLeader ? formik.values?.panelLeader?.firstName + formik.values?.panelLeader?.lastName : ''}
-              onChange={e => formik.setFieldValue('panelLeader', peopleData.find(person => person.firstName + person.lastName === e.target.value))}
+              onChange={e => handlePanelMemberChange(e, 'panelLeader')}
               onBlur={formik.handleBlur}
               helperText={formik.touched.panelLeader ? formik.errors.panelLeader : ""}
               error={formik.touched.panelLeader && Boolean(formik.errors.panelLeader)}
@@ -314,7 +315,7 @@ const PanelsDashboardDialog = ({ formik, facilityData, peopleData, isOpen, handl
               variant='outlined'
               margin='dense'
               value={formik.values?.panelMember1 ? formik.values?.panelMember1?.firstName + formik.values?.panelMember1?.lastName : ''}
-              onChange={e => formik.setFieldValue('panelMember1', peopleData.find(person => person.firstName + person.lastName === e.target.value))}
+              onChange={e => handlePanelMemberChange(e, 'panelMember1')}
               onBlur={formik.handleBlur}
               helperText={formik.touched.panelMember1 ? formik.errors.panelMember1 : ""}
               error={formik.touched.panelMember1 && Boolean(formik.errors.panelMember1)}
@@ -338,7 +339,7 @@ const PanelsDashboardDialog = ({ formik, facilityData, peopleData, isOpen, handl
             variant='outlined'
             margin='dense'
             value={formik.values?.panelMember2 ? formik.values?.panelMember2?.firstName + formik.values?.panelMember2?.lastName : ''}
-            onChange={e => formik.setFieldValue('panelMember2', peopleData.find(person => person.firstName + person.lastName === e.target.value))}
+            onChange={e => handlePanelMemberChange(e, 'panelMember2')}
             onBlur={formik.handleBlur}
             helperText={formik.touched.panelMember2 ? formik.errors.panelMember2 : ""}
             error={formik.touched.panelMember2 && Boolean(formik.errors.panelMember2)}
@@ -362,7 +363,7 @@ const PanelsDashboardDialog = ({ formik, facilityData, peopleData, isOpen, handl
               variant='outlined'
               margin='dense'
               value={formik.values?.panelMember3 ? formik.values?.panelMember3?.firstName + formik.values?.panelMember3?.lastName : ''}
-              onChange={e => formik.setFieldValue('panelMember3', peopleData.find(person => person.firstName + person.lastName === e.target.value))}
+              onChange={e => handlePanelMemberChange(e, 'panelMember3')}
               onBlur={formik.handleBlur}
               helperText={formik.touched.panelMember3 ? formik.errors.panelMember3 : ""}
               error={formik.touched.panelMember3 && Boolean(formik.errors.panelMember3)}
@@ -386,7 +387,7 @@ const PanelsDashboardDialog = ({ formik, facilityData, peopleData, isOpen, handl
               variant='outlined'
               margin='dense'
               value={formik.values?.panelMember4 ? formik.values?.panelMember4?.firstName + formik.values?.panelMember4?.lastName : ''}
-              onChange={e => formik.setFieldValue('panelMember4', peopleData.find(person => person.firstName + person.lastName === e.target.value))}
+              onChange={e => handlePanelMemberChange(e, 'panelMember4')}
               onBlur={formik.handleBlur}
               helperText={formik.touched.panelMember4 ? formik.errors.panelMember4 : ""}
               error={formik.touched.panelMember4 && Boolean(formik.errors.panelMember4)}
@@ -410,7 +411,7 @@ const PanelsDashboardDialog = ({ formik, facilityData, peopleData, isOpen, handl
               variant='outlined'
               margin='dense'
               value={formik.values?.panelMember5 ? formik.values?.panelMember5?.firstName + formik.values?.panelMember5?.lastName : ''}
-              onChange={e => formik.setFieldValue('panelMember5', peopleData.find(person => person.firstName + person.lastName === e.target.value))}
+              onChange={e => handlePanelMemberChange(e, 'panelMember5')}
               onBlur={formik.handleBlur}
               helperText={formik.touched.panelMember5 ? formik.errors.panelMember5 : ""}
               error={formik.touched.panelMember5 && Boolean(formik.errors.panelMember5)}
