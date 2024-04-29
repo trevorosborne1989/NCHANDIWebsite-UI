@@ -169,180 +169,6 @@ class NCHANDIWebsiteService {
    * } 
    * @return Check http://localhost:8080/api/NCHANDIWebsite/swagger-ui/index.html#/ for more information on the response body 
    */
-  getPanelmaterials(params, body) {
-
-    return this.instance.get('http://localhost:8080/api/NCHANDIWebsite/panel-materials', params)
-  }
-
-  /**
-   * Valid Query Parameters:
-   * { 
-   * } 
-   * @return Check http://localhost:8080/api/NCHANDIWebsite/swagger-ui/index.html#/ for more information on the response body 
-   */
-  postPanelmaterials(params, body) {
-
-    return this.instance.post('http://localhost:8080/api/NCHANDIWebsite/panel-materials', body, params)
-  }
-
-  /**
-   * Valid Query Parameters:
-   * { 
-   * string : panelMaterialId, 
-   * } 
-   * @return Check http://localhost:8080/api/NCHANDIWebsite/swagger-ui/index.html#/ for more information on the response body 
-   */
-  getPanelmaterialsWithPanelMaterialId(params, panelMaterialId, body) {
-
-    return this.instance.get('http://localhost:8080/api/NCHANDIWebsite/panel-materials/' + panelMaterialId + '', params)
-  }
-
-  /**
-   * Valid Query Parameters:
-   * { 
-   * string : panelMaterialId, 
-   * } 
-   * @return Check http://localhost:8080/api/NCHANDIWebsite/swagger-ui/index.html#/ for more information on the response body 
-   */
-  putPanelmaterialsWithPanelMaterialId(params, panelMaterialId, body) {
-
-    return this.instance.put('http://localhost:8080/api/NCHANDIWebsite/panel-materials/' + panelMaterialId + '', body, params)
-  }
-
-  /**
-   * Valid Query Parameters:
-   * { 
-   * string : panelMaterialId, 
-   * } 
-   * @return Check http://localhost:8080/api/NCHANDIWebsite/swagger-ui/index.html#/ for more information on the response body 
-   */
-  deletePanelmaterialsWithPanelMaterialId(params, panelMaterialId, body) {
-
-    return this.instance.delete('http://localhost:8080/api/NCHANDIWebsite/panel-materials/' + panelMaterialId + '', params)
-  }
-
-  /**
-   * Valid Query Parameters:
-   * { 
-   * } 
-   * @return Check http://localhost:8080/api/NCHANDIWebsite/swagger-ui/index.html#/ for more information on the response body 
-   */
-  getMonthlyreports(params, body) {
-
-    return this.instance.get('http://localhost:8080/api/NCHANDIWebsite/monthly-reports', params)
-  }
-
-  /**
-   * Valid Query Parameters:
-   * { 
-   * } 
-   * @return Check http://localhost:8080/api/NCHANDIWebsite/swagger-ui/index.html#/ for more information on the response body 
-   */
-  postMonthlyreports(params, body) {
-
-    return this.instance.post('http://localhost:8080/api/NCHANDIWebsite/monthly-reports', body, params)
-  }
-
-  /**
-   * Valid Query Parameters:
-   * { 
-   * string : monthlyReportId, 
-   * } 
-   * @return Check http://localhost:8080/api/NCHANDIWebsite/swagger-ui/index.html#/ for more information on the response body 
-   */
-  getMonthlyreportsWithMonthlyReportId(params, monthlyReportId, body) {
-
-    return this.instance.get('http://localhost:8080/api/NCHANDIWebsite/monthly-reports/' + monthlyReportId + '', params)
-  }
-
-  /**
-   * Valid Query Parameters:
-   * { 
-   * string : monthlyReportId, 
-   * } 
-   * @return Check http://localhost:8080/api/NCHANDIWebsite/swagger-ui/index.html#/ for more information on the response body 
-   */
-  putMonthlyreportsWithMonthlyReportId(params, monthlyReportId, body) {
-
-    return this.instance.put('http://localhost:8080/api/NCHANDIWebsite/monthly-reports/' + monthlyReportId + '', body, params)
-  }
-
-  /**
-   * Valid Query Parameters:
-   * { 
-   * string : monthlyReportId, 
-   * } 
-   * @return Check http://localhost:8080/api/NCHANDIWebsite/swagger-ui/index.html#/ for more information on the response body 
-   */
-  deleteMonthlyreportsWithMonthlyReportId(params, monthlyReportId, body) {
-
-    return this.instance.delete('http://localhost:8080/api/NCHANDIWebsite/monthly-reports/' + monthlyReportId + '', params)
-  }
-
-  /**
-   * Valid Query Parameters:
-   * { 
-   * } 
-   * @return Check http://localhost:8080/api/NCHANDIWebsite/swagger-ui/index.html#/ for more information on the response body 
-   */
-  getGeneralresources(params, body) {
-
-    return this.instance.get('http://localhost:8080/api/NCHANDIWebsite/general-resources', params)
-  }
-
-  /**
-   * Valid Query Parameters:
-   * { 
-   * } 
-   * @return Check http://localhost:8080/api/NCHANDIWebsite/swagger-ui/index.html#/ for more information on the response body 
-   */
-  postGeneralresources(params, body) {
-
-    return this.instance.post('http://localhost:8080/api/NCHANDIWebsite/general-resources', body, params)
-  }
-
-  /**
-   * Valid Query Parameters:
-   * { 
-   * string : generalResourceId, 
-   * } 
-   * @return Check http://localhost:8080/api/NCHANDIWebsite/swagger-ui/index.html#/ for more information on the response body 
-   */
-  getGeneralresourcesWithGeneralResourceId(params, generalResourceId, body) {
-
-    return this.instance.get('http://localhost:8080/api/NCHANDIWebsite/general-resources/' + generalResourceId + '', params)
-  }
-
-  /**
-   * Valid Query Parameters:
-   * { 
-   * string : generalResourceId, 
-   * } 
-   * @return Check http://localhost:8080/api/NCHANDIWebsite/swagger-ui/index.html#/ for more information on the response body 
-   */
-  putGeneralresourcesWithGeneralResourceId(params, generalResourceId, body) {
-
-    return this.instance.put('http://localhost:8080/api/NCHANDIWebsite/general-resources/' + generalResourceId + '', body, params)
-  }
-
-  /**
-   * Valid Query Parameters:
-   * { 
-   * string : generalResourceId, 
-   * } 
-   * @return Check http://localhost:8080/api/NCHANDIWebsite/swagger-ui/index.html#/ for more information on the response body 
-   */
-  deleteGeneralresourcesWithGeneralResourceId(params, generalResourceId, body) {
-
-    return this.instance.delete('http://localhost:8080/api/NCHANDIWebsite/general-resources/' + generalResourceId + '', params)
-  }
-
-  /**
-   * Valid Query Parameters:
-   * { 
-   * } 
-   * @return Check http://localhost:8080/api/NCHANDIWebsite/swagger-ui/index.html#/ for more information on the response body 
-   */
   getFacilities(params, body) {
 
     return this.instance.get('http://localhost:8080/api/NCHANDIWebsite/facilities', params)
@@ -412,64 +238,6 @@ class NCHANDIWebsiteService {
    * } 
    * @return Check http://localhost:8080/api/NCHANDIWebsite/swagger-ui/index.html#/ for more information on the response body 
    */
-  getArchivedreports(params, body) {
-
-    return this.instance.get('http://localhost:8080/api/NCHANDIWebsite/archived-reports', params)
-  }
-
-  /**
-   * Valid Query Parameters:
-   * { 
-   * } 
-   * @return Check http://localhost:8080/api/NCHANDIWebsite/swagger-ui/index.html#/ for more information on the response body 
-   */
-  postArchivedreports(params, body) {
-
-    return this.instance.post('http://localhost:8080/api/NCHANDIWebsite/archived-reports', body, params)
-  }
-
-  /**
-   * Valid Query Parameters:
-   * { 
-   * string : archivedReportId, 
-   * } 
-   * @return Check http://localhost:8080/api/NCHANDIWebsite/swagger-ui/index.html#/ for more information on the response body 
-   */
-  getArchivedreportsWithArchivedReportId(params, archivedReportId, body) {
-
-    return this.instance.get('http://localhost:8080/api/NCHANDIWebsite/archived-reports/' + archivedReportId + '', params)
-  }
-
-  /**
-   * Valid Query Parameters:
-   * { 
-   * string : archivedReportId, 
-   * } 
-   * @return Check http://localhost:8080/api/NCHANDIWebsite/swagger-ui/index.html#/ for more information on the response body 
-   */
-  putArchivedreportsWithArchivedReportId(params, archivedReportId, body) {
-
-    return this.instance.put('http://localhost:8080/api/NCHANDIWebsite/archived-reports/' + archivedReportId + '', body, params)
-  }
-
-  /**
-   * Valid Query Parameters:
-   * { 
-   * string : archivedReportId, 
-   * } 
-   * @return Check http://localhost:8080/api/NCHANDIWebsite/swagger-ui/index.html#/ for more information on the response body 
-   */
-  deleteArchivedreportsWithArchivedReportId(params, archivedReportId, body) {
-
-    return this.instance.delete('http://localhost:8080/api/NCHANDIWebsite/archived-reports/' + archivedReportId + '', params)
-  }
-
-  /**
-   * Valid Query Parameters:
-   * { 
-   * } 
-   * @return Check http://localhost:8080/api/NCHANDIWebsite/swagger-ui/index.html#/ for more information on the response body 
-   */
   getPeople(params, body) {
 
     return this.instance.get('http://localhost:8080/api/NCHANDIWebsite/people', params)
@@ -522,8 +290,63 @@ class NCHANDIWebsiteService {
     return this.instance.delete('http://localhost:8080/api/NCHANDIWebsite/people/' + personId + '', params)
   }
 
+  /**
+   * Valid Query Parameters:
+   * { 
+   * } 
+   * @return Check http://localhost:8080/api/NCHANDIWebsite/swagger-ui/index.html#/ for more information on the response body 
+   */
+  getResourceItems(params, body) {
 
+    return this.instance.get('http://localhost:8080/api/NCHANDIWebsite/resource-items', params)
+  }
 
+  /**
+   * Valid Query Parameters:
+   * { 
+   * } 
+   * @return Check http://localhost:8080/api/NCHANDIWebsite/swagger-ui/index.html#/ for more information on the response body 
+   */
+  postResourceItems(params, body) {
+
+    return this.instance.post('http://localhost:8080/api/NCHANDIWebsite/resource-items', body, params)
+  }
+
+  /**
+   * Valid Query Parameters:
+   * { 
+   * string : resourceItemId, 
+   * } 
+   * @return Check http://localhost:8080/api/NCHANDIWebsite/swagger-ui/index.html#/ for more information on the response body 
+   */
+  getResourceItemWithResourceItemId(params, resourceItemId, body) {
+
+    return this.instance.get('http://localhost:8080/api/NCHANDIWebsite/resource-items/' + resourceItemId + '', params)
+  }
+
+  /**
+   * Valid Query Parameters:
+   * { 
+   * string : resourceItemId, 
+   * } 
+   * @return Check http://localhost:8080/api/NCHANDIWebsite/swagger-ui/index.html#/ for more information on the response body 
+   */
+  putResourceItemWithResourceItemId(params, resourceItemId, body) {
+
+    return this.instance.put('http://localhost:8080/api/NCHANDIWebsite/resource-items/' + resourceItemId + '', body, params)
+  }
+
+  /**
+   * Valid Query Parameters:
+   * { 
+   * string : resourceItemId, 
+   * } 
+   * @return Check http://localhost:8080/api/NCHANDIWebsite/swagger-ui/index.html#/ for more information on the response body 
+   */
+  deleteResourceItemWithResourceItemId(params, resourceItemId, body) {
+
+    return this.instance.delete('http://localhost:8080/api/NCHANDIWebsite/resource-items/' + resourceItemId + '', params)
+  }
 }
 export default NCHANDIWebsiteService;
 

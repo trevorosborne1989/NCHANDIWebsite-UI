@@ -14,27 +14,13 @@ import {
 import LoadingButton from '@mui/lab/LoadingButton';
 import { nchandiTheme } from '../../App';
 import ListCard from '../ListCard/ListCard';
-// import NCHANDIWebsiteService from '../../lib/NCHANDIWebsiteService'
+import NCHANDIWebsiteService from '../../lib/NCHANDIWebsiteService'
+import moment from 'moment';
 
-// const nchandiWebsiteService = new NCHANDIWebsiteService();
-
-function createData(id, dateCreated, label, body) {
-  return {
-    id,
-    dateCreated,
-    label,
-    body
-  };
-}
-
-const announcements = [
-  createData('1', '12/14/2023', '2024 Proposed Budget', 'This budget is less than the previous year.'),
-  createData('2', '11/11/2023', 'Green Can Special Report', 'The green can is being circulated once more!'),
-  createData('3', '12/24/2022', '2023 Proposed Budget', 'Please bring proposed budget to your local group. We value your input!'),
-];
+const nchandiWebsiteService = new NCHANDIWebsiteService();
 
 const AnnouncementsPage = () => {
-  const [listData, setListData] = useState(announcements);
+  const [listData, setListData] = useState([]);
   const [announcement, setAnnouncement] = useState(null);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -42,17 +28,23 @@ const AnnouncementsPage = () => {
 
   const formik = useFormik({
     initialValues: {
-      label: '',
-      body: ''
+      name: '',
+      body: '',
+      type: '',
+      createdDate: ''
     },
     onSubmit: async (values) => {
       try {
-        // await nchandiWebsiteService.postAnnouncements({}, values);
+        setLoading(true);
+        await nchandiWebsiteService.postResourceItems({}, values);
+        console.log(formik);
         enqueueSnackbar('This resource was successfully uploaded.', snackbarMessages.success.configuration);
-        formik.handleReset();
+        fetchListData();
       } catch (err) {
         enqueueSnackbar('There was an error when uploading this resource, please try again later or contact the Technology Chair', snackbarMessages.error.configuration);
         console.error(err);
+      } finally {
+        setLoading(false);
       }
     },
     validationSchema: yupSchema,
@@ -64,14 +56,14 @@ const AnnouncementsPage = () => {
    */
   const fetchListData = useCallback(async () => {
     try {
-      // setLoading(true);
-      // const { data: announcement } = await nchandiWebsiteService.getAnnouncements();
+      setLoading(true);
+      const announcements = (await nchandiWebsiteService.getResourceItems()).data.filter(resourceItem => resourceItem?.type === 'Announcement');
       setListData(announcements);
     } catch (err) {
       enqueueSnackbar('Unable to fetch current announcements, please try again later or contact the Technology Chair', snackbarMessages.error.configuration);
       console.error(err);
     } finally {
-      // setLoading(false);
+      setLoading(false);
     }
   }, [enqueueSnackbar]);
 
@@ -94,15 +86,14 @@ const AnnouncementsPage = () => {
    *
    */
   const handleSave = () => {
-    setLoading(true);
-    setTimeout( async () => { // Remove the onTimeout once the POST method in onSubmit is defined.
-      formik.submitForm();
-      if (formik.errors) {
-        enqueueSnackbar('There are fields missing in your form. Please fill out all the required * fields.', snackbarMessages.error.configuration);
-      }
-      formik.setSubmitting(false);
-    }, 5000);
-    setLoading(false);
+    const date = moment().format('MM/DD/YYYY');
+    formik.setFieldValue('createdDate', date);
+    formik.setFieldValue('type', 'Announcement');
+    formik.submitForm();
+    if (!formik.isValid) {
+      enqueueSnackbar('There are fields missing in your form. Please fill out all the required * fields.', snackbarMessages.error.configuration);
+    }
+    formik.setSubmitting(false);
   };
 
   /**
@@ -126,19 +117,19 @@ const AnnouncementsPage = () => {
    *
    */
   const handleDeleteDialogConfirm = async () => {
-    // setLoading(true);
+    setLoading(true);
     try {
-      // const { id } = announcement;
-      // await nchandiWebsiteService.deleteAnnouncementReportById(id);
+      const { id } = announcement;
+      await nchandiWebsiteService.deleteResourceItemWithResourceItemId({}, id);
       enqueueSnackbar('This resource was deleted.', snackbarMessages.success.configuration);
     } catch (error) {
       console.error(error);
       enqueueSnackbar('There was an error deleting this resource!', snackbarMessages.error.configuration);
     } finally {
-      // setLoading(false);
+      setLoading(false);
       setAnnouncement(null);
       setIsDeleteDialogOpen(false);
-      // fetchRequests();
+      fetchListData();
     }
   };
 
@@ -149,22 +140,22 @@ const AnnouncementsPage = () => {
           <Card sx={{ backgroundColor: nchandiTheme.handiDarkBlue }} variant="elevation" elevation={10}>
             <CardContent>
               <Typography variant='h5' color={nchandiTheme.handiSecondaryWhite}>
-                Title
+                Header
               </Typography>
               <Box py={2} pb={3}>
                 <TextField
-                  name='label'
+                  name='name'
                   fullWidth
                   variant='filled'
                   size='small'
                   color='secondary'
                   focused
                   sx={{input: { color: nchandiTheme.handiSecondaryWhite }}}
-                  value={formik.values.label}
+                  value={formik.values.name}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  helperText={formik.touched.label ? formik.errors.label : ""}
-                  error={formik.touched.label && Boolean(formik.errors.label)}
+                  helperText={formik.touched.name ? formik.errors.name : ""}
+                  error={formik.touched.name && Boolean(formik.errors.name)}
                   required
                 />
                 <Typography variant='h5' color={nchandiTheme.handiSecondaryWhite} py={3}>
@@ -210,7 +201,7 @@ const AnnouncementsPage = () => {
               isOpen={isDeleteDialogOpen}
               entityName={'Announcement'}
               cardTitle={'Announcements'}
-              primaryText={announcement?.label}
+              primaryText={announcement?.name}
               handleClose={handleDeleteDialogClose}
               handleDelete={handleDelete}
               handleDeleteConfirm={handleDeleteDialogConfirm}
@@ -221,10 +212,10 @@ const AnnouncementsPage = () => {
               <Box align='center' alignItems='center' mb={8}s>
                 <Card variant="elevation" elevation={10} sx={{ maxWidth: '90%', backgroundColor: "#f8d77f" }}>
                   <Typography variant="h4" py={2} mb={1.5}>
-                    {announcement.label}
+                    {announcement.name}
                   </Typography>
                   <Typography variant='h6' mb={1}>
-                    Date Posted: {announcement.dateCreated}
+                    Date Posted: {announcement.createdDate}
                   </Typography>
                 </Card>
                 <Card variant="elevation" elevation={5} sx={{ maxWidth: '80%' }}>
