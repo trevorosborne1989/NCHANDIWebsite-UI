@@ -24,8 +24,8 @@ const ListCard = ({resourceData, handleClick, isOpen, entityName, cardTitle, pri
           </Typography>
           <Box display="flex" py={1.5} justifyContent="center">
             <List>
-              {resourceData.map(resource => (
-                <ListItem key={resource.id} value={resource.label}>
+              {resourceData?.map(resource => (
+                <ListItem key={resource.id} value={resource.name}>
                   <ListItemIcon>
                     <IconButton>
                       <DeleteForever
@@ -37,8 +37,8 @@ const ListCard = ({resourceData, handleClick, isOpen, entityName, cardTitle, pri
                       />
                     </IconButton>
                   </ListItemIcon>
-                  <Link href={resource.link} underline='hover' color={nchandiTheme.handiDarkYellow} onClick={e => handleClick(e, resource)}>
-                    {resource.label}
+                  <Link href={resource.url} underline='hover' color={nchandiTheme.handiDarkYellow} onClick={e => handleClick(e, resource)}>
+                    {resource.name}
                   </Link>
                 </ListItem>
               ))}

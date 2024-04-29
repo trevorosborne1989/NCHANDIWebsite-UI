@@ -155,7 +155,6 @@ const CommitteeDashboard = () => {
       const { id } = committeeMember;
       await nchandiWebsiteService.deletePersonWithPersonId({}, id);
       enqueueSnackbar('This pending volunteer was deleted.', snackbarMessages.success.configuration);
-      fetchTableData();
     } catch (error) {
       console.error(error);
       enqueueSnackbar('There was an error deleting the pending volunteer!', snackbarMessages.error.configuration);

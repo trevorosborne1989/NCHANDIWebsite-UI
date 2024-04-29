@@ -179,7 +179,6 @@ const PanelMembersDashboard = () => {
       const { id } = panelMember;
       await nchandiWebsiteService.deletePersonWithPersonId({}, id);
       enqueueSnackbar('This panel member was deleted.', snackbarMessages.success.configuration);
-      fetchTableData();
     } catch (error) {
       console.error(error);
       enqueueSnackbar('There was an error deleting the panel member!', snackbarMessages.error.configuration);

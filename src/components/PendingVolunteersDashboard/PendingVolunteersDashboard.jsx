@@ -125,7 +125,6 @@ const PendingVolunteersDashboard = () => {
       const { id } = pending;
       await nchandiWebsiteService.deletePendingWithPendingId({}, id);
       enqueueSnackbar('This pending volunteer was deleted.', snackbarMessages.success.configuration);
-      fetchTableData();
     } catch (error) {
       console.error(error);
       enqueueSnackbar('There was an error deleting the pending volunteer!', snackbarMessages.error.configuration);
