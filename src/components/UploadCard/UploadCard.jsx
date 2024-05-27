@@ -5,7 +5,6 @@ import {
   Typography,
   Box,
   Button,
-  TextField,
   Chip,
   } from '@mui/material';
 import {
@@ -33,6 +32,10 @@ const UploadCard = ({formik, onSave}) => {
   const handleFileChange = (e) => {
     if (e.target.files) {
       formik.setFieldValue('file', e.target.files[0])
+      let split = e.target.files[0]?.name.split('.');
+      split?.pop();
+      let fileName = split?.join(".");
+      formik.setFieldValue('name', fileName);
     }
   };
 
@@ -50,31 +53,13 @@ const UploadCard = ({formik, onSave}) => {
     <>
       <Card sx={{ backgroundColor: nchandiTheme.handiDarkBlue }} variant="elevation" elevation={10}>
         <CardContent>
-          <Typography variant='h5' color='white' py={2} textAlign={'center'}>
+          <Typography variant='h5' color='white' py={4} textAlign={'center'}>
             Upload a Resource
           </Typography>
-          <Box py={2} pb={3}>
-            <TextField
-              label='Resource Title'
-              name='resourceTitle'
-              fullWidth
-              variant='filled'
-              size='medium'
-              color='secondary'
-              focused
-              sx={{input: { color: nchandiTheme.handiSecondaryWhite }}}
-              value={formik.values.resourceTitle}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              helperText={formik.touched.resourceTitle ? formik.errors.resourceTitle : ""}
-              error={formik.touched.resourceTitle && Boolean(formik.errors.resourceTitle)}
-              required
-            />
-          </Box>
-          <Box pb={4}>
+          <Box pb={4} textAlign={'center'}>
             <Button
               component="label"
-              fullWidth
+              sx={{ width: '75%' }}
               startIcon={<CloudUpload />}
               variant="contained"
             >
@@ -98,7 +83,7 @@ const UploadCard = ({formik, onSave}) => {
           </Box>
           <Box textAlign={'center'} py={2}>
             <Typography variant='h7' color={nchandiTheme.handiGrey}>
-              Max Upload Size 100KB
+              Max Upload Size 1MB
             </Typography>
           </Box>
           {formik.values?.file &&

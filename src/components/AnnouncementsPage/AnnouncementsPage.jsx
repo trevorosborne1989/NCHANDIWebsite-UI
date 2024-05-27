@@ -10,12 +10,12 @@ import {
   CardContent,
   Box,
   TextField,
+  Skeleton
 } from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { nchandiTheme } from '../../App';
 import ListCard from '../ListCard/ListCard';
 import NCHANDIWebsiteService from '../../lib/NCHANDIWebsiteService'
-import moment from 'moment';
 
 const nchandiWebsiteService = new NCHANDIWebsiteService();
 
@@ -31,13 +31,11 @@ const AnnouncementsPage = () => {
       name: '',
       body: '',
       type: '',
-      createdDate: ''
     },
     onSubmit: async (values) => {
       try {
         setLoading(true);
         await nchandiWebsiteService.postResourceItems({}, values);
-        console.log(formik);
         enqueueSnackbar('This resource was successfully uploaded.', snackbarMessages.success.configuration);
         fetchListData();
       } catch (err) {
@@ -86,8 +84,6 @@ const AnnouncementsPage = () => {
    *
    */
   const handleSave = () => {
-    const date = moment().format('MM/DD/YYYY');
-    formik.setFieldValue('createdDate', date);
     formik.setFieldValue('type', 'Announcement');
     formik.submitForm();
     if (!formik.isValid) {
@@ -194,19 +190,23 @@ const AnnouncementsPage = () => {
           </Card>
         </Grid>
         <Grid container spacing={3} sx={12} sm={7} direction={'column'} alignItems={'center'}>
-          <Grid sx={12} sm={10}>
-            <ListCard
-              resourceData={listData}
-              handleClick={handleClick}
-              isOpen={isDeleteDialogOpen}
-              entityName={'Announcement'}
-              cardTitle={'Announcements'}
-              primaryText={announcement?.name}
-              handleClose={handleDeleteDialogClose}
-              handleDelete={handleDelete}
-              handleDeleteConfirm={handleDeleteDialogConfirm}
-            />
-          </Grid>
+          {loading ?
+            <Skeleton variant='rectangular' width='100%'/>
+            :
+            <Grid sx={12} sm={10}>
+              <ListCard
+                resourceData={listData}
+                handleClick={handleClick}
+                isOpen={isDeleteDialogOpen}
+                entityName={'Announcement'}
+                cardTitle={'Announcements'}
+                primaryText={announcement?.name}
+                handleClose={handleDeleteDialogClose}
+                handleDelete={handleDelete}
+                handleDeleteConfirm={handleDeleteDialogConfirm}
+              />
+            </Grid>
+          }
           {announcement &&
             <Grid sx={12} sm={12}>
               <Box align='center' alignItems='center' mb={8}s>
