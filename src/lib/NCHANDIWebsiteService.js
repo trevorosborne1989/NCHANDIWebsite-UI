@@ -341,12 +341,72 @@ class NCHANDIWebsiteService {
    * { 
    * string : resourceItemId, 
    * } 
-   * @return Check http://localhost:8080/api/NCHANDIWebsite/swagger-ui/index.html#/ for more information on the response body 
+   * @return Check http://localhost:8080/api/NCHANDIWebsite/swagger-ui/index.html#/ for more information on the response body
    */
   deleteResourceItemWithResourceItemId(params, resourceItemId, body) {
 
     return this.instance.delete('http://localhost:8080/api/NCHANDIWebsite/resource-items/' + resourceItemId + '', params)
   }
+
+  /**
+   * Valid Query Parameters:
+   * {
+   * }
+   * @return Check http://localhost:8080/api/NCHANDIWebsite/swagger-ui/index.html#/ for more information on the response body
+   */
+  getAttachments(params, body) {
+
+    return this.instance.get('http://localhost:8080/api/NCHANDIWebsite/attachments', params)
+  }
+
+  /**
+   * Valid Query Parameters:
+   * {
+   * string : resourceItemId,
+   * }
+   * @return Check http://localhost:8080/api/NCHANDIWebsite/swagger-ui/index.html#/ for more information on the response body
+   */
+  postAttachments(params, resourceItemId, body) {
+
+    return this.instance.post('http://localhost:8080/api/NCHANDIWebsite/attachments/' + resourceItemId + '', body, params)
+  }
+
+  /**
+   * Valid Query Parameters:
+   * {
+   * string : attachmentId,
+   * }
+   * @return Check http://localhost:8080/api/NCHANDIWebsite/swagger-ui/index.html#/ for more information on the response body
+   */
+  getAttachmentWithAttachmentId(params, attachmentId, body) {
+
+    return axios.get('http://localhost:8080/api/NCHANDIWebsite/attachments/' + attachmentId + '', {responseType: 'blob'})
+  }
+
+  /**
+   * Valid Query Parameters:
+   * {
+   * string : attachmentId,
+   * }
+   * @return Check http://localhost:8080/api/NCHANDIWebsite/swagger-ui/index.html#/ for more information on the response body
+   */
+  putAttachmentWithAttachmentId(params, attachmentId, body) {
+
+    return this.instance.put('http://localhost:8080/api/NCHANDIWebsite/attachments/' + attachmentId + '', body, params)
+  }
+
+  /**
+   * Valid Query Parameters:
+   * {
+   * string : attachmentId,
+   * }
+   * @return Check http://localhost:8080/api/NCHANDIWebsite/swagger-ui/index.html#/ for more information on the response body
+   */
+  deleteAttachmentWithAttachmentId(params, attachmentId, body) {
+
+    return this.instance.delete('http://localhost:8080/api/NCHANDIWebsite/attachments/' + attachmentId + '', params)
+  }
+
 }
 export default NCHANDIWebsiteService;
 

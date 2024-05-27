@@ -37,7 +37,7 @@ const ListCard = ({resourceData, handleClick, isOpen, entityName, cardTitle, pri
                       />
                     </IconButton>
                   </ListItemIcon>
-                  <Link href={resource.url} underline='hover' color={nchandiTheme.handiDarkYellow} onClick={e => handleClick(e, resource)}>
+                  <Link underline='hover' color={nchandiTheme.handiDarkYellow} onClick={e => handleClick(e, resource)}>
                     {resource.name}
                   </Link>
                 </ListItem>

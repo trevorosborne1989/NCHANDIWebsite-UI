@@ -1,89 +1,63 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import Grid from '@mui/material/Unstable_Grid2';
+import { Skeleton } from '@mui/material';
 import { useFormik } from 'formik';
 import { useSnackbar } from 'notistack';
 import snackbarMessages from '../../lib/snackbarMessages';
 import { yupSchema } from './ValidationSchema';
 import UploadCard from '../UploadCard/UploadCard';
 import ListCard from '../ListCard/ListCard';
-// import NCHANDIWebsiteService from '../../lib/NCHANDIWebsiteService'
+import NCHANDIWebsiteService from '../../lib/NCHANDIWebsiteService'
 
-// const nchandiWebsiteService = new NCHANDIWebsiteService();
-
-
-// const generateTableConfig = (handleSelection, handleAdd, handleDelete) => ({
-//   title: 'Panel Materials',
-//   dataKey: d => d.id,
-//   handleSelection: handleSelection,
-//   toolbar: (
-//     <IconButton color='primary' onClick={handleAdd} data-cy='table-add-button'>
-//       <Add sx={{ color: nchandiTheme.handiGreen }} fontSize='large' />
-//     </IconButton>
-//   ),
-//   columns: [
-//     { columnName: '', numeric: true, disablePadding: false, label: '', value: d => <DeleteForever fontSize='large' color='error' onClick={e => handleDelete(e, d)} data-cy='table-delete-btn' /> },
-//     { columnName: 'firstName', numeric: true, disablePadding: true, label: 'First Name', value: d => d.firstName }
-//   ]
-// });
-
-function createData(id, label) {
-  return {
-    id,
-    label,
-  };
-}
-
-const panelMaterials = [
-  createData('1', 'H&I Panel Guide'),
-  createData('2', 'A Vision For You'),
-  createData('3', '12x12'),
-  createData('4', 'How It Works'),
-  createData('5', 'Meeting Guide Instructions'),
-  createData('6', '12 Traditions'),
-  createData('7', 'Suggested Meeting Format'),
-  createData('8', 'October Grapevine')
-];
+const nchandiWebsiteService = new NCHANDIWebsiteService();
 
 const PanelMaterialsPage = () => {
-  const [listData, setListData] = useState(panelMaterials);
+  const [listData, setListData] = useState([]);
   const [panelMaterial, setPanelMaterial] = useState(null);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
 
   const formik = useFormik({
     initialValues: {
-      resourceTitle: '',
-      file: null
+      name: '',
+      type: '',
+      file: ''
     },
     onSubmit: async (values) => {
+      let file = new FormData();
+      file.append("content", values.file);
+      delete values.file;
       try {
-        // await nchandiWebsiteService.postPanelMaterial({}, values);
+        setLoading(true);
+        const resourceItemData = await nchandiWebsiteService.postResourceItems({}, values);
+        await nchandiWebsiteService.postAttachments({}, resourceItemData.data.id, file);
         enqueueSnackbar('This resource was successfully uploaded.', snackbarMessages.success.configuration);
-        formik.handleReset();
       } catch (err) {
         enqueueSnackbar('There was an error when uploading this resource, please try again later or contact the Technology Chair', snackbarMessages.error.configuration);
         console.error(err);
+      } finally {
+        fetchListData();
+        setLoading(false);
       }
     },
     validationSchema: yupSchema,
     validateOnBlur: true,
   });
 
-  // const fetchData = useCallback(params => nchandiWebsiteService.getPanelMaterials(params), []); //Try This!!!
-
   /**
    *
    */
   const fetchListData = useCallback(async () => {
     try {
-      // setLoading(true);
-      // const { data: panelMaterials } = await nchandiWebsiteService.getPanelMaterials();
+      setLoading(true);
+      const panelMaterials = (await nchandiWebsiteService.getResourceItems()).data.filter(resourceItem => resourceItem?.type === 'Panel Material');
       setListData(panelMaterials);
     } catch (err) {
       enqueueSnackbar('Unable to fetch current panel materials, please try again later or contact the Technology Chair', snackbarMessages.error.configuration);
       console.error(err);
     } finally {
-      // setLoading(false);
+      setLoading(false);
     }
   }, [enqueueSnackbar]);
 
@@ -97,17 +71,35 @@ const PanelMaterialsPage = () => {
   /**
    *
    */
+  const handleClick = async (e, entity) => {
+    e.stopPropagation();
+    setPanelMaterial(entity);
+    setLoading(true);
+    try {
+      let response = await nchandiWebsiteService.getAttachmentWithAttachmentId({}, entity.id);
+      window.open(URL.createObjectURL(response.data))
+    } catch (error) {
+      console.error(error);
+      enqueueSnackbar('There was an error retrieving the attachment!', snackbarMessages.error.configuration);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  /**
+   *
+   */
   const handleSave = () => {
-    setTimeout( async () => { // Remove the onTimeout once the POST method in onSubmit is defined.
+    formik.setFieldValue('type', 'Panel Material');
+    if (!formik.values.file) {
+      enqueueSnackbar('A file is required.', snackbarMessages.error.configuration)
+    } else {
       formik.submitForm();
-      if (formik.errors?.resourceTitle) {
-        enqueueSnackbar('There are fields missing in your form. Please fill out all the required * fields.', snackbarMessages.error.configuration);
-      }
-      if (formik.errors?.file) {
-        enqueueSnackbar(formik.errors?.file, snackbarMessages.error.configuration);
-      };
-      formik.setSubmitting(false);
-    }, 5000);
+    }
+    if (formik.values.file && formik.errors?.file) {
+      enqueueSnackbar(formik.errors?.file, snackbarMessages.error.configuration);
+    };
+    formik.setSubmitting(false);
   };
 
   /**
@@ -131,23 +123,21 @@ const PanelMaterialsPage = () => {
    *
    */
   const handleDeleteDialogConfirm = async () => {
-    // setLoading(true);
+    setLoading(true);
     try {
-      // const { id } = panelMaterial;
-      // await nchandiWebsiteService.deletePanelMaterialById(id);
+      const { id } = panelMaterial;
+      await nchandiWebsiteService.deleteResourceItemWithResourceItemId({}, id);
       enqueueSnackbar('This resource was deleted.', snackbarMessages.success.configuration);
     } catch (error) {
       console.error(error);
       enqueueSnackbar('There was an error deleting this resource!', snackbarMessages.error.configuration);
     } finally {
-      // setLoading(false);
+      setLoading(false);
       setPanelMaterial(null);
       setIsDeleteDialogOpen(false);
-      // fetchRequests();
+      fetchListData();
     }
   };
-
-  // const tableConfig = generateTableConfig(handleSelection, handleAdd, handleDelete);
 
   return (
     <>
@@ -158,18 +148,24 @@ const PanelMaterialsPage = () => {
             onSave={handleSave}
           />
         </Grid>
-        <Grid sx={12} sm={6} >
-          <ListCard
-            resourceData={listData}
-            isOpen={isDeleteDialogOpen}
-            entityName={'Panel Material'}
-            cardTitle={'Panel Materials'}
-            primaryText={panelMaterial?.label}
-            handleClose={handleDeleteDialogClose}
-            handleDelete={handleDelete}
-            handleDeleteConfirm={handleDeleteDialogConfirm}
-          />
-        </Grid>
+        {loading ?
+          <Skeleton variant='rectangular' width='100%'/>
+          :
+          <Grid sx={12} sm={6} >
+            <ListCard
+              resourceData={listData}
+              handleClick={handleClick}
+              isOpen={isDeleteDialogOpen}
+              selectedEntity={panelMaterial}
+              entityName={'Panel Material'}
+              cardTitle={'Panel Materials'}
+              primaryText={panelMaterial?.name}
+              handleClose={handleDeleteDialogClose}
+              handleDelete={handleDelete}
+              handleDeleteConfirm={handleDeleteDialogConfirm}
+            />
+          </Grid>
+        }
       </Grid>
     </>
   )
