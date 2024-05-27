@@ -307,7 +307,7 @@ class NCHANDIWebsiteService {
    * } 
    * @return Check http://localhost:8080/api/NCHANDIWebsite/swagger-ui/index.html#/ for more information on the response body 
    */
-  postResourceItems(params, body) {
+  postResourceItem(params, body) {
 
     return this.instance.post('http://localhost:8080/api/NCHANDIWebsite/resource-items', body, params)
   }

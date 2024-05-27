@@ -35,7 +35,7 @@ const AnnouncementsPage = () => {
     onSubmit: async (values) => {
       try {
         setLoading(true);
-        await nchandiWebsiteService.postResourceItems({}, values);
+        await nchandiWebsiteService.postResourceItem({}, values);
         enqueueSnackbar('This resource was successfully uploaded.', snackbarMessages.success.configuration);
         fetchListData();
       } catch (err) {
