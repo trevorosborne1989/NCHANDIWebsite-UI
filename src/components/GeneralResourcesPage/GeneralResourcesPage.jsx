@@ -1,73 +1,63 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import Grid from '@mui/material/Unstable_Grid2';
+import { Skeleton } from '@mui/material';
 import { useFormik } from 'formik';
 import { useSnackbar } from 'notistack';
 import snackbarMessages from '../../lib/snackbarMessages';
 import { yupSchema } from './ValidationSchema';
 import UploadCard from '../UploadCard/UploadCard';
 import ListCard from '../ListCard/ListCard';
-// import NCHANDIWebsiteService from '../../lib/NCHANDIWebsiteService'
+import NCHANDIWebsiteService from '../../lib/NCHANDIWebsiteService'
 
-// const nchandiWebsiteService = new NCHANDIWebsiteService();
-
-function createData(id, label) {
-  return {
-    id,
-    label,
-  };
-}
-
-const generalResources = [
-  createData('1', 'North County H&I Policies'),
-  createData('2', 'H&I Informational Brochure'),
-  createData('3', 'Sign Up For Panel On Website Video'),
-  createData('4', 'Summer Service Fair Flyer'),
-  createData('5', 'Virtual Panel Flyer'),
-  createData('6', 'Green Can Label'),
-  createData('7', 'Orientation Checklist'),
-  createData('8', 'Green Can Description')
-];
+const nchandiWebsiteService = new NCHANDIWebsiteService();
 
 const GeneralResourcesPage = () => {
-  const [listData, setListData] = useState(generalResources);
+  const [listData, setListData] = useState([]);
   const [generalResource, setGeneralResource] = useState(null);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
 
   const formik = useFormik({
     initialValues: {
-      resourceTitle: '',
-      file: null
+      name: '',
+      type: '',
+      file: ''
     },
     onSubmit: async (values) => {
+      let file = new FormData();
+      file.append("content", values.file);
+      delete values.file;
       try {
-        // await nchandiWebsiteService.postGeneralResource({}, values);
+        setLoading(true);
+        const resourceItemData = await nchandiWebsiteService.postResourceItem({}, values);
+        await nchandiWebsiteService.postAttachments({}, resourceItemData.data.id, file);
         enqueueSnackbar('This resource was successfully uploaded.', snackbarMessages.success.configuration);
-        formik.handleReset();
       } catch (err) {
         enqueueSnackbar('There was an error when uploading this resource, please try again later or contact the Technology Chair', snackbarMessages.error.configuration);
         console.error(err);
+      } finally {
+        fetchListData();
+        setLoading(false);
       }
     },
     validationSchema: yupSchema,
     validateOnBlur: true,
   });
 
-  // const fetchData = useCallback(params => nchandiWebsiteService.getGeneralResources(params), []); //Try This!!!
-
   /**
    *
    */
   const fetchListData = useCallback(async () => {
     try {
-      // setLoading(true);
-      // const { data: generalResources } = await nchandiWebsiteService.getGeneralResources();
-      setListData(generalResources);
+      setLoading(true);
+      const generalResurces = (await nchandiWebsiteService.getResourceItems()).data.filter(resourceItem => resourceItem?.type === 'General Resource');
+      setListData(generalResurces);
     } catch (err) {
-      enqueueSnackbar('Unable to fetch current general resources, please try again later or contact the Technology Chair', snackbarMessages.error.configuration);
+      enqueueSnackbar('Unable to fetch current panel materials, please try again later or contact the Technology Chair', snackbarMessages.error.configuration);
       console.error(err);
     } finally {
-      // setLoading(false);
+      setLoading(false);
     }
   }, [enqueueSnackbar]);
 
@@ -81,17 +71,35 @@ const GeneralResourcesPage = () => {
   /**
    *
    */
+  const handleClick = async (e, entity) => {
+    e.stopPropagation();
+    setGeneralResource(entity);
+    setLoading(true);
+    try {
+      let response = await nchandiWebsiteService.getAttachmentWithAttachmentId({}, entity.id);
+      window.open(URL.createObjectURL(response.data))
+    } catch (error) {
+      console.error(error);
+      enqueueSnackbar('There was an error retrieving the attachment!', snackbarMessages.error.configuration);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  /**
+   *
+   */
   const handleSave = () => {
-    setTimeout( async () => { // Remove the onTimeout once the POST method in onSubmit is defined.
+    formik.setFieldValue('type', 'General Resource');
+    if (!formik.values.file) {
+      enqueueSnackbar('A file is required.', snackbarMessages.error.configuration)
+    } else {
       formik.submitForm();
-      if (formik.errors?.resourceTitle) {
-        enqueueSnackbar('There are fields missing in your form. Please fill out all the required * fields.', snackbarMessages.error.configuration);
-      }
-      if (formik.errors?.file) {
-        enqueueSnackbar(formik.errors?.file, snackbarMessages.error.configuration);
-      };
-      formik.setSubmitting(false);
-    }, 5000);
+    }
+    if (formik.values.file && formik.errors?.file) {
+      enqueueSnackbar(formik.errors?.file, snackbarMessages.error.configuration);
+    };
+    formik.setSubmitting(false);
   };
 
   /**
@@ -115,23 +123,21 @@ const GeneralResourcesPage = () => {
    *
    */
   const handleDeleteDialogConfirm = async () => {
-    // setLoading(true);
+    setLoading(true);
     try {
-      // const { id } = generalResource;
-      // await nchandiWebsiteService.deleteGeneralResourceById(id);
+      const { id } = generalResource;
+      await nchandiWebsiteService.deleteResourceItemWithResourceItemId({}, id);
       enqueueSnackbar('This resource was deleted.', snackbarMessages.success.configuration);
     } catch (error) {
       console.error(error);
       enqueueSnackbar('There was an error deleting this resource!', snackbarMessages.error.configuration);
     } finally {
-      // setLoading(false);
+      setLoading(false);
       setGeneralResource(null);
       setIsDeleteDialogOpen(false);
-      // fetchRequests();
+      fetchListData();
     }
   };
-
-  // const tableConfig = generateTableConfig(handleSelection, handleAdd, handleDelete);
 
   return (
     <>
@@ -142,18 +148,24 @@ const GeneralResourcesPage = () => {
             onSave={handleSave}
           />
         </Grid>
-        <Grid sx={12} sm={6} >
-          <ListCard
-            resourceData={listData}
-            isOpen={isDeleteDialogOpen}
-            entityName={'General Resource'}
-            cardTitle={'General Resources'}
-            primaryText={generalResource?.label}
-            handleClose={handleDeleteDialogClose}
-            handleDelete={handleDelete}
-            handleDeleteConfirm={handleDeleteDialogConfirm}
-          />
-        </Grid>
+        {loading ?
+          <Skeleton variant='rectangular' width='100%'/>
+          :
+          <Grid sx={12} sm={6} >
+            <ListCard
+              resourceData={listData}
+              handleClick={handleClick}
+              isOpen={isDeleteDialogOpen}
+              selectedEntity={generalResource}
+              entityName={'General Resource'}
+              cardTitle={'General Resources'}
+              primaryText={generalResource?.name}
+              handleClose={handleDeleteDialogClose}
+              handleDelete={handleDelete}
+              handleDeleteConfirm={handleDeleteDialogConfirm}
+            />
+          </Grid>
+        }
       </Grid>
     </>
   )

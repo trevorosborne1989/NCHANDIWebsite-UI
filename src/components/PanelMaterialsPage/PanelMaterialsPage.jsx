@@ -30,7 +30,7 @@ const PanelMaterialsPage = () => {
       delete values.file;
       try {
         setLoading(true);
-        const resourceItemData = await nchandiWebsiteService.postResourceItems({}, values);
+        const resourceItemData = await nchandiWebsiteService.postResourceItem({}, values);
         await nchandiWebsiteService.postAttachments({}, resourceItemData.data.id, file);
         enqueueSnackbar('This resource was successfully uploaded.', snackbarMessages.success.configuration);
       } catch (err) {

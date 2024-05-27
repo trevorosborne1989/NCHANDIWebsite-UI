@@ -1,6 +1,6 @@
 import * as yup from 'yup';
 
-const FILE_SIZE = 1000; //100KB
+const FILE_SIZE = 1024000; //1MB
 
 const SUPPORTED_FORMATS = ['jpg', 'gif', 'png', 'jpeg', 'txt', 'pdf'];
 
