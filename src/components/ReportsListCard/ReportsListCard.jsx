@@ -8,13 +8,16 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
+  Link,
   IconButton,
   } from '@mui/material';
   import { DeleteForever } from '@mui/icons-material';
   import DeleteConfirmationDialog from '../DeleteConfirmationDialog/DeleteConfirmationDialog';
   import { nchandiTheme } from '../../App';
 
-const ReportsListCard = ({resourceData, isOpen, entityName, cardTitle, primaryText, secondaryText, handleClose, handleDelete, handleDeleteConfirm}) => {
+const monthsOfYear = ['January', 'February', 'March', 'April', 'May', 'June' , 'July', 'August', 'September', 'October', 'November', 'December'];
+
+const ReportsListCard = ({resourceData, handleClick, isOpen, entityName, cardTitle, primaryText, secondaryText, handleClose, handleDelete, handleDeleteConfirm}) => {
 
   return (
     <>
@@ -25,56 +28,52 @@ const ReportsListCard = ({resourceData, isOpen, entityName, cardTitle, primaryTe
           </Typography>
           <Box display="flex" py={1.5} justifyContent="center">
             <List>
-              {resourceData.map(resource => (
-                <>
-                  <List key={resource.id} value={resource.id}>
+              {monthsOfYear.map((month, i) =>
+                <div key={i}>
+                  <ListItem disablePadding>
+                    <ListItemText
+                      sx={{ color: nchandiTheme.handiDarkYellow }}
+                      primary={month}
+                    />
+                  </ListItem>
+                  {resourceData.find(resource => resource.monthOfYear === month && resource.type === 'Financial') &&
                     <ListItem disablePadding>
-                      <ListItemText
-                        sx={{ color: nchandiTheme.handiDarkYellow }}
-                        primary={resource.monthOfYear}
-                      />
+                      <ListItemIcon>
+                        <IconButton>
+                          <DeleteForever
+                            fontSize='large'
+                            color={'error'}
+                            onClick={e => handleDelete(e, resourceData.find(resource => resource.monthOfYear === month && resource.type === 'Financial'))}
+                            data-cy='list-delete-btn'
+                            sx={{"&:hover": { color: nchandiTheme.handiDarkRed }}}
+                          />
+                        </IconButton>
+                      </ListItemIcon>
+                      <Link underline='hover' color={nchandiTheme.handiDarkYellow} onClick={e => handleClick(e, resourceData.find(resource => resource.monthOfYear === month && resource.type === 'Financial'))}>
+                        Financial Report
+                      </Link>
+                    </ListItem >
+                  }
+                  {resourceData.find(resource => resource.monthOfYear === month && resource.type === 'Minutes') &&
+                    <ListItem disablePadding>
+                      <ListItemIcon>
+                        <IconButton>
+                          <DeleteForever
+                            fontSize='large'
+                            color={'error'}
+                            onClick={e => handleDelete(e, resourceData.find(resource => resource.monthOfYear === month && resource.type === 'Minutes'))}
+                            data-cy='list-delete-btn'
+                            sx={{"&:hover": { color: nchandiTheme.handiDarkRed }}}
+                          />
+                        </IconButton>
+                      </ListItemIcon>
+                      <Link underline='hover' color={nchandiTheme.handiDarkYellow} onClick={e => handleClick(e, resourceData.find(resource => resource.monthOfYear === month && resource.type === 'Minutes'))}>
+                        Minutes
+                      </Link>
                     </ListItem>
-                    {resource.financialReport &&
-                      <ListItem disablePadding>
-                        <ListItemIcon>
-                          <IconButton>
-                            <DeleteForever
-                              fontSize='large'
-                              color={'error'}
-                              onClick={e => handleDelete(e, resource, 'Financial')}
-                              data-cy='list-delete-btn'
-                              sx={{"&:hover": { color: nchandiTheme.handiDarkRed }}}
-                            />
-                          </IconButton>
-                        </ListItemIcon>
-                        <ListItemText
-                          sx={{ color: nchandiTheme.handiDarkYellow }}
-                          primary={'Financial Report'}
-                        />
-                      </ListItem >
-                    }
-                    {resource.minutes &&
-                      <ListItem disablePadding>
-                        <ListItemIcon>
-                          <IconButton>
-                            <DeleteForever
-                              fontSize='large'
-                              color={'error'}
-                              onClick={e => handleDelete(e, resource, 'Minutes')}
-                              data-cy='list-delete-btn'
-                              sx={{"&:hover": { color: nchandiTheme.handiDarkRed }}}
-                            />
-                          </IconButton>
-                        </ListItemIcon>
-                        <ListItemText
-                          sx={{ color: nchandiTheme.handiDarkYellow }}
-                          primary={'Committee Minutes'}
-                        />
-                      </ListItem>
-                    }
-                  </List>
-                </>
-              ))}
+                  }
+                </div>
+              )}
             </List>
           </Box>
         </CardContent>

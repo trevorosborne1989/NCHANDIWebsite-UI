@@ -1,15 +1,14 @@
 import * as yup from 'yup';
 
-const FILE_SIZE = 102400; //100KB
+const FILE_SIZE = 1024000; //1MB
 
-const SUPPORTED_FORMATS = ['jpg', 'gif', 'png', 'jpeg', 'doc', 'pdf', 'txt'];
+const SUPPORTED_FORMATS = ['jpg', 'gif', 'png', 'jpeg', 'txt', 'pdf'];
 
 export const yupSchema = yup.object().shape({
-  isFinancialReport: yup.boolean(),
-  isMinutes: yup.boolean(),
+  type: yup.string().required('Required').typeError('Required'),
   monthOfYear: yup.string().required('Required').typeError('Required'),
-  file: yup.mixed().required('A file is required')
-    .test('fileSize', "File Size is too large", value => value.size <= FILE_SIZE)
+  file: yup.mixed()
+    .test('fileSize', "File size cannot exceed 1MB and must be a pdf, txt, jpg, gif, png, or jpeg", value => value?.size <= FILE_SIZE)
     .test('fileType', `Unsupported File Format. Accepted formats include: ${SUPPORTED_FORMATS}`, value => {
       if (value) {
         return SUPPORTED_FORMATS.includes(value.name.split('.').pop());
@@ -19,7 +18,7 @@ export const yupSchema = yup.object().shape({
   'reportTypeTest',
   null,
   (obj) => {
-    if ( obj.isFinancialReport || obj.isMinutes ) {
+    if ( obj.isFinancial || obj.isMinutes ) {
       return true;
     }
     return new yup.ValidationError(
