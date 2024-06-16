@@ -26,16 +26,28 @@ const contactOptions = [
 ];
 const commitmentOptions = [
   {
-    value: 'Panel Leader',
-    label: 'Panel Leader',
+    value: 'Chair',
+    label: 'Chair',
   },
   {
-    value: 'Panel Coordinator',
-    label: 'Panel Coordinator',
+    value: 'CoChair',
+    label: 'CoChair',
   },
   {
-    value: 'Board Member',
-    label: 'Board Member',
+    value: 'Librarian',
+    label: 'Librarian',
+  },
+  {
+    value: 'Technology',
+    label: 'Technology',
+  },
+  {
+    value: 'Treasurer',
+    label: 'Treasurer',
+  },
+  {
+    value: 'Facilities',
+    label: 'Facilities',
   }
 ];
 
@@ -90,29 +102,29 @@ const CommitteeDashboardDialog = ({ formik, isOpen, handleSave, handleClose }) =
           />
           <TextField
             label='Phone Number'
-            name='phoneNumber'
+            name='phone'
             fullWidth
             variant='outlined'
             margin='dense'
-            value={formik.values.phoneNumber}
+            value={formik.values.phone}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            helperText={formik.touched.phoneNumber ? formik.errors.phoneNumber : ""}
-            error={formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber)}
+            helperText={formik.touched.phone ? formik.errors.phone : ""}
+            error={formik.touched.phone && Boolean(formik.errors.phone)}
             required
           />
           <TextField
             select
-            label='Contact Method'
-            name='contactMethod'
+            label='Preferred Contact Method'
+            name='preferredContactMethod'
             fullWidth
             variant='outlined'
             margin='dense'
-            value={formik.values.contactMethod}
+            value={formik.values.preferredContactMethod}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            helperText={formik.touched.contactMethod ? formik.errors.contactMethod : ""}
-            error={formik.touched.contactMethod && Boolean(formik.errors.contactMethod)}
+            helperText={formik.touched.preferredContactMethod ? formik.errors.preferredContactMethod : ""}
+            error={formik.touched.preferredContactMethod && Boolean(formik.errors.preferredContactMethod)}
             required
           >
             {contactOptions.map(option => (

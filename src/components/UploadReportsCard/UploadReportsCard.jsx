@@ -104,12 +104,10 @@ const UploadReportsCard = ({formik, onSave}) => {
   const handleFileChange = (e) => {
     if (e.target.files) {
       formik.setFieldValue('file', e.target.files[0])
-      if (formik.values.isFinancialReport) {
-        formik.setFieldValue('financialReport', e.target.files[0]);
-      }
-      if (formik.values.isMinutes) {
-        formik.setFieldValue('minutes', e.target.files[0]);
-      }
+      let split = e.target.files[0]?.name.split('.');
+      split?.pop();
+      let fileName = split?.join(".");
+      formik.setFieldValue('name', fileName);
     }
   };
 
@@ -136,13 +134,13 @@ const UploadReportsCard = ({formik, onSave}) => {
                <FormControlLabel
                   control={<Checkbox
                     sx={{ color: nchandiTheme.handiDarkGreen,'&.Mui-checked': {color: nchandiTheme.handiGreen} }}
-                    name='isFinancialReport'
-                    checked={formik.values.isFinancialReport}
-                    value={formik.values.isFinancialReport}
+                    name='isFinancial'
+                    checked={formik.values.isFinancial}
+                    value={formik.values.isFinancial}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    helperText={formik.touched.isFinancialReport ? formik.errors.isFinancialReport : ""}
-                    error={formik.touched.isFinancialReport && Boolean(formik.errors.isFinancialReport)}
+                    helperText={formik.touched.isFinancial ? formik.errors.isFinancial : ""}
+                    error={formik.touched.isFinancial && Boolean(formik.errors.isFinancial)}
                     disabled={formik.values.isMinutes}
                     />}
                   label="Financial Report" sx={{ color: nchandiTheme.handiSecondaryWhite}}
@@ -159,7 +157,7 @@ const UploadReportsCard = ({formik, onSave}) => {
                     onBlur={formik.handleBlur}
                     helperText={formik.touched.isMinutes ? formik.errors.isMinutes : ""}
                     error={formik.touched.isMinutes && Boolean(formik.errors.isMinutes)}
-                    disabled={formik.values.isFinancialReport}
+                    disabled={formik.values.isFinancial}
                     />}
                   label="Minutes" sx={{ color: nchandiTheme.handiSecondaryWhite}}
                 />
@@ -196,13 +194,13 @@ const UploadReportsCard = ({formik, onSave}) => {
               </Box>
             </Grid>
           </Grid>
-          <Box pb={4}>
+          <Box pb={4} textAlign={'center'}>
             <Button
               component="label"
-              fullWidth
+              sx={{ width: '75%' }}
               startIcon={<CloudUpload />}
               variant="contained"
-              disabled={!formik.values?.isFinancialReport && !formik.values?.isMinutes}
+              disabled={!formik.values?.isFinancial && !formik.values?.isMinutes}
             >
               <span>Upload File</span>
               <VisuallyHiddenInput type="file" name='file' onChange={handleFileChange} />
@@ -224,7 +222,7 @@ const UploadReportsCard = ({formik, onSave}) => {
           </Box>
           <Box textAlign={'center'} py={2}>
             <Typography variant='h7' color={nchandiTheme.handiGrey}>
-              Max Upload Size 100KB
+              Max Upload Size 1MB
             </Typography>
           </Box>
           {formik.values?.file &&
