@@ -54,7 +54,7 @@ const ArchivedReportsPage = () => {
       const archivedReports = (await nchandiWebsiteService.getResourceItems()).data.filter(resourceItem => resourceItem?.type === 'Archived Report');
       setListData(archivedReports);
     } catch (err) {
-      enqueueSnackbar('Unable to fetch current panel materials, please try again later or contact the Technology Chair', snackbarMessages.error.configuration);
+      enqueueSnackbar('Unable to fetch current archived reports, please try again later or contact the Technology Chair', snackbarMessages.error.configuration);
       console.error(err);
     } finally {
       setLoading(false);

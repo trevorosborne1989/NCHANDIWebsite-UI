@@ -1,81 +1,66 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import Grid from '@mui/material/Unstable_Grid2';
+import { Skeleton } from '@mui/material';
 import { useFormik } from 'formik';
 import { useSnackbar } from 'notistack';
 import snackbarMessages from '../../lib/snackbarMessages';
 import { yupSchema } from './ValidationSchema';
 import UploadReportsCard from '../UploadReportsCard/UploadReportsCard';
 import ReportsListCard from '../ReportsListCard/ReportsListCard';
+import NCHANDIWebsiteService from '../../lib/NCHANDIWebsiteService'
 
-function createData(id, monthOfYear, financialReport, minutes) {
-  return {
-    id,
-    monthOfYear,
-    financialReport,
-    minutes
-  };
-}
-
-const monthlyReports = [
-  createData('1', 'January', Object.create(null), Object.create(null)),
-  createData('2', 'Febuary', Object.create(null), Object.create(null)),
-  createData('3', 'March', Object.create(null), Object.create(null)),
-  createData('4', 'April', Object.create(null), Object.create(null)),
-  createData('5', 'May', Object.create(null), Object.create(null)),
-  createData('6', 'June', Object.create(null), Object.create(null)),
-  createData('7', 'July', Object.create(null), Object.create(null)),
-  createData('8', 'August', Object.create(null), Object.create(null)),
-  createData('9', 'September', Object.create(null), Object.create(null)),
-  createData('10', 'October', Object.create(null), Object.create(null)),
-  createData('11', 'November', Object.create(null), Object.create(null)),
-  createData('12', 'December', Object.create(null), Object.create(null)),
-];
+const nchandiWebsiteService = new NCHANDIWebsiteService();
 
 const MonthlyReportsPage = () => {
-  const [listData, setListData] = useState(monthlyReports);
+  const [listData, setListData] = useState([]);
   const [monthlyReport, setMonthlyReport] = useState(null);
-  const [reportType, setReportType] = useState(null);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
 
   const formik = useFormik({
     initialValues: {
-      monthOfYear: '',
-      isFinancialReport: false,
+      name: '',
+      isFinancial: false,
       isMinutes: false,
-      financialReport: null,
-      minutes: null
+      type: '',
+      monthOfYear: '',
+      file: ''
     },
     onSubmit: async (values) => {
-      console.log(values);
+      let file = new FormData();
+      file.append("content", values.file);
+      delete values.file;
       try {
-        // await nchandiWebsiteService.postMonthlyReport({}, values);
+        setLoading(true);
+        const resourceItemData = await nchandiWebsiteService.postResourceItem({}, values);
+        await nchandiWebsiteService.postAttachments({}, resourceItemData.data.id, file);
         enqueueSnackbar('This resource was successfully uploaded.', snackbarMessages.success.configuration);
-        formik.handleReset();
       } catch (err) {
         enqueueSnackbar('There was an error when uploading this resource, please try again later or contact the Technology Chair', snackbarMessages.error.configuration);
         console.error(err);
+      } finally {
+        fetchListData();
+        setLoading(false);
       }
     },
     validationSchema: yupSchema,
     validateOnBlur: true,
   });
 
-  // const fetchData = useCallback(params => nchandiWebsiteService.getMonthlyReports(params), []); //Try This!!!
-
   /**
    *
    */
   const fetchListData = useCallback(async () => {
     try {
-      // setLoading(true);
-      // const { data: monthlyReports } = await nchandiWebsiteService.getMonthlyReports();
+      setLoading(true);
+      const monthlyReports = (await nchandiWebsiteService.getResourceItems()).data.filter(resourceItem => (resourceItem?.type === 'Financial' || resourceItem?.type === 'Minutes'));
       setListData(monthlyReports);
     } catch (err) {
       enqueueSnackbar('Unable to fetch current monthly reports, please try again later or contact the Technology Chair', snackbarMessages.error.configuration);
       console.error(err);
     } finally {
-      // setLoading(false);
+      setLoading(false);
     }
   }, [enqueueSnackbar]);
 
@@ -89,27 +74,52 @@ const MonthlyReportsPage = () => {
   /**
    *
    */
-  const handleSave = () => {
-    setTimeout( async () => { // Remove the onTimeout once the POST method in onSubmit is defined.
-      formik.submitForm();
-      if (formik.errors?.file) {
-        enqueueSnackbar(formik.errors?.file, snackbarMessages.error.configuration);
-      };
-      if (formik.errors?.checkboxValidation) {
-        enqueueSnackbar(formik.errors?.checkboxValidation, snackbarMessages.error.configuration);
-      };
-      formik.setSubmitting(false);
-    }, 1000);
-  };
+  const handleClick = async (e, entity) => {
+    console.log(entity);
+    e.stopPropagation();
+    setMonthlyReport(entity);
+    setLoading(true);
+    try {
+      let response = await nchandiWebsiteService.getAttachmentWithAttachmentId({}, entity.id);
+      window.open(URL.createObjectURL(response.data))
+    } catch (error) {
+      console.error(error);
+      enqueueSnackbar('There was an error retrieving the attachment!', snackbarMessages.error.configuration);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   /**
    *
    */
-  const handleDelete = (e, entity, typeOfReport) => {
+  const handleSave = () => {
+    if (formik.values.isFinancial) {
+      formik.setFieldValue('type', 'Financial');
+    } else if (formik.values.isMinutes) {
+      formik.setFieldValue('type', 'Minutes');
+    }
+    if (!formik.values.file) {
+      enqueueSnackbar('A file is required.', snackbarMessages.error.configuration)
+    } else {
+      formik.submitForm();
+    }
+    if (formik.values.file && formik.errors?.file) {
+      enqueueSnackbar(formik.errors?.file, snackbarMessages.error.configuration);
+    };
+    if (formik.errors?.checkboxValidation) {
+      enqueueSnackbar(formik.errors?.checkboxValidation, snackbarMessages.error.configuration);
+    };
+    formik.setSubmitting(false);
+  }
+
+  /**
+   *
+   */
+  const handleDelete = (e, entity) => {
     e.stopPropagation();
     setIsDeleteDialogOpen(true);
     setMonthlyReport(entity);
-    setReportType(typeOfReport);
   };
 
   /**
@@ -117,7 +127,6 @@ const MonthlyReportsPage = () => {
    */
   const handleDeleteDialogClose = () => {
     setMonthlyReport(null);
-    setReportType(null);
     setIsDeleteDialogOpen(false);
   };
 
@@ -125,19 +134,19 @@ const MonthlyReportsPage = () => {
    *
    */
   const handleDeleteDialogConfirm = async () => {
-    // setLoading(true);
-    try { // You need report type for api since each entity has two reports. You don't want to delete the whole entity, just do an update and null the respective report field.
-      // const { id, reportType } = monthlyReport;
-      // await nchandiWebsiteService.putMonthlyReportWithIdByReportType(id, reportType);
+    setLoading(true);
+    try {
+      const { id } = monthlyReport;
+      await nchandiWebsiteService.deleteResourceItemWithResourceItemId({}, id);
       enqueueSnackbar('This resource was deleted.', snackbarMessages.success.configuration);
     } catch (error) {
       console.error(error);
       enqueueSnackbar('There was an error deleting this resource!', snackbarMessages.error.configuration);
     } finally {
-      // setLoading(false);
+      setLoading(false);
       setMonthlyReport(null);
       setIsDeleteDialogOpen(false);
-      // fetchRequests();
+      fetchListData();
     }
   };
 
@@ -150,19 +159,25 @@ const MonthlyReportsPage = () => {
             onSave={handleSave}
           />
         </Grid>
-        <Grid sx={12} sm={6} >
-          <ReportsListCard
-            resourceData={listData}
-            isOpen={isDeleteDialogOpen}
-            entityName={'Monthly Report'}
-            cardTitle={'Monthly Reports'}
-            primaryText={monthlyReport?.monthOfYear}
-            secondaryText={reportType}
-            handleClose={handleDeleteDialogClose}
-            handleDelete={handleDelete}
-            handleDeleteConfirm={handleDeleteDialogConfirm}
-          />
-        </Grid>
+        {loading ?
+          <Skeleton variant='rectangular' width='100%'/>
+          :
+          <Grid sx={12} sm={6} >
+            <ReportsListCard
+              resourceData={listData}
+              handleClick={handleClick}
+              isOpen={isDeleteDialogOpen}
+              selectedEntity={monthlyReport}
+              entityName={'Monthly Report'}
+              cardTitle={'Monthly Reports'}
+              primaryText={monthlyReport?.monthOfYear}
+              secondaryText={monthlyReport?.type}
+              handleClose={handleDeleteDialogClose}
+              handleDelete={handleDelete}
+              handleDeleteConfirm={handleDeleteDialogConfirm}
+            />
+          </Grid>
+          }
       </Grid>
     </>
   )

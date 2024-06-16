@@ -54,7 +54,7 @@ const GeneralResourcesPage = () => {
       const generalResurces = (await nchandiWebsiteService.getResourceItems()).data.filter(resourceItem => resourceItem?.type === 'General Resource');
       setListData(generalResurces);
     } catch (err) {
-      enqueueSnackbar('Unable to fetch current panel materials, please try again later or contact the Technology Chair', snackbarMessages.error.configuration);
+      enqueueSnackbar('Unable to fetch current general resources, please try again later or contact the Technology Chair', snackbarMessages.error.configuration);
       console.error(err);
     } finally {
       setLoading(false);
