@@ -28,7 +28,7 @@ const Contact = () => {
         else {
           // await ectsService.postEctsstaff({}, values);
           // setDialogOpen(false);
-          console.log('Calling POST service mthod')
+          console.log('Calling POST service method')
         }
       } catch (e) {
         console.error(e);

@@ -75,7 +75,6 @@ const MonthlyReportsPage = () => {
    *
    */
   const handleClick = async (e, entity) => {
-    console.log(entity);
     e.stopPropagation();
     setMonthlyReport(entity);
     setLoading(true);

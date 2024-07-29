@@ -127,7 +127,7 @@ const PanelMaterialsPage = () => {
     try {
       const { id } = panelMaterial;
       await nchandiWebsiteService.deleteResourceItemWithResourceItemId({}, id);
-      enqueueSnackbar('This resource was deleted.', snackbarMessages.success.configuration);
+      enqueueSnackbar('This resour was deleted.', snackbarMessages.success.configuration);
     } catch (error) {
       console.error(error);
       enqueueSnackbar('There was an error deleting this resource!', snackbarMessages.error.configuration);
