@@ -1,16 +1,24 @@
-import React from 'react';
-import { Divider, Typography } from '@mui/material';
+import React, { useCallback, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import {
+  Divider,
+  Typography,
+} from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import EnhancedTabs from '../EnhancedTabs/EnhancedTabs';
-import { nchandiTheme } from '../../App';
 import CommitteeDashboard from '../CommitteeDashboard/CommitteeDashboard';
 import PanelMembersDashboard from '../PanelMembersDashboard/PanelMembersDashboard';
 import FacilitiesDashboard from '../FacilitiesDashboard/FacilitiesDashboard';
 import PanelsDashboard from '../PanelsDashboard/PanelsDashboard';
 import PendingVolunteersDashboard from '../PendingVolunteersDashboard/PendingVolunteersDashboard';
 import AdminDashboard from '../AdminDashboard/AdminDashboard';
+import Cookies from 'js-cookie';
+import { nchandiTheme } from '../../App';
+
 
 const AdminContainer = () => {
+  const history = useNavigate();
+  const isAdmin = useState(Cookies.get('isAdmin'));
 
   const tabLabels = [
     "Admin Dashboard",
@@ -39,6 +47,23 @@ const AdminContainer = () => {
 
   const tabConfig = generateTabsConfig('vertical', tabLabels, components, style);
 
+  /**
+   *
+   */
+  const checkAdmin = useCallback(async () => {
+    if (!isAdmin)
+    {
+      history('/unathorized');
+    }
+  }, [isAdmin, history]);
+
+  /**
+   *
+   */
+  useEffect(() => {
+    checkAdmin();
+  }, [checkAdmin]);
+
   return (
     <>
       <Grid Grid container sm={12} textAlign={'center'} justifyContent={'center'} py={3} pb={7}>
@@ -55,7 +80,7 @@ const AdminContainer = () => {
       </Grid>
       <Grid container sm={12} justifyContent={'center'}>
         <Grid sm={12}>
-          <EnhancedTabs 
+          <EnhancedTabs
             {...tabConfig}
           />
         </Grid>

@@ -24,6 +24,16 @@ const config = {
       }
     }
   },
+  warning: {
+    configuration: {
+      variant: 'warning',
+      action: DismissAction,
+      style: {
+        color: 'white',
+        whiteSpace: 'pre-line'
+      }
+    }
+  },
   success: {
     configuration: {
       variant: 'success',
