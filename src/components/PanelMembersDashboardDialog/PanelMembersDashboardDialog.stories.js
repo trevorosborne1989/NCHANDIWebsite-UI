@@ -22,7 +22,7 @@ export default {
         lastName: '',
         commitment: '',
         email: '',
-        phoneNumber: ''
+        phone: ''
       },
       onSubmit: async () => {
         try {
@@ -43,7 +43,7 @@ export default {
         formik.submitForm();
         await formik.validateForm();
         if (!formik.isValid) {
-          enqueueSnackbar('There are fields missing in your form. Please fill out all the required * fields.', snackbarMessages.error.configuration);
+          enqueueSnackbar('There are fields missing or invalid in your form. Please fill out all the required fields.', snackbarMessages.error.configuration);
         }
         formik.setSubmitting(false);
       }, 1000);

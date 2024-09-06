@@ -370,7 +370,7 @@ const PanelsDashboardDialog = ({ formik, facilityData, peopleData, isOpen, handl
             >
               {peopleData.map(option => (
                 <MenuItem key={option?.firstName + option?.lastName} value={option?.firstName + option?.lastName}>
-                  {option.firstName + option.lastName}
+                  {option.firstName + ' ' + option.lastName}
                 </MenuItem>
               ))}
             </TextField>

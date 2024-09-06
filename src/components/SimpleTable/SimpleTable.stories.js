@@ -57,7 +57,7 @@ const tableConfig = {
     const handleAdd = () => {
       console.log('Add');
     };
-  
+
 
 export default {
   title: 'SimpleTable',
@@ -68,7 +68,7 @@ export const Primary = ({...props}) => {
 
     return (
       <>
-        <SimpleTable 
+        <SimpleTable
           {...tableConfig}
           {...props}
           tableTitle='Simple Table'

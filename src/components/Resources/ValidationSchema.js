@@ -6,7 +6,7 @@ export const yupSchema = yup.object().shape({
   commitment: yup.string().required('Required').typeError('Required'),
   facility: yup.string().required('Required').typeError('Required'),
   email: yup.string().required('Required').typeError('Required'),
-  phoneNumber: yup.string().required('Required').typeError('Required'),
+  phone: yup.string().required('Required').typeError('Required'),
   livingSober: yup.boolean().nullable(),
   livingSoberQty: yup.number().typeError('Numbers only')
     .when('livingSober', {

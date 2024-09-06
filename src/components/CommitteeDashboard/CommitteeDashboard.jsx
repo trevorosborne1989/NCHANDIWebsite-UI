@@ -14,6 +14,13 @@ import NCHANDIWebsiteService from '../../lib/NCHANDIWebsiteService'
 
 const nchandiWebsiteService = new NCHANDIWebsiteService();
 
+const formatPhone = (phone) => {
+  let areaCode = phone.substr(1, 3);
+  let first3 = phone.substr(4, 3);
+  let last4 = phone.substr(7, 4);
+  return (areaCode + '-' + first3 + '-' + last4);
+};
+
 const generateTableConfig = (handleSelection, handleAdd, handleDelete) => ({
   title: 'Committee Members',
   dataKey: d => d.id,
@@ -28,7 +35,7 @@ const generateTableConfig = (handleSelection, handleAdd, handleDelete) => ({
     { columnName: 'firstName', numeric: true, disablePadding: true, label: 'First Name', value: d => d.firstName },
     { columnName: 'lastName', numeric: true, disablePadding: false, label: 'Last Name', value: d => d.lastName },
     { columnName: 'email', numeric: true, disablePadding: false, label: 'Email', value: d => d.email },
-    { columnName: 'phone', numeric: true, disablePadding: false, label: 'Phone Number', value: d => d.phone },
+    { columnName: 'phone', numeric: true, disablePadding: false, label: 'Phone Number', value: d => formatPhone(d.phone) },
     { columnName: 'preferredContactMethod', numeric: true, disablePadding: false, label: 'Contact Method', value: d => d.preferredContactMethod },
     { columnName: 'commitment', numeric: true, disablePadding: false, label: 'Commitment', value: d => d.commitment }
   ]

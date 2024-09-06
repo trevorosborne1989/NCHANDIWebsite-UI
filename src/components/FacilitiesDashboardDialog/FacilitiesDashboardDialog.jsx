@@ -7,8 +7,12 @@ import {
   DialogActions,
   DialogContent,
   DialogContentText,
-  DialogTitle
+  DialogTitle,
+  Box,
 } from '@mui/material';
+import Grid from '@mui/material/Unstable_Grid2';
+import PhoneInput from 'react-phone-input-2'
+import 'react-phone-input-2/lib/style.css'
 
 const facilityOptions = [
   {
@@ -126,104 +130,127 @@ const FacilitiesDashboardDialog = ({ formik, isOpen, handleSave, handleClose }) 
             error={formik.touched.website && Boolean(formik.errors.website)}
             required
           />
-          <TextField
-            label='Primary Contact Name'
-            name='primaryContactName'
-            fullWidth
-            variant='outlined'
-            margin='dense'
-            value={formik.values.primaryContactName}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            helperText={formik.touched.primaryContactName ? formik.errors.primaryContactName : ""}
-            error={formik.touched.primaryContactName && Boolean(formik.errors.primaryContactName)}
-            required
-          />
-          <TextField
-            label='Primary Contact Email'
-            name='primaryContactEmail'
-            fullWidth
-            variant='outlined'
-            margin='dense'
-            value={formik.values.primaryContactEmail}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            helperText={formik.touched.primaryContactEmail ? formik.errors.primaryContactEmail : ""}
-            error={formik.touched.primaryContactEmail && Boolean(formik.errors.primaryContactEmail)}
-            required
-          />
-          <TextField
-            label='Primary Contact Phone'
-            name='primaryContactPhone'
-            fullWidth
-            variant='outlined'
-            margin='dense'
-            value={formik.values.primaryContactPhone}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            helperText={formik.touched.primaryContactPhone ? formik.errors.primaryContactPhone : ""}
-            error={formik.touched.primaryContactPhone && Boolean(formik.errors.primaryContactPhone)}
-            required
-          />
-          <TextField
-            label='Alternate Contact Name'
-            name='alternateContactName'
-            fullWidth
-            variant='outlined'
-            margin='dense'
-            value={formik.values.alternateContactName}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            helperText={formik.touched.alternateContactName ? formik.errors.alternateContactName : ""}
-            error={formik.touched.alternateContactName && Boolean(formik.errors.alternateContactName)}
-            required
-          />
-          <TextField
-            label='Alternate Contact Email'
-            name='alternateContactEmail'
-            fullWidth
-            variant='outlined'
-            margin='dense'
-            value={formik.values.alternateContactEmail}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            helperText={formik.touched.alternateContactEmail ? formik.errors.alternateContactEmail : ""}
-            error={formik.touched.alternateContactEmail && Boolean(formik.errors.alternateContactEmail)}
-            required
-          />
-          <TextField
-            label='Alternate Contact Phone'
-            name='alternateContactPhone'
-            fullWidth
-            variant='outlined'
-            margin='dense'
-            value={formik.values.alternateContactPhone}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            helperText={formik.touched.alternateContactPhone ? formik.errors.alternateContactPhone : ""}
-            error={formik.touched.alternateContactPhone && Boolean(formik.errors.alternateContactPhone)}
-            required
-          />
-          <TextField
-            select
-            label='Active'
-            name='active'
-            fullWidth
-            variant='outlined'
-            margin='dense'
-            value={formik.values.active}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            helperText={formik.touched.active ? formik.errors.active : ""}
-            error={formik.touched.active && Boolean(formik.errors.active)}
-            required
-          >
-          {activeOptions.map(option => (
-            <MenuItem key={option.value} value={option.value}>
-              {option.label}
-            </MenuItem>
-          ))}
-          </TextField>
+          <Grid Grid container sm={12} pt={4}>
+            <Grid sm={5}>
+              <TextField
+                label='Primary Contact Name'
+                name='primaryContactName'
+                fullWidth
+                variant='outlined'
+                size='small'
+                margin='dense'
+                value={formik.values.primaryContactName}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                helperText={formik.touched.primaryContactName ? formik.errors.primaryContactName : ""}
+                error={formik.touched.primaryContactName && Boolean(formik.errors.primaryContactName)}
+                required
+              />
+            </Grid>
+            <Grid sm={5} pt={1} pl={3}>
+              <PhoneInput
+                  country="US"
+                  disableDropdown
+                  value={formik.values.primaryContactPhone}
+                  onChange={value => formik.setFieldValue('primaryContactPhone', value)}
+                  isValid={() => {
+                    if (formik.touched.primaryContactPhone && Boolean(formik.errors.primaryContactPhone)) {
+                      return 'Invalid phone number';
+                    } else {
+                      return true;
+                    }
+                  }}
+              />
+            </Grid>
+          </Grid>
+          <Box textAlign={'center'} pt={1}>
+            <TextField
+              label='Primary Contact Email'
+              name='primaryContactEmail'
+              variant='outlined'
+              fullWidth
+              size='small'
+              margin='dense'
+              value={formik.values.primaryContactEmail}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              helperText={formik.touched.primaryContactEmail ? formik.errors.primaryContactEmail : ""}
+              error={formik.touched.primaryContactEmail && Boolean(formik.errors.primaryContactEmail)}
+              required
+            />
+          </Box>
+          <Grid Grid container sm={12} pt={4}>
+            <Grid sm={5}>
+              <TextField
+                label='Alternate Contact Name'
+                name='alternateContactName'
+                fullWidth
+                variant='outlined'
+                size='small'
+                margin='dense'
+                value={formik.values.alternateContactName}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                helperText={formik.touched.alternateContactName ? formik.errors.alternateContactName : ""}
+                error={formik.touched.alternateContactName && Boolean(formik.errors.alternateContactName)}
+                required
+              />
+            </Grid>
+            <Grid sm={5} pt={1} pl={3}>
+              <PhoneInput
+                country="US"
+                disableDropdown
+                value={formik.values.alternateContactPhone}
+                onChange={value => formik.setFieldValue('alternateContactPhone', value)}
+                isValid={() => {
+                  if (formik.touched.alternateContactPhone && Boolean(formik.errors.alternateContactPhone)) {
+                    return 'Invalid phone number';
+                  } else {
+                    return true;
+                  }
+                }}
+              />
+            </Grid>
+          </Grid>
+          <Box textAlign={'center'} pt={1} pb={4}>
+            <TextField
+              label='Alternate Contact Email'
+              name='alternateContactEmail'
+              fullWidth
+              variant='outlined'
+              size='small'
+              margin='dense'
+              value={formik.values.alternateContactEmail}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              helperText={formik.touched.alternateContactEmail ? formik.errors.alternateContactEmail : ""}
+              error={formik.touched.alternateContactEmail && Boolean(formik.errors.alternateContactEmail)}
+              required
+            />
+          </Box>
+          <Box pl={10} pr={10}>
+            <TextField
+              select
+              label='Active'
+              name='active'
+              fullWidth
+              variant='outlined'
+              size='small'
+              margin='dense'
+              value={formik.values.active}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              helperText={formik.touched.active ? formik.errors.active : ""}
+              error={formik.touched.active && Boolean(formik.errors.active)}
+              required
+            >
+            {activeOptions.map(option => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+            </TextField>
+          </Box>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
