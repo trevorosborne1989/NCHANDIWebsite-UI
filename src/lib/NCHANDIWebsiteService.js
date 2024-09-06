@@ -1,4 +1,3 @@
-/*** NAME NCHANDIWebsite-UI*/
 
 import axios from 'axios';
 
@@ -8,7 +7,11 @@ class NCHANDIWebsiteService {
       this.instance = axios.create({
         baseURL: params.baseURL ? params.baseURL : 'undefined',
         timeout: params.timeout ? params.timeout : 10000,
-        headers: params.headers ? params.headers : { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json' },
+        headers: params.headers ? params.headers : {
+          'Access-Control-Allow-Origin': 'http://localhost:3000',
+          'Content-Type': 'application/json',
+          'Access-Control-Request-Headers': 'Content-Type, Authorization'
+        }
       });
     } else this.instance = axios;
   }
@@ -405,6 +408,32 @@ class NCHANDIWebsiteService {
   deleteAttachmentWithAttachmentId(params, attachmentId, body) {
 
     return this.instance.delete('http://localhost:8080/api/NCHANDIWebsite/attachments/' + attachmentId + '', params)
+  }
+
+  /**
+   * Valid Query Parameters:
+   * {
+   * }
+   * @return Check http://localhost:8080/api/NCHANDIWebsite/swagger-ui/index.html#/ for more information on the response body
+   */
+  authenticate(token) {
+
+    return axios.post('http://localhost:8080/api/NCHANDIWebsite/login', {}, {
+      headers: {
+        'Authorization': `Basic ${token}`
+      },
+    })
+  }
+
+  /**
+   * Valid Query Parameters:
+   * {
+   * }
+   * @return Check http://localhost:8080/api/NCHANDIWebsite/swagger-ui/index.html#/ for more information on the response body 
+   */
+  logout(params, body) {
+
+    return this.instance.post('http://localhost:8080/api/NCHANDIWebsite/logout', params)
   }
 
 }

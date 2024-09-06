@@ -1,46 +1,71 @@
 import React from 'react';
-import { Box, Container, Paper, TextField, Typography, Button, CircularProgress } from '@mui/material';
+import {
+  Box,
+  Container,
+  Paper,
+  TextField,
+  Typography,
+  Button,
+  CircularProgress
+} from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
+import {Buffer} from 'buffer';
+import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import { useSnackbar } from 'notistack';
 import snackbarMessages from '../../lib/snackbarMessages';
+import Cookies from 'js-cookie';
+import { yupSchema } from './ValidationSchema';
 import { nchandiTheme } from '../../App';
+import NCHANDIWebsiteService from '../../lib/NCHANDIWebsiteService'
+
+const nchandiWebsiteService = new NCHANDIWebsiteService();
 
 const Login = () => {
   const { enqueueSnackbar } = useSnackbar();
+  const history = useNavigate();
+
+  function delay(ms) {
+    return new Promise((resolve) => {
+      setTimeout(resolve, ms);
+    })
+  }
 
   const formik = useFormik({
     initialValues: {
-      username: '',
-      password: ''
+      usernameParameter: '',
+      passwordParameter: ''
     },
-    onSubmit: async values => {
+    onSubmit: async (values) => {
+      const { usernameParameter } = values;
+      const { passwordParameter } = values;
+      const token = Buffer.from(`${usernameParameter}:${passwordParameter}`, 'utf8').toString('base64')
       try {
-        const { id } = values;
-        if (id) {
-          // await ectsService.putEctsstaffWithEctsStaffId({}, id, values);
-          // setDialogOpen(false);
-          console.log('Calling PUT service mthod')
+        const { data: authorities } = await nchandiWebsiteService.authenticate(token);
+        if (authorities[0]?.authority.length > 5) {
+          Cookies.set('isAdmin', true); // use get cookie to get this value at the top level of a component to set a piece of state like isAdmin for a rendering conditional.
         }
-        else {
-          // await ectsService.postEctsstaff({}, values);
-          // setDialogOpen(false);
-          console.log('Calling POST service mthod')
-        }
-      } catch (e) {
-        console.error(e);
-        enqueueSnackbar('There was an error signing in', snackbarMessages.error.configuration);
+        console.log(authorities[0]?.authority);
+        enqueueSnackbar('Login successful.', snackbarMessages.success.configuration);
+        await delay(1000);
+        window.location.reload();
+        history('/admin-container');
+      } catch (err) {
+        enqueueSnackbar('Invalid username or password.', snackbarMessages.error.configuration);
+        formik.resetForm();
+        console.error(err);
       }
-      console.log(formik.values);
-      alert(JSON.stringify(formik.values));
-    }
+    },
+    validationSchema: yupSchema,
+    validateOnBlur: true,
   });
 
-  // const { setValues, submitForm, handleReset, handleBlur, handleChange } = formik;
-
-  const handleSubmit = (values) => {
-    formik.submitForm(values)
-    formik.handleReset()
+  const handleSave = () => {
+    formik.submitForm()
+    if (!formik.isValid) {
+      enqueueSnackbar('There are fields missing in your form. Please fill out all the required * fields.', snackbarMessages.error.configuration);
+    }
+    formik.setSubmitting(false);
   };
 
     return (
@@ -61,15 +86,17 @@ const Login = () => {
                     </Typography>
                     <TextField
                       label='Email'
-                      name='username'
+                      name='usernameParameter'
                       color='primary'
                       sx={{ backgroundColor: 'white' }}
                       fullWidth
                       variant='filled'
                       margin='dense'
-                      value={formik.values.username}
+                      value={formik.values.usernameParameter}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
+                      helperText={formik.touched.usernameParameter ? formik.errors.usernameParameter : ""}
+                      error={formik.touched.usernameParameter && Boolean(formik.errors.usernameParameter)}
                       required
                     />
                   </Box>
@@ -80,15 +107,17 @@ const Login = () => {
                   </Typography>
                   <TextField
                     label='Password'
-                    name='password'
+                    name='passwordParameter'
                     color='primary'
                     sx={{ backgroundColor: 'white' }}
                     fullWidth
                     variant='filled'
                     margin='dense'
-                    value={formik.values.password}
+                    value={formik.values.passwordParameter}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
+                    helperText={formik.touched.passwordParameter ? formik.errors.passwordParameter : ""}
+                    error={formik.touched.passwordParameter && Boolean(formik.errors.passwordParameter)}
                     required
                   />
                 </Grid>
@@ -100,7 +129,7 @@ const Login = () => {
                       variant='contained'
                       sx={{ width: 300, padding: 1, margin: 2 }}
                       size='large'
-                      onClick={handleSubmit}
+                      onClick={handleSave}
                       disabled={formik.isSubmitting}
                     >
                       Submit {formik.isSubmitting &&

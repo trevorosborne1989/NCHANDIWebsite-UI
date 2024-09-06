@@ -104,7 +104,6 @@ const Panels = () => {
   return (
     <>
     {loading}
-    {console.log(tableData)}
       <Grid container sm={12} textAlign={'center'} justifyContent={'center'} py={3} pb={7}>
         <Grid sm={10}>
           <Typography variant="h3" color={'white'} >
