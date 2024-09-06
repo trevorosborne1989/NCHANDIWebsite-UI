@@ -65,7 +65,7 @@ const Resources = () => {
       commitment: '',
       facility: '',
       email: '',
-      phoneNumber: '',
+      phone: '',
       livingSober: false,
       livingSoberQty: '',
       stepsAndTraditions12x12: false,
@@ -104,7 +104,7 @@ const Resources = () => {
     setTimeout( async () => { // Remove the onTimeout once the POST method in onSubmit is defined.
       formik.submitForm();
       if (!formik.isValid) {
-        enqueueSnackbar('There are fields missing in your form. Please fill out all the required * fields.', snackbarMessages.error.configuration);
+        enqueueSnackbar('There are fields missing or invalid in your form. Please fill out all the required fields.', snackbarMessages.error.configuration);
       }
       formik.setSubmitting(false);
     }, 1000);
@@ -441,15 +441,15 @@ const Resources = () => {
                 <Grid sm={10} pb={5}>
                   <TextField
                     label='Phone Number'
-                    name='phoneNumber'
+                    name='phone'
                     fullWidth
                     variant='outlined'
                     margin='dense'
-                    value={formik.values.phoneNumber}
+                    value={formik.values.phone}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    helperText={formik.touched.phoneNumber ? formik.errors.phoneNumber : ""}
-                    error={formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber)}
+                    helperText={formik.touched.phone ? formik.errors.phone : ""}
+                    error={formik.touched.phone && Boolean(formik.errors.phone)}
                     required
                   />
                 </Grid>

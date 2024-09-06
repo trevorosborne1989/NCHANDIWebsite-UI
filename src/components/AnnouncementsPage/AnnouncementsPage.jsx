@@ -87,7 +87,7 @@ const AnnouncementsPage = () => {
     formik.setFieldValue('type', 'Announcement');
     formik.submitForm();
     if (!formik.isValid) {
-      enqueueSnackbar('There are fields missing in your form. Please fill out all the required * fields.', snackbarMessages.error.configuration);
+      enqueueSnackbar('There are fields missing or invalid in your form. Please fill out all the required fields.', snackbarMessages.error.configuration);
     }
     formik.setSubmitting(false);
   };
