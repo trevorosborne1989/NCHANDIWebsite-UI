@@ -1,10 +1,13 @@
 import React from 'react';
 import { Box, Typography, Divider, Card, CardContent, Button } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
+import { useNavigate } from 'react-router-dom';
 import { nchandiTheme } from '../../App';
 
 
 const About = () => {
+
+  const history = useNavigate();
 
   return (
     <Grid container spacing={1}>
@@ -59,7 +62,7 @@ const About = () => {
           </Grid>
           <Grid sm={12}>
             <Box justifyContent="center" textAlign={'center'} alignItems={'center'} >
-              <Button variant='contained' size='large' sx={{ width: 300, backgroundColor: nchandiTheme.handiGreen }}>ORIENTATION</Button>
+              <Button variant='contained' size='large' onClick={() => history('/orientation')} sx={{ width: 300, backgroundColor: nchandiTheme.handiGreen }}>ORIENTATION</Button>
             </Box>
           </Grid>
         </Grid>

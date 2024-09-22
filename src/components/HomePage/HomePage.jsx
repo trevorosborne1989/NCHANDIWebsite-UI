@@ -2,10 +2,11 @@ import React from 'react';
 import { Box, Container, Typography, Card, CardContent, Divider } from '@mui/material';
 import { SendRounded, MailOutline } from '@mui/icons-material'
 import { Button } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import { nchandiTheme } from '../../App';
 
-
 const HomePage = () => {
+  const history = useNavigate();
 
   return (
     <Container>
@@ -33,10 +34,26 @@ const HomePage = () => {
             </CardContent>
             <Box display='flex' justifyContent="center" >
               <Box display="flex" py={1.5} marginRight={3} >
-                <Button variant='contained' size='large' color='primary' sx={{ width: 250 }} >ORIENTATION</Button>
+                <Button
+                  variant='contained'
+                  size='large'
+                  color='primary'
+                  onClick={() => history('/orientation')}
+                  sx={{ width: 250 }}
+                >
+                  ORIENTATION
+                </Button>
               </Box>
               <Box display="flex" py={1.5} >
-                <Button variant='contained' size='large' color='primary' sx={{ width: 250 }} >CONTACT US</Button>
+                <Button
+                  variant='contained'
+                  size='large'
+                  color='primary'
+                  onClick={() => history('/contact')}
+                  sx={{ width: 250 }}
+                >
+                  CONTACT US
+                </Button>
               </Box>
             </Box>
           </Card>
@@ -50,7 +67,15 @@ const HomePage = () => {
             </CardContent>
             <Box display='flex' justifyContent="center" >
               <Box display="flex" py={1.5} >
-                <Button variant='contained' size='large' color='secondary' sx={{ width: 300 }}>OPEN PANELS</Button>
+                <Button
+                  variant='contained'
+                  size='large'
+                  color='secondary'
+                  onClick={() => history('/panels')}
+                  sx={{ width: 300 }}
+                >
+                  OPEN PANELS
+                </Button>
               </Box>
             </Box>
           </Card>
@@ -64,7 +89,15 @@ const HomePage = () => {
             </CardContent>
             <Box display='flex' justifyContent="center" >
               <Box display="flex" py={1.5} >
-                <Button variant='contained' size='large' color='secondary' sx={{ width: 300 }}>RESOURCES</Button>
+                <Button
+                  variant='contained'
+                  size='large'
+                  color='secondary'
+                  onClick={() => history('/resources')}
+                  sx={{ width: 300 }}
+                >
+                  RESOURCES
+                </Button>
               </Box>
             </Box>
           </Card>

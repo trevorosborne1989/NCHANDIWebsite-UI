@@ -38,7 +38,7 @@ const Unathorized = () => {
                   variant='contained'
                   sx={{ width: 300, padding: 1, margin: 2, color: nchandiTheme.handiDarkYellow, background: nchandiTheme.handiGrey }}
                   size='large'
-                  onClick={() => history('/homepage')}
+                  onClick={() => history('/')}
                 >
                   Return Home
                 </Button>

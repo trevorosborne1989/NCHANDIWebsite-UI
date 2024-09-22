@@ -32,28 +32,16 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import {
   Link as RouterLink,
-  Route,
-  Routes,
-  MemoryRouter,
-  useLocation,
+  useNavigate,
+  Outlet,
 } from "react-router-dom";
-import { StaticRouter } from 'react-router-dom/server';
 import Cookies from 'js-cookie';
 import { useSnackbar } from 'notistack';
 import snackbarMessages from './lib/snackbarMessages';
-import HomePage from './components/HomePage/HomePage';
-import About from './components/About/About';
-import Orientation from './components/Orientation/Orientation';
-import Panels from './components/Panels/Panels';
-import Resources from './components/Resources/Resources';
-import Contact from './components/Contact/Contact';
-import Login from './components/Login/Login';
-import AdminContainer from './components/AdminContainer/AdminContainer';
-import Unathorized from './components/Unathorized/Unathorized';
 import NCHANDIWebsiteService from './lib/NCHANDIWebsiteService';
 // import NchandiIcon from './components/NchandiIcon/NchandiIcon';
 
- const nchandiWebsiteService = new NCHANDIWebsiteService();
+const nchandiWebsiteService = new NCHANDIWebsiteService();
 
 export const nchandiTheme = {
   handiBlue: "#245980",
@@ -77,23 +65,6 @@ const theme = createTheme({
     }
   }
 });
-
-function Router(props) {
-  const { children } = props;
-  if (typeof window === 'undefined') {
-    return <StaticRouter location="/homepage">{children}</StaticRouter>;
-  }
-
-  return (
-    <MemoryRouter initialEntries={['/homepage']} initialIndex={0}>
-      {children}
-    </MemoryRouter>
-  );
-}
-
-Router.propTypes = {
-  children: PropTypes.node,
-};
 
 const Link = React.forwardRef(function Link(itemProps, ref) {
   return <RouterLink ref={ref} {...itemProps} role={undefined} />;
@@ -128,7 +99,7 @@ function ListItemAdminLink(props) {
   return (
     <li>
       {
-        <ListItem button component={Link} to={Cookies.get('isAdmin') ? to : null} onClick={Cookies.get('isAdmin') ? null : () => enqueueSnackbar('You must be an Admin and logged in.', snackbarMessages.warning.configuration)}>
+        <ListItem button component={Link} to={Cookies.get('isAdmin') ? to : '/unathorized'} onClick={Cookies.get('isAdmin') ? null : () => enqueueSnackbar('You must be an Admin and logged in.', snackbarMessages.warning.configuration)}>
           {icon ? <ListItemIcon>{icon}</ListItemIcon> : null}
           <ListItemText primary={primary} sx={{ color: Cookies.get('isAdmin') ? 'white' : 'grey'}} />
         </ListItem>
@@ -143,17 +114,9 @@ ListItemAdminLink.propTypes = {
   to: PropTypes.string.isRequired,
 };
 
-function RouterContent() {
-  const location = useLocation();
-  return (
-    <Typography variant="body2" sx={{ pb: 2 }} color="text.secondary">
-      Current route: {location.pathname}
-    </Typography>
-  );
-}
-
 function App() {
   const { enqueueSnackbar } = useSnackbar();
+  const history = useNavigate();
 
   function delay(ms) {
     return new Promise((resolve) => {
@@ -171,7 +134,7 @@ function App() {
       Cookies.remove('isAdmin');
       enqueueSnackbar('Logout Successful', snackbarMessages.success.configuration);
       await delay(1000);
-      window.location.reload();
+      history('/');
     } catch (error) {
       console.error(error);
       enqueueSnackbar('There was an error logging out!', snackbarMessages.error.configuration);
@@ -180,150 +143,141 @@ function App() {
 
   return (
     <>
-      <Router>
-        <ThemeProvider theme={theme}>
-          <Root
-            scheme={{
-              header: {
-                config: {
-                  xs: {
-                    position: "sticky",
-                    height: 56,
-                  },
-                  md: {
-                    position: "permanent",
-                    height: 64,
-                    clipped: false, // Add this if you uncomment the bottom
-                  },
+      <ThemeProvider theme={theme}>
+        <Root
+          scheme={{
+            header: {
+              config: {
+                xs: {
+                  position: "sticky",
+                  height: 56,
+                },
+                md: {
+                  position: "permanent",
+                  height: 64,
+                  clipped: false, // Add this if you uncomment the bottom
                 },
               },
-              leftEdgeSidebar: {
-                config: {
-                  xs: {
-                    variant: "temporary",
-                    width: "auto"
-                  },
-                  // md: {
-                  //   variant: "permanent", // eliminate md property to make non permenant sidebar
-                  //   width: 256,
-                  //   collapsible: true,
-                  //   collapsedWidth: 64,
-                  // },
+            },
+            leftEdgeSidebar: {
+              config: {
+                xs: {
+                  variant: "temporary",
+                  width: "auto"
                 },
+                // md: {
+                //   variant: "permanent", // eliminate md property to make non permenant sidebar
+                //   width: 256,
+                //   collapsible: true,
+                //   collapsedWidth: 64,
+                // },
               },
-            }}
-          >
-            <CssBaseline />
-            <Header elevation={8} sx={{ backgroundColor: nchandiTheme.handiDarkGreen }}>
-              <Grid container sm={12}>
-                <Grid sm={9}>
-                  <Box flex={1} display={'flex'} px={2} gap={1} alignItems='center' >
-                    <EdgeTrigger target={{ anchor: "left", field: "open" }} >
-                      {(open, setOpen) => (
-                        <IconButton onClick={() => setOpen(!open)}>
-                          {open ? <KeyboardArrowLeft sx={{ color: 'white' }} /> : <Menu sx={{ color: 'white' }} />}
-                        </IconButton>
-                      )}
-                    </EdgeTrigger>
-                    <Box display={'flex'} alignItems='center'>
-                      <ExtensionTwoTone sx={{ color: 'white', fontSize: 50, mr: 1, my: 0.5 }}/>
-                      <Typography variant='h5' color={'white'} data-cy='header-title'>
-                        North County H&I
-                      </Typography>
-                    </Box>
+            },
+          }}
+        >
+          <CssBaseline />
+          <Header elevation={8} sx={{ backgroundColor: nchandiTheme.handiDarkGreen }}>
+            <Grid container sm={12}>
+              <Grid sm={9}>
+                <Box flex={1} display={'flex'} px={2} gap={1} alignItems='center' >
+                  <EdgeTrigger target={{ anchor: "left", field: "open" }} >
+                    {(open, setOpen) => (
+                      <IconButton onClick={() => setOpen(!open)}>
+                        {open ? <KeyboardArrowLeft sx={{ color: 'white' }} /> : <Menu sx={{ color: 'white' }} />}
+                      </IconButton>
+                    )}
+                  </EdgeTrigger>
+                  <Box display={'flex'} alignItems='center'>
+                    <ExtensionTwoTone sx={{ color: 'white', fontSize: 50, mr: 1, my: 0.5 }}/>
+                    <Typography variant='h5' color={'white'} data-cy='header-title'>
+                      North County H&I
+                    </Typography>
                   </Box>
-                </Grid>
-                <Grid sm={3} >
-                  {Cookies.get("isAdmin") &&
-                    <Box display={'flex'} pr={1} justifyContent={'right'} >
-                      {/* <Logout sx={{ color: 'white', fontSize: 45 }}/> */}
-                      <Tooltip title="Logout" placement='left' arrow>
-                        <IconButton onClick={handleLogout}>
-                          {/* <Typography sx={{fontSize: 'large'}} color={'white'} pr={1} data-cy='logout'>
-                            Logout
-                          </Typography> */}
-                          <Logout sx={{ color: 'white', fontSize: 50 }}/>
-                        </IconButton>
-                      </Tooltip>
-                    </Box>
-                  }
-                </Grid>
+                </Box>
               </Grid>
-            </Header>
-            <EdgeSidebar anchor="left" >
-              <Paper sx={{ width: 320, maxWidth: '100%', backgroundColor: nchandiTheme.handiDarkGreen }}>
-                <Divider />
-                <List>
-                  <ListItemLink to="/homepage" primary="Home" icon={<Home fontSize="medium" sx={{ color: 'white'}} />} />
-                  <ListItemLink to="/about" primary="About" icon={<Info fontSize="medium" sx={{ color: 'white'}} />} />
-                  <ListItemLink to="/orientation" primary="Orientation" icon={<School fontSize="medium" sx={{ color: 'white'}} />} />
-                  <ListItemLink to="/panels" primary="Panels" icon={<LocalHospital fontSize="medium" sx={{ color: 'white'}} />} />
-                  <ListItemLink to="/resources" primary="Resources" icon={<LibraryBooks fontSize="medium" sx={{ color: 'white'}} />} />
-                  <ListItemLink to="/contact" primary="Contact" icon={<ContactPhone fontSize="medium"  sx={{ color: 'white'}} />} />
-                  <ListItemLink to="/login-page" primary="Login" icon={<LockOpen fontSize="medium" sx={{ color: 'white'}} />} />
-                  {/* <ListItemLink to="/unathorized" primary="Unathorized" icon={<Warning fontSize="medium" sx={{ color: 'white'}} />} /> */}
-                </List>
-                <Divider />
-                <List >
-                  <ListItemAdminLink
-                    to={"/admin-container"}
-                    primary="Admin"
-                    icon={<AdminPanelSettings
-                    fontSize="medium"
-                    sx={{ color: 'white'}} />}
-                  />
-                </List>
+              <Grid sm={3} >
+                {Cookies.get("isAdmin") &&
+                  <Box display={'flex'} pr={1} justifyContent={'right'} >
+                    {/* <Logout sx={{ color: 'white', fontSize: 45 }}/> */}
+                    <Tooltip title="Logout" placement='left' arrow>
+                      <IconButton onClick={handleLogout}>
+                        {/* <Typography sx={{fontSize: 'large'}} color={'white'} pr={1} data-cy='logout'>
+                          Logout
+                        </Typography> */}
+                        <Logout sx={{ color: 'white', fontSize: 50 }}/>
+                      </IconButton>
+                    </Tooltip>
+                  </Box>
+                }
+              </Grid>
+            </Grid>
+          </Header>
+          <EdgeSidebar anchor="left" >
+            <Paper sx={{ width: 320, maxWidth: '100%', backgroundColor: nchandiTheme.handiDarkGreen }}>
+              <Divider />
+              <List>
+                <ListItemLink to="/" primary="Home" icon={<Home fontSize="medium" sx={{ color: 'white'}} />} />
+                <ListItemLink to="/about" primary="About" icon={<Info fontSize="medium" sx={{ color: 'white'}} />} />
+                <ListItemLink to="/orientation" primary="Orientation" icon={<School fontSize="medium" sx={{ color: 'white'}} />} />
+                <ListItemLink to="/panels" primary="Panels" icon={<LocalHospital fontSize="medium" sx={{ color: 'white'}} />} />
+                <ListItemLink to="/resources" primary="Resources" icon={<LibraryBooks fontSize="medium" sx={{ color: 'white'}} />} />
+                <ListItemLink to="/contact" primary="Contact" icon={<ContactPhone fontSize="medium"  sx={{ color: 'white'}} />} />
+                <ListItemLink to="/login-page" primary="Login" icon={<LockOpen fontSize="medium" sx={{ color: 'white'}} />} />
+                {/* <ListItemLink to="/unathorized" primary="Unathorized" icon={<Warning fontSize="medium" sx={{ color: 'white'}} />} /> */}
+              </List>
+              <Divider />
+              <List >
+                <ListItemAdminLink
+                  to={"/admin-container"}
+                  primary="Admin"
+                  icon={<AdminPanelSettings
+                  fontSize="medium"
+                  sx={{ color: 'white'}} />}
+                />
+              </List>
+            </Paper>
+            <SidebarContent sx={{ backgroundColor: nchandiTheme.handiDarkGreen }}> </SidebarContent>
+          </EdgeSidebar>
+          <Content>
+            <Box height='100%' sx={{backgroundColor: nchandiTheme.handiBlue}}>
+              <Paper variant='outlined' sx={{backgroundColor: nchandiTheme.handiBlue}}>
+                <Outlet /> {/* Nested routes render here */}
               </Paper>
-              <SidebarContent sx={{ backgroundColor: nchandiTheme.handiDarkGreen }}> </SidebarContent>
-            </EdgeSidebar>
-            <Content>
-              <Box height='100%' sx={{backgroundColor: nchandiTheme.handiBlue}}>
-                <Paper variant='outlined' sx={{backgroundColor: nchandiTheme.handiBlue}}>
-                  <Routes>
-                    <Route path="*" element={<RouterContent />} />
-                    <Route path='/homepage' element={<HomePage />} />
-                    <Route path='/about' element={<About />} />
-                    <Route path='/orientation' element={<Orientation />} />
-                    <Route path='/panels' element={<Panels />} />
-                    <Route path='/resources' element={<Resources />} />
-                    <Route path='/contact' element={<Contact />} />
-                    <Route path='/login-page' element={<Login />} />
-                    <Route path='/admin-container' element={<AdminContainer />} />
-                    <Route path='/unathorized' element={<Unathorized />} />
-                  </Routes>
-                </Paper>
-              </Box>
-            </Content>
-            <Footer>
-              <Grid container sm={12}  sx={{backgroundColor: nchandiTheme.handiDarkBlue}} justifyContent={'center'} alignItems={'center'} py={1}>
-                <Grid sm={1} textAlign={'right'} pr={1}>
-                  <ExtensionTwoTone sx={{ color: 'white', fontSize: 50, my: 0.5 }}/>
-                </Grid>
-                <Grid sm={2}>
-                  <Typography variant='h6' color='white' >
-                    North County H&I
+            </Box>
+          </Content>
+          <Footer>
+            <Box height='100%' sx={{backgroundColor: nchandiTheme.handiBlue}} position={''}>
+            <Paper variant='outlined' sx={{backgroundColor: nchandiTheme.handiDarkBlue}}>
+            <Grid container sm={12}  sx={{backgroundColor: nchandiTheme.handiDarkBlue}} justifyContent={'center'} alignItems={'center'} py={1}>
+              <Grid sm={1} textAlign={'right'} pr={1}>
+                <ExtensionTwoTone sx={{ color: 'white', fontSize: 50, my: 0.5 }}/>
+              </Grid>
+              <Grid sm={2}>
+                <Typography variant='h6' color='white' >
+                  North County H&I
+                </Typography>
+              </Grid>
+              <Grid sm={5}>
+
+              </Grid>
+              <Grid container sm={4} direction='column' justifyContent={'center'} alignItems={'end'} textAlign={'end'} pr={4}>
+                <Grid sm={10}>
+                  <Typography variant='h7' color='white' >
+                    PO Box 4013, Carlsbad, CA 92018
                   </Typography>
                 </Grid>
-                <Grid sm={5}>
-
-                </Grid>
-                <Grid container sm={4} direction='column' justifyContent={'center'} alignItems={'end'} textAlign={'end'} pr={4}>
-                  <Grid sm={10}>
-                    <Typography variant='h7' color='white' >
-                      PO Box 4013, Carlsbad, CA 92018
-                    </Typography>
-                  </Grid>
-                  <Grid sm={10}>
-                    <Typography variant='h7' color='white'>
-                      info@nchandi.org
-                    </Typography>
-                  </Grid>
+                <Grid sm={10}>
+                  <Typography variant='h7' color='white'>
+                    info@nchandi.org
+                  </Typography>
                 </Grid>
               </Grid>
-            </Footer>
-          </Root>
-        </ThemeProvider>
-      </Router>
+            </Grid>
+            </Paper>
+            </Box>
+          </Footer>
+        </Root>
+      </ThemeProvider>
     </>
   );
 }
