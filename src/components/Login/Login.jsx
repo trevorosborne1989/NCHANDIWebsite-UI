@@ -48,8 +48,8 @@ const Login = () => {
         console.log(authorities[0]?.authority);
         enqueueSnackbar('Login successful.', snackbarMessages.success.configuration);
         await delay(1000);
-        window.location.reload();
         history('/admin-container');
+        // window.location.reload();
       } catch (err) {
         enqueueSnackbar('Invalid username or password.', snackbarMessages.error.configuration);
         formik.resetForm();

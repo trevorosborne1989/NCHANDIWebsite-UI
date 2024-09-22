@@ -64,18 +64,26 @@ const Orientation = () => {
         <Grid  direction={'column'} pb={7}>
           <Divider orientation="vertical" flexItem sx={{ borderRightWidth: 7, background: 'white', height: '100%' }} />
         </Grid>
-        <Grid container sm={10} md={5} direction={'column'} justifyContent={'center'} alignItems={'center'} pb={7}>
-          <Grid sm={12} textAlign={'center'}>
+        <Grid container sm={10} md={5} direction={'column'} justifyContent={'center'} alignItems={'center'} textAlign={'center'} pb={7}>
+          <Grid sm={12}>
             <Typography variant='h4' color={'white'} pb={5}>
               Orientation and Committee Board Meetings
             </Typography>
           </Grid>
-          <Grid sm={12} container direction={'row'} textAlign={'center'}>
-            <Grid sm={8}>
-              <Typography variant='h5' color={'white'}>
-                Sat Jul 15 2023
-              </Typography>
-            </Grid>
+          <Grid sm={12}>
+            <Typography variant='h5' color={'white'}>
+              Every 3rd Saturday
+            </Typography>
+          </Grid>
+          <Grid sm={12} pt={2}>
+            <Typography variant='h5' color={'white'}>
+              Orientation: 9:00am - 9:45am
+            </Typography>
+          </Grid>
+          <Grid sm={12}>
+            <Typography variant='h5' color={'white'}>
+              Board Meeting: 9:45am - 11:00am
+            </Typography>
           </Grid>
         </Grid>
         <Grid sm={10} container pb={7}>
