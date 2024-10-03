@@ -35,6 +35,7 @@ const MonthlyReportsPage = () => {
         setLoading(true);
         const resourceItemData = await nchandiWebsiteService.postResourceItem({}, values);
         await nchandiWebsiteService.postAttachments({}, resourceItemData.data.id, file);
+        formik.handleReset();
         enqueueSnackbar('This resource was successfully uploaded.', snackbarMessages.success.configuration);
       } catch (err) {
         enqueueSnackbar('There was an error when uploading this resource, please try again later or contact the Technology Chair', snackbarMessages.error.configuration);

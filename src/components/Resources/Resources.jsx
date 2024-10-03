@@ -30,24 +30,6 @@ const nchandiWebsiteService = new NCHANDIWebsiteService();
 
 const monthsOfYear = ['January', 'February', 'March', 'April', 'May', 'June' , 'July', 'August', 'September', 'October', 'November', 'December'];
 
-const facilityData = [
-  {
-    value: 'West Coast Recovery',
-    label: 'West Coast Recovery',
-  },
-  {
-    value: 'Tri-City',
-    label: 'Tri-City',
-  },
-  {
-    value: 'First Step House',
-    label: 'First Step House',
-  },
-  {
-    value: 'Crown View',
-    label: 'Crown View',
-  }
-];
 const commitmentOptions = [
   {
     value: 'Panel Leader',
@@ -81,30 +63,30 @@ const Resources = () => {
       email: '',
       phoneNumber: '',
       livingSober: false,
-      livingSoberQty: '',
+      livingSoberQty: 0,
       stepsAndTraditions12x12: false,
-      stepsAndTraditions12x12Qty: '',
+      stepsAndTraditions12x12Qty: 0,
       aaPaperback: false,
-      aaPaperbackQty: '',
+      aaPaperbackQty: 0,
       aaPocketSize: false,
-      aaPocketSizeQty: '',
+      aaPocketSizeQty: 0,
       grapevine: false,
-      grapevineQty: '',
+      grapevineQty: 0,
       laVina: false,
-      laVinaQty: '',
+      laVinaQty: 0,
       newcomerPackets: false,
-      newcomerPacketsQty: '',
+      newcomerPacketsQty: 0,
       literatureRackWithPamphlets: false,
-      literatureRackWithPamphletsQty: '',
+      literatureRackWithPamphletsQty: 0,
       other: false,
-      otherQty: '',
+      otherQty: 0,
       comments: ''
     },
-    onSubmit: async () => {
+    onSubmit: async (values) => {
       try {
-        // await post method()   Use await here.
-        enqueueSnackbar('This literature request was successfully submitted.', snackbarMessages.success.configuration);
+        await nchandiWebsiteService.emailLiteratureRequest({}, values);
         formik.handleReset();
+        enqueueSnackbar('This request was successfully submitted.', snackbarMessages.success.configuration);
       } catch (err) {
         enqueueSnackbar('There was an error when submitting this form, please try again later or contact the Technology Chair', snackbarMessages.error.configuration);
         console.error(err);
@@ -114,30 +96,36 @@ const Resources = () => {
     validateOnBlur: true,
   });
 
-  const validateSubmission = async () => {
-    setTimeout( async () => { // Remove the onTimeout once the POST method in onSubmit is defined.
-      formik.submitForm();
-      if (!formik.isValid) {
-        enqueueSnackbar('There are fields missing in your form. Please fill out all the required * fields.', snackbarMessages.error.configuration);
-      }
-      formik.setSubmitting(false);
-    }, 1000);
+  const handleSubmit = async () => {
+    formik.submitForm();
+    if (!formik.isValid) {
+      enqueueSnackbar('There are fields missing in your form. Please fill out all the required fields.', snackbarMessages.error.configuration);
+    }
+    formik.setSubmitting(false);
   };
 
-  useEffect(() => {
-    const fetchFacilities = async () => {
-      try {
-        // let response = await nchandiWebsiteService.getFacilites();
-        // let facilityOptions = response.data.map(facilities => facilities || '');
-        let facilityOptions = facilityData;
-        setFaciltiyOptions(facilityOptions);
-      } catch (error) {
-        console.error(error);
-        setFaciltiyOptions([]);
-      }
-    };
-    fetchFacilities();
+  /**
+   *
+   */
+  const fetchFacilityData = useCallback(async () => {
+    try {
+      setLoading(true);
+      const { data: facilities } = await nchandiWebsiteService.getFacilities();
+      setFaciltiyOptions(facilities);
+    } catch (err) {
+      console.error(err);
+      setFaciltiyOptions([]);
+    } finally {
+      setLoading(false);
+    }
   }, []);
+
+  /**
+   *
+   */
+  useEffect(() => {
+    fetchFacilityData();
+  }, [fetchFacilityData]);
 
   /**
    *
@@ -544,8 +532,8 @@ const Resources = () => {
                       required
                     >
                       {facilityOptions.map(option => (
-                        <MenuItem key={option.value} value={option.value}>
-                          {option.label}
+                        <MenuItem key={option?.name} value={option?.name}>
+                          {option?.name}
                         </MenuItem>
                       ))}
                     </TextField>
@@ -589,7 +577,7 @@ const Resources = () => {
                     <Grid sm={4} ml={4}>
                       <FormGroup>
                         <FormControlLabel
-                          control={<Checkbox 
+                          control={<Checkbox
                             sx={{ color: nchandiTheme.handiDarkGreen,'&.Mui-checked': {color: nchandiTheme.handiGreen} }}
                             name='livingSober'
                             checked={formik.values.livingSober}
@@ -834,7 +822,7 @@ const Resources = () => {
                       variant='contained'
                       sx={{ width: '50%', padding: 1, margin: 2 }}
                       size='large'
-                      onClick={async () => { await validateSubmission(); }}
+                      onClick={async () => { await handleSubmit(); }}
                       disabled={formik.isSubmitting}
                     >
                       Submit {formik.isSubmitting &&

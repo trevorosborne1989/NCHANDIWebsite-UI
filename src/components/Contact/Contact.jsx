@@ -4,7 +4,11 @@ import Grid from '@mui/material/Unstable_Grid2';
 import { useFormik } from 'formik';
 import { useSnackbar } from 'notistack';
 import snackbarMessages from '../../lib/snackbarMessages';
+import { yupSchema } from './ValidationSchema';
 import { nchandiTheme } from '../../App';
+import NCHANDIWebsiteService from '../../lib/NCHANDIWebsiteService'
+
+const nchandiWebsiteService = new NCHANDIWebsiteService();
 
 const Contact = () => {
   const { enqueueSnackbar } = useSnackbar();
@@ -17,33 +21,28 @@ const Contact = () => {
       phone: '',
       message: '',
     },
-    onSubmit: async values => {
+    onSubmit: async (values) => {
       try {
-        const { id } = values;
-        if (id) {
-          // await ectsService.putEctsstaffWithEctsStaffId({}, id, values);
-          // setDialogOpen(false);
-          console.log('Calling PUT service mthod')
-        }
-        else {
-          // await ectsService.postEctsstaff({}, values);
-          // setDialogOpen(false);
-          console.log('Calling POST service method')
-        }
-      } catch (e) {
-        console.error(e);
-        enqueueSnackbar('There was an error submitting contact info', snackbarMessages.error.configuration);
+        await nchandiWebsiteService.emailContactForm({}, values);
+        enqueueSnackbar('This committee member was successfully submitted.', snackbarMessages.success.configuration);
+      } catch (err) {
+        enqueueSnackbar('There was an error when submitting this form, please try again later or contact the Technology Chair', snackbarMessages.error.configuration);
+        console.error(err);
       }
-      console.log(formik.values);
-      alert(JSON.stringify(formik.values));
-    }
+    },
+    validationSchema: yupSchema,
+    validateOnBlur: true,
   });
 
-  // const { setValues, submitForm, handleReset, handleBlur, handleChange } = formik;
-
-  const handleSubmit = (values) => {
-    formik.submitForm(values)
-    formik.handleReset()
+  /**
+   *
+   */
+  const handleSubmit = () => {
+    formik.submitForm();
+    if (!formik.isValid) {
+      enqueueSnackbar('There are fields missing in your form. Please fill out all the required fields.', snackbarMessages.error.configuration);
+    }
+    formik.setSubmitting(false);
   };
 
     return (
