@@ -18,8 +18,8 @@ class NCHANDIWebsiteService {
 
   /**
    * Valid Query Parameters:
-   * { 
-   * } 
+   * {
+   * }
    * @return Check http://localhost:8080/api/NCHANDIWebsite/swagger-ui/index.html#/ for more information on the response body 
    */
   getPendings(params, body) {
@@ -383,7 +383,7 @@ class NCHANDIWebsiteService {
    */
   getAttachmentWithAttachmentId(params, attachmentId, body) {
 
-    return axios.get('http://localhost:8080/api/NCHANDIWebsite/attachments/' + attachmentId + '', {responseType: 'blob'})
+    return axios.get('http://localhost:8080/api/NCHANDIWebsite/attachments/' + attachmentId + '', { responseType: 'blob' })
   }
 
   /**
@@ -434,6 +434,28 @@ class NCHANDIWebsiteService {
   logout(params, body) {
 
     return this.instance.post('http://localhost:8080/api/NCHANDIWebsite/logout', params)
+  }
+
+  /**
+   * Valid Query Parameters:
+   * {
+   * }
+   * @return Check http://localhost:8080/api/NCHANDIWebsite/swagger-ui/index.html#/ for more information on the response body 
+   */
+  emailLiteratureRequest(params, body) {
+
+    return this.instance.post('http://localhost:8080/api/NCHANDIWebsite/email/literature-request', body, params)
+  }
+
+  /**
+   * Valid Query Parameters:
+   * {
+   * }
+   * @return Check http://localhost:8080/api/NCHANDIWebsite/swagger-ui/index.html#/ for more information on the response body 
+   */
+  emailContactForm(params, body) {
+
+    return this.instance.post('http://localhost:8080/api/NCHANDIWebsite/email/contact-form', body, params)
   }
 
 }
