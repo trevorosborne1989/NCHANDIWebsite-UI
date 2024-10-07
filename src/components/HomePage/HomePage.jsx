@@ -1,15 +1,55 @@
-import React from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { Box, Container, Typography, Card, CardContent, Divider } from '@mui/material';
 import { SendRounded, MailOutline } from '@mui/icons-material'
 import { Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { nchandiTheme } from '../../App';
+import NCHANDIWebsiteService from '../../lib/NCHANDIWebsiteService'
+
+const nchandiWebsiteService = new NCHANDIWebsiteService();
 
 const HomePage = () => {
+  const [listData, setListData] = useState([]);
+  const [loading, setLoading] = useState(false);
   const history = useNavigate();
+
+  /**
+   *
+   */
+  const fetchListData = useCallback(async () => {
+    try {
+      setLoading(true);
+      const announcements = (await nchandiWebsiteService.getResourceItems()).data.filter(resourceItem => resourceItem?.type === 'Announcement');
+      setListData(announcements);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  /**
+   *
+   */
+  useEffect(() => {
+    fetchListData();
+  }, [fetchListData]);
+
+  /**
+   *
+   */
+  const getRandomColor = () => {
+    let letters = '0123456789ABCDEF';
+    let color = '#';
+    for (var i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+  }
 
   return (
     <Container>
+      {loading}
       <Box textAlign={'center'} py={3} mb={2} >
         <Typography variant="h3" color={'white'} mb={1.5} >
           North County Hospitals & Institutions
@@ -130,22 +170,23 @@ const HomePage = () => {
           <Typography variant="h3" color={nchandiTheme.handiBlue} py={1} mb={7}>
             Announcements
           </Typography>
-          <Card variant="elevation" elevation={15} sx={{ maxWidth: 900, backgroundColor: "#f8d77f" }}>
-            <Typography variant="h4" py={2} mb={1.5}>
-              Summer Service Fair is June 24
-            </Typography>
-            <Typography variant='h6' mb={1}>
-              Posted Date: Sun Jun 18 2023
-            </Typography>
-          </Card>
-          <Card variant="elevation" elevation={5} sx={{ maxWidth: 850 }}>
-            <Typography variant='h6' marginTop={5} py={2} >
-            Join us at the Summer Service Fair, Saturday June 24 from 10AM to 1 PM at the Carlsbad Senior Center, 799 Pine Avenue, Carlsbad, CA 92008.
-            </Typography>
-            <Typography variant='h6' mb={4}>
-              Download the flyer here: https://tinyurl.com/2u8m7re2
-            </Typography>
-          </Card>
+          {listData?.map(item => (
+            <Box pb={3}>
+              <Card variant="elevation" elevation={15} sx={{ maxWidth: 900, backgroundColor: getRandomColor() }}>
+                <Typography variant="h4" py={2} mb={1.5}>
+                  {item?.name}
+                </Typography>
+                <Typography variant='h6' mb={1}>
+                  Posted Date: {item?.createdDate}
+                </Typography>
+              </Card>
+              <Card variant="elevation" elevation={5} sx={{ maxWidth: 850 }}>
+                <Typography variant='h6' marginTop={5} py={2} >
+                  {item?.body}
+                </Typography>
+              </Card>
+            </Box>
+          ))}
         </CardContent>
       </Box>
     </Container>
