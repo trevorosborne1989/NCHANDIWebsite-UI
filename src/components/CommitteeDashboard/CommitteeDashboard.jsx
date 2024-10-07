@@ -1,5 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Divider, Typography, IconButton } from '@mui/material';
+import {
+  Divider,
+  Typography,
+  IconButton,
+  Skeleton,
+} from '@mui/material';
 import { Add, DeleteForever } from '@mui/icons-material';
 import Grid from '@mui/material/Unstable_Grid2';
 import { useFormik } from 'formik';
@@ -177,7 +182,6 @@ const CommitteeDashboard = () => {
 
   return (
     <>
-    {loading}
       <Grid Grid container sm={12} textAlign={'center'} justifyContent={'center'} pb={3}>
         <Grid sm={10}>
           <Typography variant="h4" color={'white'} >
@@ -191,12 +195,16 @@ const CommitteeDashboard = () => {
         </Grid>
       </Grid>
       <Grid container sm={12} justifyContent={'center'}>
-        <Grid sm={12}>
-          <EnhancedTable
-            data ={tableData}
-            {...tableConfig}
-          />
-        </Grid>
+        {loading ?
+          <Skeleton variant='rectangular' width='90%' height={250}/>
+          :
+          <Grid sm={12}>
+            <EnhancedTable
+              data ={tableData}
+              {...tableConfig}
+            />
+          </Grid>
+        }
       </Grid>
       <CommitteeDashboardDialog
         formik={formik}

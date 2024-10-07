@@ -2,7 +2,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import {
   Divider,
   Typography,
-  IconButton
+  IconButton,
+  Skeleton,
 } from '@mui/material';
 import { Add } from '@mui/icons-material';
 import { DeleteForever } from '@mui/icons-material';
@@ -211,12 +212,16 @@ const FacilitiesDashboard = () => {
         </Grid>
       </Grid>
       <Grid container sm={12} justifyContent={'center'}>
-        <Grid sm={12}>
-          <EnhancedTable
-            data ={tableData}
-            {...tableConfig}
-          />
-        </Grid>
+        {loading ?
+          <Skeleton variant='rectangular' width='90%' height={250}/>
+          :
+          <Grid sm={12}>
+            <EnhancedTable
+              data ={tableData}
+              {...tableConfig}
+            />
+          </Grid>
+        }
       </Grid>
       <FacilitiesDashboardDialog
         formik={formik}

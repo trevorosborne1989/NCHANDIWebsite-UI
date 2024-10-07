@@ -1,5 +1,12 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Divider, Typography, IconButton, CircularProgress, Box } from '@mui/material';
+import {
+  Divider,
+  Typography,
+  IconButton,
+  CircularProgress,
+  Box,
+  Skeleton,
+} from '@mui/material';
 import { Add, DeleteForever, Female, Male, Wc } from '@mui/icons-material';
 import Grid from '@mui/material/Unstable_Grid2';
 import { useFormik } from 'formik';
@@ -292,12 +299,16 @@ const PanelsDashboard = () => {
         </Grid>
       </Grid>
       <Grid container sm={12} justifyContent={'center'}>
-        <Grid sm={12}>
-          <EnhancedTable
-            data={tableData}
-            {...tableConfig}
-          />
-        </Grid>
+        {loading ?
+          <Skeleton variant='rectangular' width='90%' height={250}/>
+          :
+          <Grid sm={12}>
+            <EnhancedTable
+              data={tableData}
+              {...tableConfig}
+            />
+          </Grid>
+        }
       </Grid>
       <PanelsDashboardDialog
         formik={formik}

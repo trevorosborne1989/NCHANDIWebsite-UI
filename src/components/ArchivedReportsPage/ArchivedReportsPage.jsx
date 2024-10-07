@@ -148,24 +148,24 @@ const ArchivedReportsPage = () => {
             onSave={handleSave}
           />
         </Grid>
-        {loading ?
-          <Skeleton variant='rectangular' width='100%'/>
-          :
           <Grid sx={12} sm={6} >
-            <ListCard
-              resourceData={listData}
-              handleClick={handleClick}
-              isOpen={isDeleteDialogOpen}
-              selectedEntity={archivedReport}
-              entityName={'Archived Report'}
-              cardTitle={'Archived Reports'}
-              primaryText={archivedReport?.name}
-              handleClose={handleDeleteDialogClose}
-              handleDelete={handleDelete}
-              handleDeleteConfirm={handleDeleteDialogConfirm}
-            />
+            {loading ?
+              <Skeleton variant='rectangular' width='90%' height={250}/>
+              :
+              <ListCard
+                resourceData={listData}
+                handleClick={handleClick}
+                isOpen={isDeleteDialogOpen}
+                selectedEntity={archivedReport}
+                entityName={'Archived Report'}
+                cardTitle={'Archived Reports'}
+                primaryText={archivedReport?.name}
+                handleClose={handleDeleteDialogClose}
+                handleDelete={handleDelete}
+                handleDeleteConfirm={handleDeleteDialogConfirm}
+              />
+            }
           </Grid>
-        }
       </Grid>
     </>
   )

@@ -159,10 +159,10 @@ const MonthlyReportsPage = () => {
             onSave={handleSave}
           />
         </Grid>
-        {loading ?
-          <Skeleton variant='rectangular' width='100%'/>
-          :
-          <Grid sx={12} sm={6} >
+        <Grid sx={12} sm={6} >
+          {loading ?
+            <Skeleton variant='rectangular' width='90%' height={250}/>
+            :
             <ReportsListCard
               resourceData={listData}
               handleClick={handleClick}
@@ -176,8 +176,8 @@ const MonthlyReportsPage = () => {
               handleDelete={handleDelete}
               handleDeleteConfirm={handleDeleteDialogConfirm}
             />
-          </Grid>
           }
+        </Grid>
       </Grid>
     </>
   )
