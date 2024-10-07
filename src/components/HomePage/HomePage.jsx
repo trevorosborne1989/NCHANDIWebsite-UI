@@ -158,7 +158,16 @@ const HomePage = () => {
             Join our mailing list to receiving limited emails about orientation dates, panel openings and special events.
           </Typography>
           <Box display="flex" py={1.5} >
-            <Button variant='contained' size='large' sx={{ backgroundColor: nchandiTheme.handiGreen }} endIcon={<SendRounded/>}>Register</Button>
+            <Button
+              variant='contained'
+              href='http://eepurl.com/dslIWb'
+              target="_blank"
+              size='large'
+              sx={{ backgroundColor: nchandiTheme.handiGreen }}
+              endIcon={<SendRounded/>}
+              >
+                Register
+            </Button>
           </Box>
         </Box>
       </Box>
