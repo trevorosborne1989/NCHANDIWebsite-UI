@@ -36,6 +36,7 @@ const AnnouncementsPage = () => {
       try {
         setLoading(true);
         await nchandiWebsiteService.postResourceItem({}, values);
+        formik.handleReset();
         enqueueSnackbar('This resource was successfully uploaded.', snackbarMessages.success.configuration);
         fetchListData();
       } catch (err) {
