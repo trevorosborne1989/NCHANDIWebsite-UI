@@ -11,6 +11,13 @@ import NCHANDIWebsiteService from '../../lib/NCHANDIWebsiteService'
 
 const nchandiWebsiteService = new NCHANDIWebsiteService();
 
+const formatPhone = (phone) => {
+  let areaCode = phone.substr(1, 3);
+  let first3 = phone.substr(4, 3);
+  let last4 = phone.substr(7, 4);
+  return (areaCode + '-' + first3 + '-' + last4);
+};
+
 const generateTableConfig = (handleSave, handleDelete) => ({
   title: 'Pending Volunteers',
   dataKey: d => d.id,
@@ -19,7 +26,7 @@ const generateTableConfig = (handleSave, handleDelete) => ({
     { columnName: '', numeric: true, disablePadding: false, label: '', value: d => <IconButton><DeleteForever fontSize='large'  color='error' onClick={e => handleDelete(e, d)} data-cy='table-delete-btn' /></IconButton> },
     { columnName: 'fullName', numeric: true, disablePadding: false, label: 'Full Name', value: d => d.firstName + ' ' + d.lastName },
     { columnName: 'email', numeric: true, disablePadding: false, label: 'Email', value: d => d.email },
-    { columnName: 'phone', numeric: true, disablePadding: false, label: 'Phone', value: d => d.phone },
+    { columnName: 'phone', numeric: true, disablePadding: false, label: 'Phone Number', value: d => formatPhone(d.phone) },
     { columnName: 'preferredContactMethod', numeric: true, disablePadding: false, label: 'Preferred Contact Method', value: d => d.preferredContactMethod },
     { columnName: 'facilityName', numeric: true, disablePadding: false, label: 'Facility', value: d => d.facilityName },
     { columnName: 'dayOfWeek', numeric: true, disablePadding: true, label: 'Day of Week', value: d => d.dayOfWeek },

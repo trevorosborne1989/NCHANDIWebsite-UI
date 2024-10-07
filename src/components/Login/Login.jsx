@@ -63,7 +63,7 @@ const Login = () => {
   const handleSave = () => {
     formik.submitForm()
     if (!formik.isValid) {
-      enqueueSnackbar('There are fields missing in your form. Please fill out all the required * fields.', snackbarMessages.error.configuration);
+      enqueueSnackbar('There are fields missing or invalid in your form. Please fill out all the required fields.', snackbarMessages.error.configuration);
     }
     formik.setSubmitting(false);
   };
@@ -90,6 +90,7 @@ const Login = () => {
                       color='primary'
                       sx={{ backgroundColor: 'white' }}
                       fullWidth
+                      type='email'
                       variant='filled'
                       margin='dense'
                       value={formik.values.usernameParameter}
@@ -111,6 +112,7 @@ const Login = () => {
                     color='primary'
                     sx={{ backgroundColor: 'white' }}
                     fullWidth
+                    type='password'
                     variant='filled'
                     margin='dense'
                     value={formik.values.passwordParameter}

@@ -21,7 +21,7 @@ export default {
         firstName: '',
         lastName: '',
         email: '',
-        phoneNumber: '',
+        phone: '',
         contactMethod: '',
         commitment: ''
       },
@@ -44,7 +44,7 @@ export default {
         formik.submitForm();
         const errors = await formik.validateForm();
         if (!formik.isValid) {
-          enqueueSnackbar('There are fields missing in your form. Please fill out all the required * fields.', snackbarMessages.error.configuration);
+          enqueueSnackbar('There are fields missing or invalid in your form. Please fill out all the required fields.', snackbarMessages.error.configuration);
         }
         formik.setSubmitting(false);
       }, 1000);

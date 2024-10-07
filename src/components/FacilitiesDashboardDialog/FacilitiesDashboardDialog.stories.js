@@ -26,10 +26,10 @@ export default {
       website: '',
       primaryContactName: '',
       primaryContactEmail: '',
-      primaryPhoneNumber: '',
-      altContactName: '',
-      altContactEmail: '',
-      altPhoneNumber: '',
+      primaryContactPhone: '',
+      alternateContactName: '',
+      alternateContactEmail: '',
+      alternateContactPhone: '',
       active: ''
       },
       onSubmit: async () => {

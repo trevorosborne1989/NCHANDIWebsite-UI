@@ -20,6 +20,13 @@ import NCHANDIWebsiteService from '../../lib/NCHANDIWebsiteService'
 
 const nchandiWebsiteService = new NCHANDIWebsiteService();
 
+const formatPhone = (phone) => {
+  let areaCode = phone.substr(1, 3);
+  let first3 = phone.substr(4, 3);
+  let last4 = phone.substr(7, 4);
+  return (areaCode + '-' + first3 + '-' + last4);
+};
+
 const generateTableConfig = (handleSelection, handleAdd, handleDelete) => ({
   title: 'Facilities',
   dataKey: d => d.id,
@@ -39,10 +46,10 @@ const generateTableConfig = (handleSelection, handleAdd, handleDelete) => ({
     { columnName: 'website', numeric: true, disablePadding: false, label: 'Website', value: d => d.website },
     { columnName: 'primaryContactName', numeric: true, disablePadding: false, label: 'Primary Contact Name', value: d => d.primaryContactName },
     { columnName: 'primaryContactEmail', numeric: true, disablePadding: false, label: 'Primary Contact Email', value: d => d.primaryContactEmail },
-    { columnName: 'primaryContactPhone', numeric: true, disablePadding: false, label: 'Primary Phone Number', value: d => d.primaryContactPhone },
+    { columnName: 'primaryContactPhone', numeric: true, disablePadding: false, label: 'Primary Phone Number', value: d => formatPhone(d.primaryContactPhone) },
     { columnName: 'alternateContactName', numeric: true, disablePadding: false, label: 'Alternate Contact Name', value: d => d.alternateContactName },
     { columnName: 'alternateContactEmail', numeric: true, disablePadding: false, label: 'Alternate Contact Email', value: d => d.alternateContactEmail },
-    { columnName: 'alternateContactPhone', numeric: true, disablePadding: false, label: 'Alternate Contact Phone', value: d => d.alternateContactPhone },
+    { columnName: 'alternateContactPhone', numeric: true, disablePadding: false, label: 'Alternate Contact Phone', value: d => formatPhone(d.alternateContactPhone) },
     { columnName: '', numeric: true, disablePadding: false, label: 'Active', value: d => d.active ? <IconButton><Circle color='success'  /></IconButton> : <IconButton><Circle color='disabled' /></IconButton> },
   ]
 });
@@ -64,11 +71,11 @@ const FacilitiesDashboard = () => {
       state: '',
       website: '',
       primaryContactName: '',
+      primaryContactPhone: '',
       primaryContactEmail: '',
-      primaryPhoneNumber: '',
-      altContactName: '',
-      altContactEmail: '',
-      altPhoneNumber: '',
+      alternateContactName: '',
+      alternateContactPhone: '',
+      alternateContactEmail: '',
       active: ''
     },
     onSubmit: async (values) => {
