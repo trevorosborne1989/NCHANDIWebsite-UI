@@ -61,7 +61,7 @@ const Resources = () => {
       commitment: '',
       facility: '',
       email: '',
-      phoneNumber: '',
+      phone: '',
       livingSober: false,
       livingSoberQty: 0,
       stepsAndTraditions12x12: false,
