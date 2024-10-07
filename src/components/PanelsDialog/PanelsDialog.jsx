@@ -9,6 +9,9 @@ import {
   DialogContentText,
   DialogTitle
 } from '@mui/material';
+import Grid from '@mui/material/Unstable_Grid2';
+import PhoneInput from 'react-phone-input-2'
+import 'react-phone-input-2/lib/style.css'
 
 const contactOptions = [
   {
@@ -75,39 +78,46 @@ const PanelsDialog = ({ formik, data, isOpen, handleSave, handleClose }) => {
             error={formik.touched.email && Boolean(formik.errors.email)}
             required
           />
-          <TextField
-            label='Phone'
-            name='phone'
-            fullWidth
-            variant='outlined'
-            margin='dense'
-            value={formik.values.phone}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            helperText={formik.touched.phone ? formik.errors.phone : ""}
-            error={formik.touched.phone && Boolean(formik.errors.phone)}
-            required
-          />
-          <TextField
-            select
-            label='Preferred Contact Method'
-            name='preferredContactMethod'
-            fullWidth
-            variant='outlined'
-            margin='dense'
-            value={formik.values.preferredContactMethod}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            helperText={formik.touched.preferredContactMethod ? formik.errors.preferredContactMethod : ""}
-            error={formik.touched.preferredContactMethod && Boolean(formik.errors.preferredContactMethod)}
-            required
-          >
-            {contactOptions.map(option => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}
-              </MenuItem>
-            ))}
-          </TextField>
+          <Grid Grid container sm={12} pt={2}>
+            <Grid sm={6} pt={1}>
+              <PhoneInput
+                country="US"
+                disableDropdown
+                value={formik.values.phone}
+                onChange={value => formik.setFieldValue('phone', value)}
+                isValid={() => {
+                  if (formik.touched.phone && Boolean(formik.errors.phone)) {
+                    return 'Invalid phone number';
+                  } else {
+                    return true;
+                  }
+                }}
+              />
+            </Grid>
+            <Grid sm={6} pl={8}>
+              <TextField
+                select
+                label='Contact Method'
+                name='preferredContactMethod'
+                variant='outlined'
+                size='small'
+                margin='dense'
+                fullWidth
+                value={formik.values.preferredContactMethod}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                helperText={formik.touched.preferredContactMethod ? formik.errors.preferredContactMethod : ""}
+                error={formik.touched.preferredContactMethod && Boolean(formik.errors.preferredContactMethod)}
+                required
+              >
+                {contactOptions.map(option => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </Grid>
+          </Grid>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
