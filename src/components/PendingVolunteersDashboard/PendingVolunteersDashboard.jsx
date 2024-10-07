@@ -1,5 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Divider, IconButton, Typography, } from '@mui/material';
+import {
+  Divider,
+  IconButton,
+  Typography,
+  Skeleton,
+} from '@mui/material';
 import { DeleteForever, CheckCircleOutline } from '@mui/icons-material';
 import Grid from '@mui/material/Unstable_Grid2';
 import { useSnackbar } from 'notistack';
@@ -161,12 +166,16 @@ const PendingVolunteersDashboard = () => {
         </Grid>
       </Grid>
       <Grid container sm={12} justifyContent={'center'}>
-        <Grid sm={12}>
-          <EnhancedTable
-            data={tableData}
-            {...tableConfig}
-          />
-        </Grid>
+        {loading ?
+          <Skeleton variant='rectangular' width='90%' height={250}/>
+          :
+          <Grid sm={12}>
+            <EnhancedTable
+              data={tableData}
+              {...tableConfig}
+            />
+          </Grid>
+        }
       </Grid>
       <SaveConfirmationDialog
         isOpen={isSaveDialogOpen}

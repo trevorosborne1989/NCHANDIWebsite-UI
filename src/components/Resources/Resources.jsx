@@ -216,7 +216,7 @@ const Resources = () => {
   return (
     <>
       {loading ?
-        <Skeleton variant='rectangular' width='100%'/>
+        <Skeleton variant='rectangular' width='90%' height={250}/>
         :
         <Grid container>
             <Grid container sm={12} textAlign={'center'} justifyContent={'center'} py={3} pb={7}>

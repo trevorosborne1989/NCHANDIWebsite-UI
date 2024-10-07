@@ -1,5 +1,9 @@
 import React, { useState, useCallback, useEffect } from "react";
-import { Typography, Divider } from "@mui/material";
+import {
+  Typography,
+  Divider,
+  Skeleton,
+} from "@mui/material";
 import EnhancedTable from "../EnhancedTable/EnhancedTable";
 import Grid from '@mui/material/Unstable_Grid2';
 import PanelsDialog from "../PanelsDialog/PanelsDialog";
@@ -103,7 +107,6 @@ const Panels = () => {
 
   return (
     <>
-    {loading}
       <Grid container sm={12} textAlign={'center'} justifyContent={'center'} py={3} pb={7}>
         <Grid sm={10}>
           <Typography variant="h3" color={'white'} >
@@ -117,12 +120,16 @@ const Panels = () => {
         </Grid>
       </Grid>
       <Grid container  sm={12} justifyContent={'center'} pb={7}>
-        <Grid sm={11}>
-          <EnhancedTable
-            data={tableData}
-            {...tableConfig}
-          />
-        </Grid>
+        { loading ?
+          <Skeleton variant='rectangular' width='90%' height={250} />
+          :
+          <Grid sm={11}>
+            <EnhancedTable
+              data={tableData}
+              {...tableConfig}
+            />
+          </Grid>
+        }
       </Grid>
       <PanelsDialog
         formik={formik}
