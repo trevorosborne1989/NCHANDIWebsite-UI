@@ -191,10 +191,10 @@ const AnnouncementsPage = () => {
           </Card>
         </Grid>
         <Grid container spacing={3} sx={12} sm={7} direction={'column'} alignItems={'center'}>
-          {loading ?
-            <Skeleton variant='rectangular' width='100%'/>
-            :
-            <Grid sx={12} sm={10}>
+          <Grid sx={12} sm={10}>
+            {loading ?
+              <Skeleton variant='rectangular' width='90%' height={250}/>
+              :
               <ListCard
                 resourceData={listData}
                 handleClick={handleClick}
@@ -206,8 +206,8 @@ const AnnouncementsPage = () => {
                 handleDelete={handleDelete}
                 handleDeleteConfirm={handleDeleteDialogConfirm}
               />
-            </Grid>
-          }
+            }
+          </Grid>
           {announcement &&
             <Grid sx={12} sm={12}>
               <Box align='center' alignItems='center' mb={8}s>

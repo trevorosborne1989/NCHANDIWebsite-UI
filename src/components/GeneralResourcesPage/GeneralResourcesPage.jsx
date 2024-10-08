@@ -149,7 +149,7 @@ const GeneralResourcesPage = () => {
           />
         </Grid>
         {loading ?
-          <Skeleton variant='rectangular' width='100%'/>
+          <Skeleton variant='rectangular' width='90%' height={250}/>
           :
           <Grid sx={12} sm={6} >
             <ListCard
