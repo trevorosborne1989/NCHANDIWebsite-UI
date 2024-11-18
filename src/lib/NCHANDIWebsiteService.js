@@ -8,7 +8,10 @@ class NCHANDIWebsiteService {
         baseURL: params.baseURL ? params.baseURL : 'undefined',
         timeout: params.timeout ? params.timeout : 10000,
         headers: params.headers ? params.headers : {
-          'Access-Control-Allow-Origin': 'http://localhost:3000',
+          // For local hosting use the below allow origin url. For sandbox, uncomment and use the second
+          // allow origin url and update all of the api method routes in this document.
+          'Access-Control-Allow-Origin': 'http://localhost:8080',
+          // 'Access-Control-Allow-Origin': 'http://ec2-54-241-237-139.us-west-1.compute.amazonaws.com:3000',
           'Content-Type': 'application/json',
           'Access-Control-Request-Headers': 'Content-Type, Authorization'
         }
