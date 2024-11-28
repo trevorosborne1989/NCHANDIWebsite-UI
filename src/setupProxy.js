@@ -4,7 +4,9 @@ module.exports = function(app) {
   app.use(
     '/api/NCHANDIWebsite',
     createProxyMiddleware({
-      target: 'http://localhost:8080',
+      // For local hosting use the below target. For sandbox, uncomment and use the second target
+      // target: 'http://localhost:8080',
+      target: 'http://ec2-54-176-45-156.us-west-1.compute.amazonaws.com:8080',
       changeOrigin: true,
     })
   );
