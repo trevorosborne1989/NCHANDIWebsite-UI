@@ -8,6 +8,8 @@ class NCHANDIWebsiteService {
         baseURL: params.baseURL ? params.baseURL : 'undefined',
         timeout: params.timeout ? params.timeout : 10000,
         headers: params.headers ? params.headers : {
+          // For local hosting use the below allow origin url. Update all of the api method routes in this document.
+          // 'Access-Control-Allow-Origin': 'http://localhost:8080',
           'Access-Control-Allow-Origin': 'http://ec2-13-57-33-74.us-west-1.compute.amazonaws.com:8080',
           'Content-Type': 'application/json',
           'Access-Control-Request-Headers': 'Content-Type, Authorization'
@@ -153,17 +155,6 @@ class NCHANDIWebsiteService {
   deletePanelsWithPanelId(params, panelId, body) {
 
     return this.instance.delete('http://ec2-13-57-33-74.us-west-1.compute.amazonaws.com:8080/api/NCHANDIWebsite/panels/' + panelId + '', params)
-  }
-
-  /**
-   * Valid Query Parameters:
-   * { 
-   * } 
-   * @return Check http://ec2-13-57-33-74.us-west-1.compute.amazonaws.com:8080/api/NCHANDIWebsite/swagger-ui/index.html#/ for more information on the response body 
-   */
-  getPanelsopen(params, body) {
-
-    return this.instance.get('http://ec2-13-57-33-74.us-west-1.compute.amazonaws.com:8080/api/NCHANDIWebsite/panels-open', params)
   }
 
   /**
