@@ -24,7 +24,7 @@ const Contact = () => {
     onSubmit: async (values) => {
       try {
         await nchandiWebsiteService.emailContactForm({}, values);
-        enqueueSnackbar('This committee member was successfully submitted.', snackbarMessages.success.configuration);
+        enqueueSnackbar('Your request was successfully submitted.', snackbarMessages.success.configuration);
       } catch (err) {
         enqueueSnackbar('There was an error when submitting this form, please try again later or contact the Technology Chair', snackbarMessages.error.configuration);
         console.error(err);
