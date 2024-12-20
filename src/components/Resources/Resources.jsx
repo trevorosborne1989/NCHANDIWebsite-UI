@@ -556,15 +556,15 @@ const Resources = () => {
                   <Grid sm={10} pb={5}>
                     <TextField
                       label='Phone Number'
-                      name='phoneNumber'
+                      name='phone'
                       fullWidth
                       variant='outlined'
                       margin='dense'
-                      value={formik.values.phoneNumber}
+                      value={formik.values.phone}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
-                      helperText={formik.touched.phoneNumber ? formik.errors.phoneNumber : ""}
-                      error={formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber)}
+                      helperText={formik.touched.phone ? formik.errors.phone : ""}
+                      error={formik.touched.phone && Boolean(formik.errors.phone)}
                       required
                     />
                   </Grid>
