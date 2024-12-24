@@ -141,7 +141,7 @@ const Login = () => {
                   </Grid>
                   <Grid sm={12}>
                     <Typography variant="h7" color={'white'}>
-                      No account yet? Create an account
+                      Login is for chairmembers and other appointees.
                     </Typography>
                   </Grid>
                 </Box>
