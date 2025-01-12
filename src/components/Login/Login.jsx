@@ -25,12 +25,6 @@ const Login = () => {
   const { enqueueSnackbar } = useSnackbar();
   const history = useNavigate();
 
-  function delay(ms) {
-    return new Promise((resolve) => {
-      setTimeout(resolve, ms);
-    })
-  }
-
   const formik = useFormik({
     initialValues: {
       usernameParameter: '',
@@ -47,7 +41,6 @@ const Login = () => {
         }
         console.log(authorities[0]?.authority);
         enqueueSnackbar('Login successful.', snackbarMessages.success.configuration);
-        await delay(1000);
         history('/admin-container');
         // window.location.reload();
       } catch (err) {
