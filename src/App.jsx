@@ -118,12 +118,6 @@ function App() {
   const { enqueueSnackbar } = useSnackbar();
   const history = useNavigate();
 
-  function delay(ms) {
-    return new Promise((resolve) => {
-      setTimeout(resolve, ms);
-    })
-  }
-
   /**
    *
    */
@@ -133,7 +127,6 @@ function App() {
       Cookies.remove('JSESSIONID');
       Cookies.remove('isAdmin');
       enqueueSnackbar('Logout Successful', snackbarMessages.success.configuration);
-      await delay(1000);
       history('/');
     } catch (error) {
       console.error(error);

@@ -39,15 +39,13 @@ export default {
       validateOnBlur: true,
     });
 
-    const handleDialogSave = () => {
-      setTimeout( async () => { // Remove the onTimeout once the POST method in onSubmit is defined.
-        formik.submitForm();
-        const errors = await formik.validateForm();
-        if (!formik.isValid) {
-          enqueueSnackbar('There are fields missing or invalid in your form. Please fill out all the required fields.', snackbarMessages.error.configuration);
-        }
-        formik.setSubmitting(false);
-      }, 1000);
+    const handleDialogSave = async () => {
+      formik.submitForm();
+      const errors = await formik.validateForm();
+      if (!formik.isValid) {
+        enqueueSnackbar('There are fields missing or invalid in your form. Please fill out all the required fields.', snackbarMessages.error.configuration);
+      }
+      formik.setSubmitting(false);
     };
 
     const handleDialogClose = () => {
