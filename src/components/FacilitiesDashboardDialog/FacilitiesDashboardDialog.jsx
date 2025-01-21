@@ -9,10 +9,14 @@ import {
   DialogContentText,
   DialogTitle,
   Box,
+  FormControlLabel,
+  Checkbox,
+  FormGroup,
 } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
+import { nchandiTheme } from '../../App';
 
 const facilityOptions = [
   {
@@ -179,55 +183,74 @@ const FacilitiesDashboardDialog = ({ formik, isOpen, handleSave, handleClose }) 
               required
             />
           </Box>
-          <Grid Grid container sm={12} pt={4}>
-            <Grid sm={5}>
-              <TextField
-                label='Alternate Contact Name'
-                name='alternateContactName'
-                fullWidth
-                variant='outlined'
-                size='small'
-                margin='dense'
-                value={formik.values.alternateContactName}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                helperText={formik.touched.alternateContactName ? formik.errors.alternateContactName : ""}
-                error={formik.touched.alternateContactName && Boolean(formik.errors.alternateContactName)}
-                required
+          <FormGroup>
+            <Box textAlign={'center'} pt={2} pb={3}>
+              <FormControlLabel
+                control={<Checkbox
+                  sx={{ color: nchandiTheme.handiDarkGreen,'&.Mui-checked': {color: nchandiTheme.handiGreen} }}
+                  name='alternateContact'
+                  checked={formik.values.alternateContact}
+                  value={formik.values.alternateContact}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  />}
+                label="Alternate Contact" sx={{ color: nchandiTheme.handiDarkBlue}}
               />
-            </Grid>
-            <Grid sm={5} pt={1} pl={3}>
-              <PhoneInput
-                country="US"
-                disableDropdown
-                value={formik.values.alternateContactPhone}
-                onChange={value => formik.setFieldValue('alternateContactPhone', value)}
-                isValid={() => {
-                  if (formik.touched.alternateContactPhone && Boolean(formik.errors.alternateContactPhone)) {
-                    return 'Invalid phone number';
-                  } else {
-                    return true;
-                  }
-                }}
-              />
-            </Grid>
-          </Grid>
-          <Box textAlign={'center'} pt={1} pb={4}>
-            <TextField
-              label='Alternate Contact Email'
-              name='alternateContactEmail'
-              fullWidth
-              variant='outlined'
-              size='small'
-              margin='dense'
-              value={formik.values.alternateContactEmail}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              helperText={formik.touched.alternateContactEmail ? formik.errors.alternateContactEmail : ""}
-              error={formik.touched.alternateContactEmail && Boolean(formik.errors.alternateContactEmail)}
-              required
-            />
-          </Box>
+            </Box>
+            {formik.values.alternateContact &&
+            <>
+              <Grid Grid container sm={12}>
+                <Grid sm={5}>
+                  <TextField
+                    label='Alternate Contact Name'
+                    name='alternateContactName'
+                    fullWidth
+                    variant='outlined'
+                    size='small'
+                    margin='dense'
+                    value={formik.values.alternateContactName}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    helperText={formik.touched.alternateContactName ? formik.errors.alternateContactName : ""}
+                    error={formik.touched.alternateContactName && Boolean(formik.errors.alternateContactName)}
+                    required
+                  />
+                </Grid>
+                <Grid sm={5} pt={1} pl={3}>
+                  <PhoneInput
+                    country="US"
+                    disableDropdown
+                    value={formik.values.alternateContactPhone}
+                    onChange={value => formik.setFieldValue('alternateContactPhone', value)}
+                    isValid={() => {
+                      if (formik.touched.alternateContactPhone && Boolean(formik.errors.alternateContactPhone)) {
+                        return 'Invalid phone number';
+                      } else {
+                        return true;
+                      }
+                    }}
+                  />
+                </Grid>
+              </Grid>
+              <Box textAlign={'center'} pt={1} pb={4}>
+                <TextField
+                  label='Alternate Contact Email'
+                  name='alternateContactEmail'
+                  fullWidth
+                  variant='outlined'
+                  size='small'
+                  margin='dense'
+                  value={formik.values.alternateContactEmail}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  helperText={formik.touched.alternateContactEmail ? formik.errors.alternateContactEmail : ""}
+                  error={formik.touched.alternateContactEmail && Boolean(formik.errors.alternateContactEmail)}
+                  required
+                />
+              </Box>
+            </>
+            }
+          </FormGroup>
           <Box pl={10} pr={10}>
             <TextField
               select
