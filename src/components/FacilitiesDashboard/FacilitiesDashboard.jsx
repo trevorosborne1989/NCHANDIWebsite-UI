@@ -22,6 +22,7 @@ import NCHANDIWebsiteService from '../../lib/NCHANDIWebsiteService'
 const nchandiWebsiteService = new NCHANDIWebsiteService();
 
 const formatPhone = (phone) => {
+  if (phone.length === 0) return;
   let areaCode = phone.substr(1, 3);
   let first3 = phone.substr(4, 3);
   let last4 = phone.substr(7, 4);
@@ -74,6 +75,7 @@ const FacilitiesDashboard = () => {
       primaryContactName: '',
       primaryContactPhone: '',
       primaryContactEmail: '',
+      alternateContact: false,
       alternateContactName: '',
       alternateContactPhone: '',
       alternateContactEmail: '',
@@ -126,6 +128,11 @@ const FacilitiesDashboard = () => {
    *
    */
   const handleDialogSave = () => {
+    if (!formik.values.alternateContact) {
+      formik.setFieldValue("alternateContactName", '');
+      formik.setFieldValue("alternateContactPhone", '');
+      formik.setFieldValue("alternateContactEmail", '');
+    }
     formik.submitForm();
     if (!formik.isValid) {
       enqueueSnackbar('There are fields missing in your form. Please fill out all required * fields.', snackbarMessages.error.configuration);
