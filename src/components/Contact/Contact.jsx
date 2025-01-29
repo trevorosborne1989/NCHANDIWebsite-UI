@@ -66,6 +66,8 @@ const Contact = () => {
                   value={formik.values.firstName}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
+                  helperText={formik.touched.firstName ? formik.errors.firstName : ""}
+                  error={formik.touched.firstName && Boolean(formik.errors.firstName)}
                   required
                   />
                   <TextField
@@ -77,6 +79,8 @@ const Contact = () => {
                     value={formik.values.lastName}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
+                    helperText={formik.touched.lastName ? formik.errors.lastName : ""}
+            error={formik.touched.lastName && Boolean(formik.errors.lastName)}
                     required
                   />
                   <TextField
@@ -88,6 +92,8 @@ const Contact = () => {
                     value={formik.values.email}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
+                    helperText={formik.touched.email ? formik.errors.email : ""}
+                    error={formik.touched.email && Boolean(formik.errors.email)}
                     required
                   />
                   <TextField
@@ -99,6 +105,8 @@ const Contact = () => {
                     value={formik.values.phone}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
+                    helperText={formik.touched.phone ? formik.errors.phone : ""}
+                    error={formik.touched.phone && Boolean(formik.errors.phone)}
                     required
                   />
                   <TextField
@@ -119,6 +127,8 @@ const Contact = () => {
                     value={formik.values.message}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
+                    helperText={formik.touched.message ? formik.errors.message : ""}
+                    error={formik.touched.message && Boolean(formik.errors.message)}
                     required
                   />
                   <Box textAlign={'center'} py={1}>
