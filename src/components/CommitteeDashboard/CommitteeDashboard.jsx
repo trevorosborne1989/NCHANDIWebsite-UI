@@ -40,7 +40,7 @@ const generateTableConfig = (handleSelection, handleAdd, handleDelete) => ({
     { columnName: 'firstName', numeric: true, disablePadding: true, label: 'First Name', value: d => d.firstName },
     { columnName: 'lastName', numeric: true, disablePadding: false, label: 'Last Name', value: d => d.lastName },
     { columnName: 'email', numeric: true, disablePadding: false, label: 'Email', value: d => d.email },
-    { columnName: 'phone', numeric: true, disablePadding: false, label: 'Phone Number', value: d => formatPhone(d.phone) },
+    { columnName: 'phone', numeric: true, disablePadding: false, label: 'Phone Number', value: d => d.phone ? formatPhone(d.phone) : '' },
     { columnName: 'preferredContactMethod', numeric: true, disablePadding: false, label: 'Contact Method', value: d => d.preferredContactMethod },
     { columnName: 'commitment', numeric: true, disablePadding: false, label: 'Commitment', value: d => d.commitment }
   ]

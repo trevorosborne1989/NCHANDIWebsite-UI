@@ -31,7 +31,7 @@ const generateTableConfig = (handleSave, handleDelete) => ({
     { columnName: '', numeric: true, disablePadding: false, label: '', value: d => <IconButton><DeleteForever fontSize='large'  color='error' onClick={e => handleDelete(e, d)} data-cy='table-delete-btn' /></IconButton> },
     { columnName: 'fullName', numeric: true, disablePadding: false, label: 'Full Name', value: d => d.firstName + ' ' + d.lastName },
     { columnName: 'email', numeric: true, disablePadding: false, label: 'Email', value: d => d.email },
-    { columnName: 'phone', numeric: true, disablePadding: false, label: 'Phone Number', value: d => formatPhone(d.phone) },
+    { columnName: 'phone', numeric: true, disablePadding: false, label: 'Phone Number', value: d => d.phone ? formatPhone(d.phone) : '' },
     { columnName: 'preferredContactMethod', numeric: true, disablePadding: false, label: 'Preferred Contact Method', value: d => d.preferredContactMethod },
     { columnName: 'facilityName', numeric: true, disablePadding: false, label: 'Facility', value: d => d.facilityName },
     { columnName: 'dayOfWeek', numeric: true, disablePadding: true, label: 'Day of Week', value: d => d.dayOfWeek },
