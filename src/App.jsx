@@ -27,6 +27,7 @@ import {
   KeyboardArrowLeft,
   ExtensionTwoTone,
   Logout,
+  CardGiftcard,
 } from '@mui/icons-material';
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -216,6 +217,7 @@ function App() {
                 <ListItemLink to="/resources" primary="Resources" icon={<LibraryBooks fontSize="medium" sx={{ color: 'white'}} />} />
                 <ListItemLink to="/contact" primary="Contact" icon={<ContactPhone fontSize="medium"  sx={{ color: 'white'}} />} />
                 <ListItemLink to="/login-page" primary="Login" icon={<LockOpen fontSize="medium" sx={{ color: 'white'}} />} />
+                <ListItemLink to="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=PB3PFLL9AW4KU&source=url" primary="Donate" icon={<CardGiftcard fontSize="medium" sx={{ color: nchandiTheme.handiYellow }} />} />
                 {/* <ListItemLink to="/unathorized" primary="Unathorized" icon={<Warning fontSize="medium" sx={{ color: 'white'}} />} /> */}
               </List>
               <Divider />
