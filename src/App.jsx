@@ -13,6 +13,7 @@ import {
   List,
   ListItem,
   Tooltip,
+  SvgIcon,
 } from '@mui/material';
 import {
   Home,
@@ -25,7 +26,6 @@ import {
   LibraryBooks,
   Menu,
   KeyboardArrowLeft,
-  ExtensionTwoTone,
   Logout,
   CardGiftcard,
 } from '@mui/icons-material';
@@ -40,7 +40,7 @@ import Cookies from 'js-cookie';
 import { useSnackbar } from 'notistack';
 import snackbarMessages from './lib/snackbarMessages';
 import NCHANDIWebsiteService from './lib/NCHANDIWebsiteService';
-// import NchandiIcon from './components/NchandiIcon/NchandiIcon';
+import { ReactComponent as NchandiSvg } from './resources/icons/nchandiLogo.svg';
 
 const nchandiWebsiteService = new NCHANDIWebsiteService();
 
@@ -181,9 +181,11 @@ function App() {
                       </IconButton>
                     )}
                   </EdgeTrigger>
-                  <Box display={'flex'} alignItems='center'>
-                    <ExtensionTwoTone sx={{ color: 'white', fontSize: 50, mr: 1, my: 0.5 }}/>
-                    <Typography variant='h5' color={'white'} data-cy='header-title'>
+                  <Box display={'flex'} alignItems='center' pt={1} >
+                    <SvgIcon sx={{ fontSize: '45px', boxShadow: '3'}} >
+                      <NchandiSvg  />
+                    </SvgIcon>
+                    <Typography variant='h5' color={'white'}  pl={2} data-cy='header-title'>
                       North County H&I
                     </Typography>
                   </Box>
@@ -244,8 +246,10 @@ function App() {
             <Box height='100%' sx={{backgroundColor: nchandiTheme.handiBlue}} position={''}>
             <Paper variant='outlined' sx={{backgroundColor: nchandiTheme.handiDarkBlue}}>
             <Grid container sm={12}  sx={{backgroundColor: nchandiTheme.handiDarkBlue}} justifyContent={'center'} alignItems={'center'} py={1}>
-              <Grid sm={1} textAlign={'right'} pr={1}>
-                <ExtensionTwoTone sx={{ color: 'white', fontSize: 50, my: 0.5 }}/>
+              <Grid sm={1} textAlign={'right'} pr={1.5} pt={1}>
+                <SvgIcon sx={{ fontSize: '50px', boxShadow: '3'}} >
+                  <NchandiSvg  />
+                </SvgIcon>
               </Grid>
               <Grid sm={2}>
                 <Typography variant='h6' color='white' >
