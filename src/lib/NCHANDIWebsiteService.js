@@ -292,7 +292,7 @@ class NCHANDIWebsiteService {
    */
   getResourceItems(params, body) {
 
-    return this.instance.get('http://ec2-13-57-33-74.us-west-1.compute.amazonaws.com:8080/api/NCHANDIWebsite/resource-itemsss/', params)
+    return this.instance.get('http://ec2-13-57-33-74.us-west-1.compute.amazonaws.com:8080/api/NCHANDIWebsite/resource-items/', params)
   }
 
   /**
