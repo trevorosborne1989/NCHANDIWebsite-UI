@@ -10,7 +10,7 @@ class NCHANDIWebsiteService {
         headers: params.headers ? params.headers : {
           // For local hosting use the below allow origin url. Update all of the api method routes in this document.
           // 'Access-Control-Allow-Origin': 'http://localhost:8080',
-          'Access-Control-Allow-Origin': 'https://ec2-13-57-33-74.us-west-1.compute.amazonaws.com:8080',
+          'Access-Control-Allow-Origin': 'http://ec2-13-57-33-74.us-west-1.compute.amazonaws.com:8080',
           'Content-Type': 'application/json',
           'Access-Control-Request-Headers': 'Content-Type, Authorization'
         }
