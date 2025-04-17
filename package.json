@@ -18,7 +18,7 @@
     "@testing-library/user-event": "^13.5.0",
     "buffer": "^6.0.3",
     "formik": "^2.2.9",
-    "https-proxy-middleware": "^1.0.0",
+    "http-proxy-middleware": "^3.0.5",
     "js-cookie": "^3.0.5",
     "moment": "^2.29.4",
     "notistack": "^3.0.1",
