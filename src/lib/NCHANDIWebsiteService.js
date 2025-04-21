@@ -9,8 +9,8 @@ class NCHANDIWebsiteService {
         timeout: params.timeout ? params.timeout : 10000,
         headers: params.headers ? params.headers : {
           // For local hosting use the below allow origin url. Update all of the api method routes in this document.
-          'Access-Control-Allow-Origin': 'http://localhost:8080',
-          // 'Access-Control-Allow-Origin': 'http://localhost:8080/api',
+          // 'Access-Control-Allow-Origin': 'http://localhost:8080',
+          'Access-Control-Allow-Origin': 'https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api',
           'Content-Type': 'application/json',
           'Access-Control-Request-Headers': 'Content-Type, Authorization'
         }
@@ -22,22 +22,22 @@ class NCHANDIWebsiteService {
    * Valid Query Parameters:
    * {
    * }
-   * @return Check http://localhost:8080/api/swagger-ui/index.html#/ for more information on the response body 
+   * @return Check https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api/swagger-ui/index.html#/ for more information on the response body 
    */
   getPendings(params, body) {
 
-    return this.instance.get('http://localhost:8080/api/pendings', params)
+    return this.instance.get('https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api/pendings', params)
   }
 
   /**
    * Valid Query Parameters:
    * { 
    * } 
-   * @return Check http://localhost:8080/api/swagger-ui/index.html#/ for more information on the response body 
+   * @return Check https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api/swagger-ui/index.html#/ for more information on the response body 
    */
   savePending(params, body) {
 
-    return this.instance.post('http://localhost:8080/api/pendings', body, params)
+    return this.instance.post('https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api/pendings', body, params)
   }
 
   /**
@@ -45,11 +45,11 @@ class NCHANDIWebsiteService {
    * { 
    * string : pendingId, 
    * } 
-   * @return Check http://localhost:8080/api/swagger-ui/index.html#/ for more information on the response body 
+   * @return Check https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api/swagger-ui/index.html#/ for more information on the response body 
    */
   getPendingWithPendingId(params, pendingId, body) {
 
-    return this.instance.get('http://localhost:8080/api/pendings/' + pendingId + '', params)
+    return this.instance.get('https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api/pendings/' + pendingId + '', params)
   }
 
   /**
@@ -57,11 +57,11 @@ class NCHANDIWebsiteService {
    * { 
    * string : pendingId, 
    * } 
-   * @return Check http://localhost:8080/api/swagger-ui/index.html#/ for more information on the response body 
+   * @return Check https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api/swagger-ui/index.html#/ for more information on the response body 
    */
   putPendingWithPendingId(params, pendingId, body) {
 
-    return this.instance.put('http://localhost:8080/api/pendings/' + pendingId + '', body, params)
+    return this.instance.put('https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api/pendings/' + pendingId + '', body, params)
   }
 
   /**
@@ -69,11 +69,11 @@ class NCHANDIWebsiteService {
    * { 
    * string : pendingId, 
    * } 
-   * @return Check http://localhost:8080/api/swagger-ui/index.html#/ for more information on the response body 
+   * @return Check https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api/swagger-ui/index.html#/ for more information on the response body 
    */
   deletePendingWithPendingId(params, pendingId, body) {
 
-    return this.instance.delete('http://localhost:8080/api/pendings/' + pendingId + '', params)
+    return this.instance.delete('https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api/pendings/' + pendingId + '', params)
   }
 
   /**
@@ -81,44 +81,44 @@ class NCHANDIWebsiteService {
    * { 
    * string : pendingId, 
    * } 
-   * @return Check http://localhost:8080/api/swagger-ui/index.html#/ for more information on the response body 
+   * @return Check https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api/swagger-ui/index.html#/ for more information on the response body 
    */
   approvePending(params, pendingId, body) {
 
-    return this.instance.put('http://localhost:8080/api/pendings/' + pendingId + '/approve', body, params)
+    return this.instance.put('https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api/pendings/' + pendingId + '/approve', body, params)
   }
 
   /**
    * Valid Query Parameters:
    * { 
    * } 
-   * @return Check http://localhost:8080/api/swagger-ui/index.html#/ for more information on the response body 
+   * @return Check https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api/swagger-ui/index.html#/ for more information on the response body 
    */
   getAllPanels(params, body) {
 
-    return this.instance.get('http://localhost:8080/api/panels', params)
+    return this.instance.get('https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api/panels', params)
   }
 
   /**
    * Valid Query Parameters:
    * { 
    * } 
-   * @return Check http://localhost:8080/api/swagger-ui/index.html#/ for more information on the response body 
+   * @return Check https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api/swagger-ui/index.html#/ for more information on the response body 
    */
   getOpenPanels(params, body) {
 
-    return this.instance.get('http://localhost:8080/api/panels-open', params)
+    return this.instance.get('https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api/panels-open', params)
   }
 
   /**
    * Valid Query Parameters:
    * { 
    * } 
-   * @return Check http://localhost:8080/api/swagger-ui/index.html#/ for more information on the response body 
+   * @return Check https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api/swagger-ui/index.html#/ for more information on the response body 
    */
   postPanel(params, body) {
 
-    return this.instance.post('http://localhost:8080/api/panels', body, params)
+    return this.instance.post('https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api/panels', body, params)
   }
 
   /**
@@ -126,11 +126,11 @@ class NCHANDIWebsiteService {
    * { 
    * string : panelId, 
    * } 
-   * @return Check http://localhost:8080/api/swagger-ui/index.html#/ for more information on the response body 
+   * @return Check https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api/swagger-ui/index.html#/ for more information on the response body 
    */
   getPanelsWithPanelId(params, panelId, body) {
 
-    return this.instance.get('http://localhost:8080/api/panels/' + panelId + '', params)
+    return this.instance.get('https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api/panels/' + panelId + '', params)
   }
 
   /**
@@ -138,11 +138,11 @@ class NCHANDIWebsiteService {
    * { 
    * string : panelId, 
    * } 
-   * @return Check http://localhost:8080/api/swagger-ui/index.html#/ for more information on the response body 
+   * @return Check https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api/swagger-ui/index.html#/ for more information on the response body 
    */
   putPanelWithPanelId(params, panelId, body) {
 
-    return this.instance.put('http://localhost:8080/api/panels/' + panelId + '', body, params)
+    return this.instance.put('https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api/panels/' + panelId + '', body, params)
   }
 
   /**
@@ -150,33 +150,33 @@ class NCHANDIWebsiteService {
    * { 
    * string : panelId, 
    * } 
-   * @return Check http://localhost:8080/api/swagger-ui/index.html#/ for more information on the response body 
+   * @return Check https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api/swagger-ui/index.html#/ for more information on the response body 
    */
   deletePanelsWithPanelId(params, panelId, body) {
 
-    return this.instance.delete('http://localhost:8080/api/panels/' + panelId + '', params)
+    return this.instance.delete('https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api/panels/' + panelId + '', params)
   }
 
   /**
    * Valid Query Parameters:
    * { 
    * } 
-   * @return Check http://localhost:8080/api/swagger-ui/index.html#/ for more information on the response body 
+   * @return Check https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api/swagger-ui/index.html#/ for more information on the response body 
    */
   getFacilities(params, body) {
 
-    return this.instance.get('http://localhost:8080/api/facilities', params)
+    return this.instance.get('https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api/facilities', params)
   }
 
   /**
    * Valid Query Parameters:
    * { 
    * } 
-   * @return Check http://localhost:8080/api/swagger-ui/index.html#/ for more information on the response body 
+   * @return Check https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api/swagger-ui/index.html#/ for more information on the response body 
    */
   postFacilities(params, body) {
 
-    return this.instance.post('http://localhost:8080/api/facilities', body, params)
+    return this.instance.post('https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api/facilities', body, params)
   }
 
   /**
@@ -184,11 +184,11 @@ class NCHANDIWebsiteService {
    * { 
    * string : facilityId, 
    * } 
-   * @return Check http://localhost:8080/api/swagger-ui/index.html#/ for more information on the response body 
+   * @return Check https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api/swagger-ui/index.html#/ for more information on the response body 
    */
   getFacilitiesWithFacilityId(params, facilityId, body) {
 
-    return this.instance.get('http://localhost:8080/api/facilities/' + facilityId + '', params)
+    return this.instance.get('https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api/facilities/' + facilityId + '', params)
   }
 
   /**
@@ -196,11 +196,11 @@ class NCHANDIWebsiteService {
    * { 
    * string : facilityId, 
    * } 
-   * @return Check http://localhost:8080/api/swagger-ui/index.html#/ for more information on the response body 
+   * @return Check https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api/swagger-ui/index.html#/ for more information on the response body 
    */
   putFacilitiesWithFacilityId(params, facilityId, body) {
 
-    return this.instance.put('http://localhost:8080/api/facilities/' + facilityId + '', body, params)
+    return this.instance.put('https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api/facilities/' + facilityId + '', body, params)
   }
 
   /**
@@ -208,44 +208,44 @@ class NCHANDIWebsiteService {
    * { 
    * string : facilityId, 
    * } 
-   * @return Check http://localhost:8080/api/swagger-ui/index.html#/ for more information on the response body 
+   * @return Check https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api/swagger-ui/index.html#/ for more information on the response body 
    */
   deleteFacilitiesWithFacilityId(params, facilityId, body) {
 
-    return this.instance.delete('http://localhost:8080/api/facilities/' + facilityId + '', params)
+    return this.instance.delete('https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api/facilities/' + facilityId + '', params)
   }
 
   /**
    * Valid Query Parameters:
    * { 
    * } 
-   * @return Check http://localhost:8080/api/swagger-ui/index.html#/ for more information on the response body 
+   * @return Check https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api/swagger-ui/index.html#/ for more information on the response body 
    */
   getFacilitiesactive(params, body) {
 
-    return this.instance.get('http://localhost:8080/api/facilities-active', params)
+    return this.instance.get('https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api/facilities-active', params)
   }
 
   /**
    * Valid Query Parameters:
    * { 
    * } 
-   * @return Check http://localhost:8080/api/swagger-ui/index.html#/ for more information on the response body 
+   * @return Check https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api/swagger-ui/index.html#/ for more information on the response body 
    */
   getPeople(params, body) {
 
-    return this.instance.get('http://localhost:8080/api/people', params)
+    return this.instance.get('https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api/people', params)
   }
 
   /**
    * Valid Query Parameters:
    * { 
    * } 
-   * @return Check http://localhost:8080/api/swagger-ui/index.html#/ for more information on the response body 
+   * @return Check https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api/swagger-ui/index.html#/ for more information on the response body 
    */
   postPerson(params, body) {
 
-    return this.instance.post('http://localhost:8080/api/people', body, params)
+    return this.instance.post('https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api/people', body, params)
   }
 
   /**
@@ -253,11 +253,11 @@ class NCHANDIWebsiteService {
    * { 
    * string : peopleId, 
    * } 
-   * @return Check http://localhost:8080/api/swagger-ui/index.html#/ for more information on the response body 
+   * @return Check https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api/swagger-ui/index.html#/ for more information on the response body 
    */
   getPersonWithPersonId(params, personId, body) {
 
-    return this.instance.get('http://localhost:8080/api/people/' + personId + '', params)
+    return this.instance.get('https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api/people/' + personId + '', params)
   }
 
   /**
@@ -265,11 +265,11 @@ class NCHANDIWebsiteService {
    * { 
    * string : peopleId, 
    * } 
-   * @return Check http://localhost:8080/api/swagger-ui/index.html#/ for more information on the response body 
+   * @return Check https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api/swagger-ui/index.html#/ for more information on the response body 
    */
   putPersonWithPersonId(params, personId, body) {
 
-    return this.instance.put('http://localhost:8080/api/people/' + personId + '', body, params)
+    return this.instance.put('https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api/people/' + personId + '', body, params)
   }
 
   /**
@@ -277,33 +277,33 @@ class NCHANDIWebsiteService {
    * { 
    * string : personId, 
    * } 
-   * @return Check http://localhost:8080/api/swagger-ui/index.html#/ for more information on the response body 
+   * @return Check https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api/swagger-ui/index.html#/ for more information on the response body 
    */
   deletePersonWithPersonId(params, personId, body) {
 
-    return this.instance.delete('http://localhost:8080/api/people/' + personId + '', params)
+    return this.instance.delete('https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api/people/' + personId + '', params)
   }
 
   /**
    * Valid Query Parameters:
    * { 
    * } 
-   * @return Check http://localhost:8080/api/swagger-ui/index.html#/ for more information on the response body 
+   * @return Check https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api/swagger-ui/index.html#/ for more information on the response body 
    */
   getResourceItems(params, body) {
 
-    return this.instance.get('http://localhost:8080/api/resource-items', params)
+    return this.instance.get('https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api/resource-items', params)
   }
 
   /**
    * Valid Query Parameters:
    * { 
    * } 
-   * @return Check http://localhost:8080/api/swagger-ui/index.html#/ for more information on the response body 
+   * @return Check https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api/swagger-ui/index.html#/ for more information on the response body 
    */
   postResourceItem(params, body) {
 
-    return this.instance.post('http://localhost:8080/api/resource-items', body, params)
+    return this.instance.post('https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api/resource-items', body, params)
   }
 
   /**
@@ -311,11 +311,11 @@ class NCHANDIWebsiteService {
    * { 
    * string : resourceItemId, 
    * } 
-   * @return Check http://localhost:8080/api/swagger-ui/index.html#/ for more information on the response body 
+   * @return Check https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api/swagger-ui/index.html#/ for more information on the response body 
    */
   getResourceItemWithResourceItemId(params, resourceItemId, body) {
 
-    return this.instance.get('http://localhost:8080/api/resource-items/' + resourceItemId + '', params)
+    return this.instance.get('https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api/resource-items/' + resourceItemId + '', params)
   }
 
   /**
@@ -323,11 +323,11 @@ class NCHANDIWebsiteService {
    * { 
    * string : resourceItemId, 
    * } 
-   * @return Check http://localhost:8080/api/swagger-ui/index.html#/ for more information on the response body 
+   * @return Check https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api/swagger-ui/index.html#/ for more information on the response body 
    */
   putResourceItemWithResourceItemId(params, resourceItemId, body) {
 
-    return this.instance.put('http://localhost:8080/api/resource-items/' + resourceItemId + '', body, params)
+    return this.instance.put('https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api/resource-items/' + resourceItemId + '', body, params)
   }
 
   /**
@@ -335,22 +335,22 @@ class NCHANDIWebsiteService {
    * { 
    * string : resourceItemId, 
    * } 
-   * @return Check http://localhost:8080/api/swagger-ui/index.html#/ for more information on the response body
+   * @return Check https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api/swagger-ui/index.html#/ for more information on the response body
    */
   deleteResourceItemWithResourceItemId(params, resourceItemId, body) {
 
-    return this.instance.delete('http://localhost:8080/api/resource-items/' + resourceItemId + '', params)
+    return this.instance.delete('https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api/resource-items/' + resourceItemId + '', params)
   }
 
   /**
    * Valid Query Parameters:
    * {
    * }
-   * @return Check http://localhost:8080/api/swagger-ui/index.html#/ for more information on the response body
+   * @return Check https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api/swagger-ui/index.html#/ for more information on the response body
    */
   getAttachments(params, body) {
 
-    return this.instance.get('http://localhost:8080/api/attachments', params)
+    return this.instance.get('https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api/attachments', params)
   }
 
   /**
@@ -358,11 +358,11 @@ class NCHANDIWebsiteService {
    * {
    * string : resourceItemId,
    * }
-   * @return Check http://localhost:8080/api/swagger-ui/index.html#/ for more information on the response body
+   * @return Check https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api/swagger-ui/index.html#/ for more information on the response body
    */
   postAttachments(params, resourceItemId, body) {
 
-    return this.instance.post('http://localhost:8080/api/attachments/' + resourceItemId + '', body, params)
+    return this.instance.post('https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api/attachments/' + resourceItemId + '', body, params)
   }
 
   /**
@@ -370,11 +370,11 @@ class NCHANDIWebsiteService {
    * {
    * string : attachmentId,
    * }
-   * @return Check http://localhost:8080/api/swagger-ui/index.html#/ for more information on the response body
+   * @return Check https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api/swagger-ui/index.html#/ for more information on the response body
    */
   getAttachmentWithAttachmentId(params, attachmentId, body) {
 
-    return axios.get('http://localhost:8080/api/attachments/' + attachmentId + '', { responseType: 'blob' })
+    return axios.get('https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api/attachments/' + attachmentId + '', { responseType: 'blob' })
   }
 
   /**
@@ -382,11 +382,11 @@ class NCHANDIWebsiteService {
    * {
    * string : attachmentId,
    * }
-   * @return Check http://localhost:8080/api/swagger-ui/index.html#/ for more information on the response body
+   * @return Check https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api/swagger-ui/index.html#/ for more information on the response body
    */
   putAttachmentWithAttachmentId(params, attachmentId, body) {
 
-    return this.instance.put('http://localhost:8080/api/attachments/' + attachmentId + '', body, params)
+    return this.instance.put('https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api/attachments/' + attachmentId + '', body, params)
   }
 
   /**
@@ -394,22 +394,22 @@ class NCHANDIWebsiteService {
    * {
    * string : attachmentId,
    * }
-   * @return Check http://localhost:8080/api/swagger-ui/index.html#/ for more information on the response body
+   * @return Check https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api/swagger-ui/index.html#/ for more information on the response body
    */
   deleteAttachmentWithAttachmentId(params, attachmentId, body) {
 
-    return this.instance.delete('http://localhost:8080/api/attachments/' + attachmentId + '', params)
+    return this.instance.delete('https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api/attachments/' + attachmentId + '', params)
   }
 
   /**
    * Valid Query Parameters:
    * {
    * }
-   * @return Check http://localhost:8080/api/swagger-ui/index.html#/ for more information on the response body
+   * @return Check https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api/swagger-ui/index.html#/ for more information on the response body
    */
   authenticate(token) {
 
-    return axios.post('http://localhost:8080/api/login', {}, {
+    return axios.post('https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api/login', {}, {
       headers: {
         'Authorization': `Basic ${token}`
       },
@@ -420,33 +420,33 @@ class NCHANDIWebsiteService {
    * Valid Query Parameters:
    * {
    * }
-   * @return Check http://localhost:8080/api/swagger-ui/index.html#/ for more information on the response body 
+   * @return Check https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api/swagger-ui/index.html#/ for more information on the response body 
    */
   logout(params, body) {
 
-    return this.instance.post('http://localhost:8080/api/logout', params)
+    return this.instance.post('https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api/logout', params)
   }
 
   /**
    * Valid Query Parameters:
    * {
    * }
-   * @return Check http://localhost:8080/api/swagger-ui/index.html#/ for more information on the response body 
+   * @return Check https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api/swagger-ui/index.html#/ for more information on the response body 
    */
   emailLiteratureRequest(params, body) {
 
-    return this.instance.post('http://localhost:8080/api/email/literature-request', body, params)
+    return this.instance.post('https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api/email/literature-request', body, params)
   }
 
   /**
    * Valid Query Parameters:
    * {
    * }
-   * @return Check http://localhost:8080/api/swagger-ui/index.html#/ for more information on the response body 
+   * @return Check https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api/swagger-ui/index.html#/ for more information on the response body 
    */
   emailContactForm(params, body) {
 
-    return this.instance.post('http://localhost:8080/api/email/contact-form', body, params)
+    return this.instance.post('https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api/email/contact-form', body, params)
   }
 
 }
