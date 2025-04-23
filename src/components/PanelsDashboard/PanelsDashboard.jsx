@@ -96,7 +96,7 @@ const PanelsDashboard = () => {
       facility: null,
       gender: '',
       markAsMembersNeeded: false,
-      numberNeeded: null,
+      numberNeeded: 0,
       boardChampion: null,
       panelCoordinator: null,
       panelLeader: null,

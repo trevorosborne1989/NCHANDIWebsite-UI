@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Paper, Typography, TextField, Button, CircularProgress } from '@mui/material';
+import { Box, Paper, Typography, TextField, Button, CircularProgress, ListItem, List, Link } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import { useFormik } from 'formik';
 import { useSnackbar } from 'notistack';
@@ -66,6 +66,8 @@ const Contact = () => {
                   value={formik.values.firstName}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
+                  helperText={formik.touched.firstName ? formik.errors.firstName : ""}
+                  error={formik.touched.firstName && Boolean(formik.errors.firstName)}
                   required
                   />
                   <TextField
@@ -77,6 +79,8 @@ const Contact = () => {
                     value={formik.values.lastName}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
+                    helperText={formik.touched.lastName ? formik.errors.lastName : ""}
+            error={formik.touched.lastName && Boolean(formik.errors.lastName)}
                     required
                   />
                   <TextField
@@ -88,6 +92,8 @@ const Contact = () => {
                     value={formik.values.email}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
+                    helperText={formik.touched.email ? formik.errors.email : ""}
+                    error={formik.touched.email && Boolean(formik.errors.email)}
                     required
                   />
                   <TextField
@@ -99,6 +105,8 @@ const Contact = () => {
                     value={formik.values.phone}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
+                    helperText={formik.touched.phone ? formik.errors.phone : ""}
+                    error={formik.touched.phone && Boolean(formik.errors.phone)}
                     required
                   />
                   <TextField
@@ -119,6 +127,8 @@ const Contact = () => {
                     value={formik.values.message}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
+                    helperText={formik.touched.message ? formik.errors.message : ""}
+                    error={formik.touched.message && Boolean(formik.errors.message)}
                     required
                   />
                   <Box textAlign={'center'} py={1}>
@@ -143,13 +153,46 @@ const Contact = () => {
                   <Typography variant='h4' color={nchandiTheme.handiDarkGreen} sx={{ fontWeight: 'bold' }} textAlign={'center'} pb={5}>
                     Contact Form
                   </Typography>
-                  <Typography variant='h5' color={nchandiTheme.handiDarkGreen} pb={5}>
-                    Please use this form to contact us. You can also contact our committee board members directly.
+                  <Typography variant='h5' color={nchandiTheme.handiDarkGreen} pb={3}>
+                    Please use this form to contact us. You can also contact our committee board members directly:
                   </Typography>
-                  <Typography variant='h5' color={nchandiTheme.handiDarkGreen}>
-                    For information about voluneering or a facility, contact
-                  </Typography>
-                  {/* Dropdown of emails */}
+                  <List sx={{ listStyleType: 'disc' }}>
+                    <ListItem sx={{ display: 'list-item', color: nchandiTheme.handiDarkYellow }}>
+                      <Link underline='hover'>
+                        <Typography variant='h5' color={nchandiTheme.handiDarkGreen}>facilities@nchandi.org</Typography>
+                      </Link>
+                    </ListItem>
+                    <ListItem sx={{ display: 'list-item', color: nchandiTheme.handiDarkYellow }}>
+                      <Link underline='hover'>
+                        <Typography variant='h5' color={nchandiTheme.handiDarkGreen}>literature@nchandi.org</Typography>
+                      </Link>
+                    </ListItem>
+                    <ListItem sx={{ display: 'list-item', color: nchandiTheme.handiDarkYellow }}>
+                      <Link underline='hover'>
+                        <Typography variant='h5' color={nchandiTheme.handiDarkGreen}>treasurer@nchandi.org</Typography>
+                      </Link>
+                    </ListItem>
+                    <ListItem sx={{ display: 'list-item', color: nchandiTheme.handiDarkYellow }}>
+                      <Link underline='hover'>
+                        <Typography variant='h5' color={nchandiTheme.handiDarkGreen}>spanish@nchandi.org</Typography>
+                      </Link>
+                    </ListItem>
+                    <ListItem sx={{ display: 'list-item', color: nchandiTheme.handiDarkYellow }}>
+                      <Link underline='hover'>
+                        <Typography variant='h5' color={nchandiTheme.handiDarkGreen}>secretary@nchandi.org</Typography>
+                      </Link>
+                    </ListItem>
+                    <ListItem sx={{ display: 'list-item', color: nchandiTheme.handiDarkYellow }}>
+                      <Link underline='hover'>
+                        <Typography variant='h5' color={nchandiTheme.handiDarkGreen}>technology@nchandi.org</Typography>
+                      </Link>
+                    </ListItem>
+                    <ListItem sx={{ display: 'list-item', color: nchandiTheme.handiDarkYellow }}>
+                      <Link underline='hover' >
+                        <Typography variant='h5' color={nchandiTheme.handiDarkGreen}>chairperson@nchandi.org</Typography>
+                      </Link>
+                    </ListItem>
+                  </List>
                 </Box>
               </Grid>
             </Grid>

@@ -25,12 +25,6 @@ const Login = () => {
   const { enqueueSnackbar } = useSnackbar();
   const history = useNavigate();
 
-  function delay(ms) {
-    return new Promise((resolve) => {
-      setTimeout(resolve, ms);
-    })
-  }
-
   const formik = useFormik({
     initialValues: {
       usernameParameter: '',
@@ -47,7 +41,6 @@ const Login = () => {
         }
         console.log(authorities[0]?.authority);
         enqueueSnackbar('Login successful.', snackbarMessages.success.configuration);
-        await delay(1000);
         history('/admin-container');
         // window.location.reload();
       } catch (err) {
@@ -68,87 +61,94 @@ const Login = () => {
     formik.setSubmitting(false);
   };
 
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter")
+      handleSave();
+  };
+
     return (
       <Container>
-        <Box textAlign={'center'} py={5} pb={3}>
-          <Typography variant="h3" color={'white'} pb={10} pl={3} pr={3} >
-            Admin Login
-          </Typography>
-        </Box>
-        <Grid container spacing={1} pb={7} alignContent={'center'} justifyContent={'center'}>
-          <Grid sm={8}>
-            <Paper variant='elevation' elevation={15} sx={{ backgroundColor: nchandiTheme.handiDarkGreen }} >
-              <Grid container alignContent={'center'} justifyContent={'center'} direction={'column'} >
-                <Grid sm={10}>
-                  <Box py={7} pb={3}>
-                    <Typography variant="h6" color={'white'} >
-                      Email Address
+        <div onKeyDown={handleKeyPress}>
+          <Box textAlign={'center'} py={5} pb={3}>
+            <Typography variant="h3" color={'white'} pb={10} pl={3} pr={3} >
+              Admin Login
+            </Typography>
+          </Box>
+          <Grid container spacing={1} pb={7} alignContent={'center'} justifyContent={'center'}>
+            <Grid sm={8}>
+              <Paper variant='elevation' elevation={15} sx={{ backgroundColor: nchandiTheme.handiDarkGreen }} >
+                <Grid container alignContent={'center'} justifyContent={'center'} direction={'column'} >
+                  <Grid sm={10}>
+                    <Box py={7} pb={3}>
+                      <Typography variant="h6" color={'white'} >
+                        Email Address
+                      </Typography>
+                      <TextField
+                        label='Email'
+                        name='usernameParameter'
+                        color='primary'
+                        sx={{ backgroundColor: 'white' }}
+                        fullWidth
+                        type='email'
+                        variant='filled'
+                        margin='dense'
+                        value={formik.values.usernameParameter}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        helperText={formik.touched.usernameParameter ? formik.errors.usernameParameter : ""}
+                        error={formik.touched.usernameParameter && Boolean(formik.errors.usernameParameter)}
+                        required
+                      />
+                    </Box>
+                  </Grid>
+                  <Grid sm={10}>
+                    <Typography variant="h6" color={'white'}>
+                      Password
                     </Typography>
                     <TextField
-                      label='Email'
-                      name='usernameParameter'
+                      label='Password'
+                      name='passwordParameter'
                       color='primary'
                       sx={{ backgroundColor: 'white' }}
                       fullWidth
-                      type='email'
+                      type='password'
                       variant='filled'
                       margin='dense'
-                      value={formik.values.usernameParameter}
+                      value={formik.values.passwordParameter}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
-                      helperText={formik.touched.usernameParameter ? formik.errors.usernameParameter : ""}
-                      error={formik.touched.usernameParameter && Boolean(formik.errors.usernameParameter)}
+                      helperText={formik.touched.passwordParameter ? formik.errors.passwordParameter : ""}
+                      error={formik.touched.passwordParameter && Boolean(formik.errors.passwordParameter)}
                       required
                     />
+                  </Grid>
+                  <Box py={3} textAlign={'center'}>
+                    <Grid sm={12}>
+                      <Button
+                        data-cy='nchandi-contact-confirm-btn'
+                        color='primary'
+                        variant='contained'
+                        sx={{ width: 300, padding: 1, margin: 2 }}
+                        size='large'
+                        onClick={handleSave}
+                        disabled={formik.isSubmitting}
+                      >
+                        Submit {formik.isSubmitting &&
+                          <Box ml={1} mt={1}><CircularProgress size={15} /></Box>
+                        }
+                      </Button>
+                    </Grid>
+                    <Grid sm={12}>
+                      <Typography variant="h7" color={'white'}>
+                        Login is for chairmembers and other appointees.
+                      </Typography>
+                    </Grid>
                   </Box>
                 </Grid>
-                <Grid sm={10}>
-                  <Typography variant="h6" color={'white'}>
-                    Password
-                  </Typography>
-                  <TextField
-                    label='Password'
-                    name='passwordParameter'
-                    color='primary'
-                    sx={{ backgroundColor: 'white' }}
-                    fullWidth
-                    type='password'
-                    variant='filled'
-                    margin='dense'
-                    value={formik.values.passwordParameter}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    helperText={formik.touched.passwordParameter ? formik.errors.passwordParameter : ""}
-                    error={formik.touched.passwordParameter && Boolean(formik.errors.passwordParameter)}
-                    required
-                  />
-                </Grid>
-                <Box py={3} textAlign={'center'}>
-                  <Grid sm={12}>
-                    <Button
-                      data-cy='nchandi-contact-confirm-btn'
-                      color='primary'
-                      variant='contained'
-                      sx={{ width: 300, padding: 1, margin: 2 }}
-                      size='large'
-                      onClick={handleSave}
-                      disabled={formik.isSubmitting}
-                    >
-                      Submit {formik.isSubmitting &&
-                        <Box ml={1} mt={1}><CircularProgress size={15} /></Box>
-                      }
-                    </Button>
-                  </Grid>
-                  <Grid sm={12}>
-                    <Typography variant="h7" color={'white'}>
-                      No account yet? Create an account
-                    </Typography>
-                  </Grid>
-                </Box>
-              </Grid>
-            </Paper>
+              </Paper>
+            </Grid>
           </Grid>
-        </Grid>
+        </div>
       </Container>
     )
 }

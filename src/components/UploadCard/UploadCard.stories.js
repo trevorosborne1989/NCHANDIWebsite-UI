@@ -36,16 +36,14 @@ export const Primary = ({...props}) => {
    *
    */
   const handleSave = () => {
-    setTimeout( async () => { // Remove the onTimeout once the POST method in onSubmit is defined.
-      formik.submitForm();
-      if (formik.errors?.resourceTitle) {
-        enqueueSnackbar('There are fields missing or invalid in your form. Please fill out all the required fields.', snackbarMessages.error.configuration);
-      }
-      if (formik.errors?.file) {
-        enqueueSnackbar(formik.errors?.file, snackbarMessages.error.configuration);
-      };
-      formik.setSubmitting(false);
-    }, 5000);
+    formik.submitForm();
+    if (formik.errors?.resourceTitle) {
+      enqueueSnackbar('There are fields missing or invalid in your form. Please fill out all the required fields.', snackbarMessages.error.configuration);
+    }
+    if (formik.errors?.file) {
+      enqueueSnackbar(formik.errors?.file, snackbarMessages.error.configuration);
+    };
+    formik.setSubmitting(false);
   };
 
   return (
