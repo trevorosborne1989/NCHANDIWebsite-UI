@@ -414,7 +414,7 @@ class NCHANDIWebsiteService {
    */
   authenticate(token) {
 
-    return axios.post(serviceURL + '/login/login', {}, {
+    return axios.post(serviceURL + '/login', {}, {
       headers: {
         'Authorization': `Basic ${token}`
       },

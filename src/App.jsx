@@ -100,9 +100,9 @@ function ListItemAdminLink(props) {
   return (
     <li>
       {
-        <ListItem button component={Link} to={Cookies.get('isAdmin') ? to : '/unathorized'} onClick={Cookies.get('isAdmin') ? null : () => enqueueSnackbar('You must be an Admin and logged in.', snackbarMessages.warning.configuration)}>
+        <ListItem button component={Link} to={Cookies.get('tempCookie') ? to : '/unathorized'} onClick={Cookies.get('tempCookie') ? null : () => enqueueSnackbar('You must be an Admin and logged in.', snackbarMessages.warning.configuration)}>
           {icon ? <ListItemIcon>{icon}</ListItemIcon> : null}
-          <ListItemText primary={primary} sx={{ color: Cookies.get('isAdmin') ? 'white' : 'grey'}} />
+          <ListItemText primary={primary} sx={{ color: Cookies.get('tempCookie') ? 'white' : 'grey'}} />
         </ListItem>
       }
     </li>
@@ -126,7 +126,7 @@ function App() {
     try {
       await nchandiWebsiteService.logout();
       Cookies.remove('JSESSIONID');
-      Cookies.remove('isAdmin');
+      Cookies.remove('tempCookie');
       enqueueSnackbar('Logout Successful', snackbarMessages.success.configuration);
       history('/');
     } catch (error) {
@@ -192,7 +192,7 @@ function App() {
                 </Box>
               </Grid>
               <Grid sm={3} >
-                {Cookies.get("isAdmin") &&
+                {Cookies.get("tempCookie") &&
                   <Box display={'flex'} pr={1} justifyContent={'right'} >
                     {/* <Logout sx={{ color: 'white', fontSize: 45 }}/> */}
                     <Tooltip title="Logout" placement='left' arrow>

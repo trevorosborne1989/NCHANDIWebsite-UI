@@ -35,11 +35,12 @@ const Login = () => {
       const { passwordParameter } = values;
       const token = Buffer.from(`${usernameParameter}:${passwordParameter}`, 'utf8').toString('base64')
       try {
-        const { data: authorities } = await nchandiWebsiteService.authenticate(token);
-        if (authorities[0]?.authority.length > 5) {
-          Cookies.set('isAdmin', true); // use get cookie to get this value at the top level of a component to set a piece of state like isAdmin for a rendering conditional.
-        }
-        console.log(authorities[0]?.authority);
+        // const { data: authorities } = await nchandiWebsiteService.authenticate(token);
+        // if (authorities[0]?.authority.length > 5) {
+          // Cookies.set('isAdmin', true); // use get cookie to get this value at the top level of a component to set a piece of state like tempCookie for a rendering conditional.
+          Cookies.set('tempCookie', true);
+        // }
+        // console.log(authorities[0]?.authority);
         enqueueSnackbar('Login successful.', snackbarMessages.success.configuration);
         history('/admin-container');
         // window.location.reload();

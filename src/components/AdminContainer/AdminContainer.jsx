@@ -18,7 +18,7 @@ import { nchandiTheme } from '../../App';
 
 const AdminContainer = () => {
   const history = useNavigate();
-  const isAdmin = useState(Cookies.get('isAdmin'));
+  const tempCookie = useState(Cookies.get('tempCookie'));
 
   const tabLabels = [
     "Admin Dashboard",
@@ -51,11 +51,11 @@ const AdminContainer = () => {
    *
    */
   const checkAdmin = useCallback(async () => {
-    if (!isAdmin)
+    if (!tempCookie)
     {
       history('/unathorized');
     }
-  }, [isAdmin, history]);
+  }, [tempCookie, history]);
 
   /**
    *
