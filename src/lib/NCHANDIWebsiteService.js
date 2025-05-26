@@ -7,16 +7,16 @@ import axios from 'axios';
 // Use this service URL for production
 const serviceURL = 'https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api';
 
-
 class NCHANDIWebsiteService {
   constructor(params) {
-    if (params) {
+    if (params) { 
       this.instance = axios.create({
         baseURL: params.baseURL ? params.baseURL : 'undefined',
         timeout: params.timeout ? params.timeout : 10000,
         headers: params.headers ? params.headers : {
           'Access-Control-Allow-Origin': serviceURL,
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json, application/pdf, multipart/form-data, application/octet-stream',
+          'Accept': 'application/json, application/pdf, multipart/form-data, application/octet-stream',
           'Access-Control-Request-Headers': 'Content-Type, Authorization'
         }
       });
