@@ -15,8 +15,8 @@ class NCHANDIWebsiteService {
         timeout: params.timeout ? params.timeout : 10000,
         headers: params.headers ? params.headers : {
           'Access-Control-Allow-Origin': serviceURL,
-          'Content-Type': 'multipart/form-data',
-          'Accept': 'multipart/form-data',
+          'Content-Type': 'application/json, application/pdf, multipart/form-data, application/octet-stream',
+          'Accept': 'application/json, application/pdf, multipart/form-data, application/octet-stream',
           'Access-Control-Request-Headers': 'Content-Type, Authorization'
         }
       });
