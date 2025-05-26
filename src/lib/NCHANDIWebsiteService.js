@@ -7,9 +7,6 @@ import axios from 'axios';
 // Use this service URL for production
 const serviceURL = 'https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchandi-api';
 
-const awsServiceURL= 'http://ec2-13-57-33-74.us-west-1.compute.amazonaws.com:8080/api'
-
-
 class NCHANDIWebsiteService {
   constructor(params) {
     if (params) { 
@@ -370,7 +367,7 @@ class NCHANDIWebsiteService {
    */
   postAttachments(params, resourceItemId, body) {
 
-    return this.instance.post(awsServiceURL + '/attachments/' + resourceItemId + '', body, params)
+    return this.instance.post(serviceURL + '/attachments/' + resourceItemId + '', body, params)
   }
 
   /**
