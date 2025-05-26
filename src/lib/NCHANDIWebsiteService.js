@@ -16,7 +16,7 @@ class NCHANDIWebsiteService {
         headers: params.headers ? params.headers : {
           'Access-Control-Allow-Origin': serviceURL,
           'Content-Type': 'application/json',
-          'Accept': 'application/pdf',
+          'Accept': 'multipart/form-data',
           'Access-Control-Request-Headers': 'Content-Type, Authorization'
         }
       });
