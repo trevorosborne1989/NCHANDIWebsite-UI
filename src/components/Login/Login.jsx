@@ -19,7 +19,7 @@ import { yupSchema } from './ValidationSchema';
 import { nchandiTheme } from '../../App';
 import NCHANDIWebsiteService from '../../lib/NCHANDIWebsiteService'
 
-const nchandiWebsiteService = new NCHANDIWebsiteService();
+// const nchandiWebsiteService = new NCHANDIWebsiteService();
 
 const Login = () => {
   const { enqueueSnackbar } = useSnackbar();
@@ -33,7 +33,7 @@ const Login = () => {
     onSubmit: async (values) => {
       const { usernameParameter } = values;
       const { passwordParameter } = values;
-      const token = Buffer.from(`${usernameParameter}:${passwordParameter}`, 'utf8').toString('base64')
+      // const token = Buffer.from(`${usernameParameter}:${passwordParameter}`, 'utf8').toString('base64')
       try {
         // const { data: authorities } = await nchandiWebsiteService.authenticate(token);
         // if (authorities[0]?.authority.length > 5) {
