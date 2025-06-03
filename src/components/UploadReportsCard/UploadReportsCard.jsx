@@ -53,8 +53,8 @@ const monthOptions = [
     label: 'January',
   },
   {
-    value: 'Febuary',
-    label: 'Febuary',
+    value: 'February',
+    label: 'February',
   },
   {
     value: 'March',
@@ -81,8 +81,8 @@ const monthOptions = [
     label: 'August',
   },
   {
-    value: 'Sepetember',
-    label: 'Sepetember',
+    value: 'September',
+    label: 'September',
   },
   {
     value: 'October',
@@ -131,7 +131,7 @@ const UploadReportsCard = ({formik, onSave}) => {
           <Grid container sm={12} spacing={1} py={2} pb={3} alignItems={'center'} justifyContent={'center'}>
             <Grid container sm={10} md={5} spacing ={1} direction={'column'}>
               <Grid sm={12}>
-               <FormControlLabel
+                <FormControlLabel
                   control={<Checkbox
                     sx={{ color: nchandiTheme.handiDarkGreen,'&.Mui-checked': {color: nchandiTheme.handiGreen} }}
                     name='isFinancial'
