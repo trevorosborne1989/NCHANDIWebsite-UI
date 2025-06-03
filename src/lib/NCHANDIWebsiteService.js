@@ -9,15 +9,15 @@ const serviceURL = 'https://df7g4zitg1.execute-api.us-west-1.amazonaws.com/nchan
 
 class NCHANDIWebsiteService {
   constructor(params) {
-    if (params) { 
+    if (params) {
       this.instance = axios.create({
         baseURL: params.baseURL ? params.baseURL : 'undefined',
         timeout: params.timeout ? params.timeout : 10000,
         headers: params.headers ? params.headers : {
           'Access-Control-Allow-Origin': serviceURL,
-          'Content-Type': 'multipart/form-data, image/png, image/jpeg, image/gif, application/octet-stream, application/pdf',
-          'Accept': 'multipart/form-data, image/png, image/jpeg, image/gif, application/octet-stream, application/pdf',
-          'Access-Control-Request-Headers': 'Content-Type, Authorization'
+          'Content-Type': 'multipart/form-data',
+          'Accept': 'multipart/form-data',
+          'Access-Control-Request-Headers': 'Content-Type, Authorization, Accept'
         }
       });
     } else this.instance = axios;
