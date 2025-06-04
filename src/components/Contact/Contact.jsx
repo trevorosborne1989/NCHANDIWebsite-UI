@@ -56,7 +56,7 @@ const Contact = () => {
           <Paper variant='elevation' elevation={5}>
             <Grid container spacing={1} direction={{ sm: 'column-reverse' , md: 'row'  }}>
               <Grid container sm={10} md={7} direction={'column'}>
-                <Box pb={7} pl={10} py={7}>
+                <Box pb={7} py={7} ml={4} mr={4}>
                   <TextField
                   label='First Name'
                   name='firstName'
@@ -80,7 +80,7 @@ const Contact = () => {
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     helperText={formik.touched.lastName ? formik.errors.lastName : ""}
-            error={formik.touched.lastName && Boolean(formik.errors.lastName)}
+                    error={formik.touched.lastName && Boolean(formik.errors.lastName)}
                     required
                   />
                   <TextField

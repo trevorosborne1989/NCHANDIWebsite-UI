@@ -214,7 +214,7 @@ const Resources = () => {
   }
 
   return (
-    <>
+    <Box ml={2} mr={2}>
       {loading ?
         <Skeleton variant='rectangular' width='90%' height={250}/>
         :
@@ -450,8 +450,8 @@ const Resources = () => {
           </Grid>
           <Grid container justifyContent={'center'} alignItems={'center'} pb={7}>
             <Grid container sm={10} justifyContent={'center'} alignItems={'center'}>
-              <Paper variant='elevation' elevation={15} >
-                <Grid container sm={12} direction={'column'} justifyContent={'center'} alignItems={'center'} py={3}>
+              <Paper variant='elevation' elevation={15}>
+                <Grid container sm={12} direction={'column'} justifyContent={'center'} alignItems={'center'} py={3} ml={3} mr={3}>
                   <Grid sm={10} pb={5} textAlign={'center'}>
                     <Typography variant='h4' sx={{ fontWeight: 'bold' }} color={nchandiTheme.handiDarkGreen}>
                       Literature Request Form
@@ -468,7 +468,7 @@ const Resources = () => {
                     <TextField
                       label='First Name'
                       name='firstName'
-                      fullWidth
+                      sx={{width: 300, minWidth: '100%'}}
                       variant='outlined'
                       margin='dense'
                       value={formik.values.firstName}
@@ -483,7 +483,7 @@ const Resources = () => {
                     <TextField
                       label='Last Name'
                       name='lastName'
-                      fullWidth
+                      sx={{width: 300, minWidth: '100%'}}
                       variant='outlined'
                       margin='dense'
                       value={formik.values.lastName}
@@ -499,7 +499,7 @@ const Resources = () => {
                       select
                       label='H&I Commitment'
                       name='commitment'
-                      fullWidth
+                      sx={{width: 300, minWidth: '100%'}}
                       variant='outlined'
                       margin='dense'
                       value={formik.values.commitment}
@@ -521,7 +521,7 @@ const Resources = () => {
                       select
                       label='Facility'
                       name='facility'
-                      fullWidth
+                      sx={{width: 300, minWidth: '100%'}}
                       variant='outlined'
                       margin='dense'
                       value={formik.values.facility}
@@ -542,7 +542,7 @@ const Resources = () => {
                     <TextField
                       label='Email'
                       name='email'
-                      fullWidth
+                      sx={{width: 300, minWidth: '100%'}}
                       variant='outlined'
                       margin='dense'
                       value={formik.values.email}
@@ -557,7 +557,7 @@ const Resources = () => {
                     <TextField
                       label='Phone Number'
                       name='phone'
-                      fullWidth
+                      sx={{width: 300, minWidth: '100%'}}
                       variant='outlined'
                       margin='dense'
                       value={formik.values.phone}
@@ -820,7 +820,7 @@ const Resources = () => {
                       data-cy='nchandi-literature-request-confirm-btn'
                       color='secondary'
                       variant='contained'
-                      sx={{ width: '50%', padding: 1, margin: 2 }}
+                      sx={{ width: '75%', padding: 1, margin: 2 }}
                       size='large'
                       onClick={async () => { await handleSubmit(); }}
                       disabled={formik.isSubmitting}
@@ -836,7 +836,7 @@ const Resources = () => {
           </Grid>
         </Grid>
       }
-    </>
+    </Box>
   )
 }
 
