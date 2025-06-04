@@ -101,7 +101,7 @@ const PanelMembersDashboardDialog = ({ formik, isOpen, handleSave, handleClose }
                 variant='outlined'
                 size='small'
                 margin='dense'
-                fullWidth
+                sx={{width: 175, minWidth: '100%'}}
                 value={formik.values.preferredContactMethod}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}

@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { Box, Container, Typography, Card, CardContent, Divider } from '@mui/material';
+import Grid from '@mui/material/Unstable_Grid2';
 import { SendRounded, MailOutline } from '@mui/icons-material'
 import { Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
@@ -65,83 +66,89 @@ const HomePage = () => {
         <Typography variant="h4" color='white' py={2} mb={1.5} >
           Interested in joining North County H&I?
         </Typography>
-        <Box sx={{ flexDirection: 'column'}} display='flex' justifyContent="center" alignItems="center" py={3} mb={2} >
-          <Card sx={{ backgroundColor: nchandiTheme.handiDarkBlue, width: '80%' }} variant="elevation" elevation={10}>
-            <CardContent>
-              <Typography variant='h5' color='white' py={2} marginLeft={3} marginRight={3} >
-                Learn how to join H&I and attend our orientation meetings.
-              </Typography>
-            </CardContent>
-            <Box display='flex' justifyContent="center" >
-              <Box display="flex" py={1.5} marginRight={3} >
-                <Button
-                  variant='contained'
-                  size='large'
-                  color='primary'
-                  onClick={() => history('/orientation')}
-                  sx={{ width: 250 }}
-                >
-                  ORIENTATION
-                </Button>
-              </Box>
-              <Box display="flex" py={1.5} >
-                <Button
-                  variant='contained'
-                  size='large'
-                  color='primary'
-                  onClick={() => history('/contact')}
-                  sx={{ width: 250 }}
-                >
-                  CONTACT US
-                </Button>
-              </Box>
-            </Box>
-          </Card>
-        </Box>
-        <Box sx={{ flexDirection: 'column'}} display='flex' justifyContent="center" alignItems="center" py={3} mb={2} >
-          <Card sx={{ backgroundColor: nchandiTheme.handiDarkBlue, width: '75%' }} variant="elevation" elevation={10}>
-            <CardContent>
-              <Typography variant='h5' color='white' py={2} marginLeft={3} marginRight={3} >
-                Visit our Panels page to learn where we need your help.
-              </Typography>
-            </CardContent>
-            <Box display='flex' justifyContent="center" >
-              <Box display="flex" py={1.5} >
-                <Button
-                  variant='contained'
-                  size='large'
-                  color='secondary'
-                  onClick={() => history('/panels')}
-                  sx={{ width: 300 }}
-                >
-                  OPEN PANELS
-                </Button>
-              </Box>
-            </Box>
-          </Card>
-        </Box>
-        <Box sx={{ flexDirection: 'row'}} display='flex' justifyContent="center" alignItems="center" py={3} mb={2} >
-          <Card sx={{ backgroundColor: nchandiTheme.handiDarkBlue, width: '70%' }} variant="elevation" elevation={10}>
-            <CardContent>
-              <Typography variant='h5' color='white' py={2} marginLeft={3} marginRight={3} >
-                Visit our resources page to order literature, view our financial reports and important links.
-              </Typography>
-            </CardContent>
-            <Box display='flex' justifyContent="center" >
-              <Box display="flex" py={1.5} >
-                <Button
-                  variant='contained'
-                  size='large'
-                  color='secondary'
-                  onClick={() => history('/resources')}
-                  sx={{ width: 300 }}
-                >
-                  RESOURCES
-                </Button>
-              </Box>
-            </Box>
-          </Card>
-        </Box>
+      </Box>
+      <Box display='flex' justifyContent="center" alignItems="center" mb={4} >
+        <Card sx={{ backgroundColor: nchandiTheme.handiDarkBlue, width: '80%' }} variant="elevation" elevation={10}>
+          <Grid container spacing={1} alignContent={'center'} justifyContent={'center'} alignItems="center" textAlign='center' py={2} mb={2}>
+            <Grid sm={12} md={11} alignContent={'center'} justifyContent={'center'} justifyItems={'center'} alignItems="center" textAlign={'center'}>
+              <CardContent>
+                <Typography variant='h5' color='white' py={2} marginLeft={3} marginRight={3} >
+                  Learn how to join H&I and attend our orientation meetings.
+                </Typography>
+              </CardContent>
+            </Grid>
+            <Grid sm={12} md={5} alignContent={'center'} justifyContent={'center'} justifyItems={'center'} alignItems="center" textAlign={'center'}>
+              <Button
+                variant='contained'
+                size='large'
+                color='primary'
+                onClick={() => history('/orientation')}
+                sx={{width: '85%'}}
+              >
+                ORIENTATION
+              </Button>
+            </Grid>
+            <Grid sm={12} md={5} alignContent={'center'} justifyContent={'center'} justifyItems={'center'} alignItems="center" textAlign={'center'}>
+              <Button
+                variant='contained'
+                size='large'
+                color='primary'
+                onClick={() => history('/contact')}
+                sx={{width: '85%'}}
+              >
+                CONTACT US
+              </Button>
+            </Grid>
+          </Grid>
+        </Card>
+      </Box>
+      <Box display='flex' justifyContent="center" alignItems="center" py={3} mb={2} >
+        <Card sx={{ backgroundColor: nchandiTheme.handiDarkBlue, width: '75%' }} variant="elevation" elevation={10}>
+          <Grid container spacing={1} alignContent={'center'} justifyContent={'center'} alignItems="center" textAlign='center' py={2} mb={2}>
+            <Grid sm={12} md={11} alignContent={'center'} justifyContent={'center'} justifyItems={'center'} alignItems="center" textAlign={'center'}>
+              <CardContent>
+                <Typography variant='h5' color='white' py={2} marginLeft={3} marginRight={3} >
+                  Visit our Panels page to learn where we need your help.
+                </Typography>
+              </CardContent>
+            </Grid>
+            <Grid sm={12} md={5} alignContent={'center'} justifyContent={'center'} justifyItems={'center'} alignItems="center" textAlign={'center'}>
+              <Button
+                variant='contained'
+                size='large'
+                color='secondary'
+                onClick={() => history('/panels')}
+                sx={{width: '100%'}}
+              >
+                OPEN PANELS
+              </Button>
+            </Grid>
+          </Grid>
+        </Card>
+      </Box>
+      <Box display='flex' justifyContent="center" alignItems="center" py={3} mb={2} >
+        <Card sx={{ backgroundColor: nchandiTheme.handiDarkBlue, width: '70%' }} variant="elevation" elevation={10}>
+          <Grid container spacing={1} alignContent={'center'} justifyContent={'center'} alignItems="center" textAlign='center' py={2} mb={2}>
+            <Grid sm={12} md={11} alignContent={'center'} justifyContent={'center'} justifyItems={'center'} alignItems="center" textAlign={'center'}>
+              <CardContent>
+                <Typography variant='h5' color='white' py={2} marginLeft={3} marginRight={3} >
+                  Visit our resources page to order literature, view our financial reports and important links.
+                </Typography>
+              </CardContent>
+            </Grid>
+            <Grid sm={12} md={5} alignContent={'center'} justifyContent={'center'} justifyItems={'center'} alignItems="center" textAlign={'center'}>
+              <Button
+                variant='contained'
+                size='large'
+                color='secondary'
+                onClick={() => history('/resources')}
+                sx={{width: '100%'}}
+              >
+                RESOURCES
+              </Button>
+            </Grid>
+          </Grid>
+        </Card>
       </Box>
       <Box py={3}>
         <Divider />

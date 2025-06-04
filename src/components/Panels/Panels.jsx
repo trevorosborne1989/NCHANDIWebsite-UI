@@ -3,6 +3,7 @@ import {
   Typography,
   Divider,
   Skeleton,
+  Box,
 } from "@mui/material";
 import EnhancedTable from "../EnhancedTable/EnhancedTable";
 import Grid from '@mui/material/Unstable_Grid2';
@@ -106,7 +107,7 @@ const Panels = () => {
   const tableConfig = generateTableConfig(handleSelection);
 
   return (
-    <>
+    <Box ml={2} mr={2}>
       <Grid container sm={12} textAlign={'center'} justifyContent={'center'} py={3} pb={7}>
         <Grid sm={10}>
           <Typography variant="h3" color={'white'} >
@@ -138,7 +139,7 @@ const Panels = () => {
         handleSave={handleDialogSave}
         handleClose={handleDialogClose}
       />
-    </>
+    </Box>
   )
 }
 
