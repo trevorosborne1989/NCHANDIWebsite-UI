@@ -429,7 +429,7 @@ class NCHANDIWebsiteService {
    */
   logout(params, body) {
 
-    return this.instance.get(serviceURL + '/logout', params)
+    return this.instance.post(serviceURL + '/logout', params)
   }
 
   /**
