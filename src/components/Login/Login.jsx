@@ -19,7 +19,7 @@ import { yupSchema } from './ValidationSchema';
 import { nchandiTheme } from '../../App';
 import NCHANDIWebsiteService from '../../lib/NCHANDIWebsiteService'
 
-// const nchandiWebsiteService = new NCHANDIWebsiteService();
+const nchandiWebsiteService = new NCHANDIWebsiteService();
 
 const Login = () => {
   const { enqueueSnackbar } = useSnackbar();
@@ -33,14 +33,13 @@ const Login = () => {
     onSubmit: async (values) => {
       const { usernameParameter } = values;
       const { passwordParameter } = values;
-      // const token = Buffer.from(`${usernameParameter}:${passwordParameter}`, 'utf8').toString('base64')
+      const token = Buffer.from(`${usernameParameter}:${passwordParameter}`, 'utf8').toString('base64')
       try {
-        // const { data: authorities } = await nchandiWebsiteService.authenticate(token);
-        // if (authorities[0]?.authority.length > 5) {
-          // Cookies.set('isAdmin', true); // use get cookie to get this value at the top level of a component to set a piece of state like tempCookie for a rendering conditional.
-          Cookies.set('tempCookie', true);
-        // }
-        // console.log(authorities[0]?.authority);
+        const { data: authorities } = await nchandiWebsiteService.authenticate(token);
+        if (authorities[0]?.authority.length > 5) {
+          Cookies.set('isAdmin', true); // use get cookie to get this value at the top level of a component to set a piece of state like tempCookie for a rendering conditional.
+        }
+        console.log(authorities[0]?.authority);
         enqueueSnackbar('Login successful.', snackbarMessages.success.configuration);
         history('/admin-container');
         // window.location.reload();
