@@ -131,6 +131,9 @@ const Panels = () => {
             />
           </Grid>
         }
+        {
+          !tableData && <Typography>NO PANEL DATA AVAILABLE</Typography>
+        }
       </Grid>
       <PanelsDialog
         formik={formik}
