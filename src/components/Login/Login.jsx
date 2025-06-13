@@ -38,7 +38,6 @@ const Login = () => {
         const { data: authorities } = await nchandiWebsiteService.authenticate(token);
         if (authorities[0]?.authority.length > 5) {
           Cookies.set('isAdmin', true); // use get cookie to get this value at the top level of a component to set a piece of state like tempCookie for a rendering conditional.
-          // Cookies.set('tempCookie', true);
         }
         console.log(authorities[0]?.authority);
         enqueueSnackbar('Login successful.', snackbarMessages.success.configuration);
