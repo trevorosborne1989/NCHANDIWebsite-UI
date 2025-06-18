@@ -13,6 +13,7 @@ import { useSnackbar } from 'notistack';
 import snackbarMessages from '../../lib/snackbarMessages';
 import { yupSchema } from './ValidationSchema';
 import NCHANDIWebsiteService from '../../lib/NCHANDIWebsiteService'
+import { nchandiTheme } from '../../App';
 
 const nchandiWebsiteService = new NCHANDIWebsiteService();
 
@@ -125,10 +126,16 @@ const Panels = () => {
           <Skeleton variant='rectangular' width='90%' height={250} />
           :
           <Grid sm={11}>
-            <EnhancedTable
-              data={tableData}
-              {...tableConfig}
-            />
+            { tableData.length === 0 ?
+              <Typography variant="h4" color={nchandiTheme.handiDarkYellow} textAlign={'center'}>
+                All of our panels are full.
+              </Typography>
+              :
+              <EnhancedTable
+                data={tableData}
+                {...tableConfig}
+              />
+            }
           </Grid>
         }
       </Grid>
