@@ -128,7 +128,7 @@ const Panels = () => {
           <Grid sm={11}>
             { tableData.length === 0 ?
               <Typography variant="h4" color={nchandiTheme.handiDarkYellow} textAlign={'center'}>
-                All of our panels are full.
+                Please contact facilities@nchandi.org for the most updated panel needs.
               </Typography>
               :
               <EnhancedTable
