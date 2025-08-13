@@ -64,7 +64,7 @@ const generateTableConfig = (handleSelection, handleGenderColumn) => ({
     { field: 'numberNeeded', headerName: '# Needed',  width: 100 },
     { field: 'address', headerName: 'Address',  width: 175, valueGetter: (value, row) => row?.facility?.address },
     { field: 'city', headerName: 'City',  width: 100, valueGetter: (value, row) => row?.facility?.city },
-    { field: 'website', headerName: 'Website',  width: 100, valueGetter: (value, row) => row?.facility?.website }
+    { field: 'website', headerName: 'Website',  width: 250, valueGetter: (value, row) => row?.facility?.website }
   ]
 });
 
