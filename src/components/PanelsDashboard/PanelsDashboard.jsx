@@ -6,82 +6,72 @@ import {
   CircularProgress,
   Box,
   Skeleton,
+  Button,
 } from '@mui/material';
-import { Add, DeleteForever, Female, Male, Wc } from '@mui/icons-material';
+import {
+  DataGrid,
+  GridToolbar,
+  GridAddIcon,
+  GridToolbarContainer } from '@mui/x-data-grid';
+import { DeleteForever, Wc, Man, Woman } from '@mui/icons-material';
 import Grid from '@mui/material/Unstable_Grid2';
 import { useFormik } from 'formik';
 import { useSnackbar } from 'notistack';
 import snackbarMessages from '../../lib/snackbarMessages';
-import EnhancedTable from '../EnhancedTable/EnhancedTable';
 import PanelsDashboardDialog from '../PanelsDashboardDialog/PanelsDashboardDialog'
 import DeleteConfirmationDialog from '../DeleteConfirmationDialog/DeleteConfirmationDialog';
 import { yupSchema } from './ValidationSchema';
-import { nchandiTheme } from '../../App';
+import { nchandiTheme, nchandiTableStyles } from '../../App';
 import NCHANDIWebsiteService from '../../lib/NCHANDIWebsiteService'
 
 const nchandiWebsiteService = new NCHANDIWebsiteService();
 
-const handleGenderColumn = (gender) => {
-  if (gender === 'Male') {
-    return <IconButton sx={{ color: nchandiTheme.handiGreen }} >
-        <Box>
-        <Male fontSize='large' />
-        <Typography>M</Typography>
-        </Box>
-      </IconButton>
-  } else if (gender === 'Female') {
-      return <IconButton sx={{ color: nchandiTheme.handiDarkYellow }}>
-          <Box>
-          <Female fontSize='large' />
-          <Typography>F</Typography>
-          </Box>
-        </IconButton>
-  } else {
-    return <IconButton sx={{ color: nchandiTheme.handiYellow }}  >
-        <Box>
-        <Wc fontSize='large' />
-        <Typography>M/F</Typography>
-        </Box>
-      </IconButton>
-  }
-};
-
-const generateTableConfig = (handleSelection, handleAdd, handleDelete) => ({
-  title: 'Panels',
-  dataKey: d => d.id,
-  handleSelection: handleSelection,
-  toolbar: (
-    <IconButton color='primary' onClick={handleAdd} data-cy='table-add-button'>
-      <Add sx={{ color: nchandiTheme.handiGreen }} fontSize='large' />
-    </IconButton>
-  ),
+const generateTableConfig = (handleSelection, handleAdd, handleDelete, handleGenderColumn) => ({
+  onRowSelectionModelChange: handleSelection,
+  slots: { toolbar: () => {
+      return (
+        <GridToolbarContainer sx={{ backgroundColor: nchandiTheme.handiSecondaryWhite }}>
+          <GridToolbar />
+          <Button color="primary" startIcon={<GridAddIcon />} onClick={handleAdd} >
+            New Row
+          </Button>
+        </GridToolbarContainer>
+      )
+    }
+  },
   columns: [
-    { columnName: '', numeric: true, disablePadding: false, label: '', value: d => <IconButton><DeleteForever fontSize='large' color='error' onClick={e => handleDelete(e, d)} data-cy='table-delete-btn' /></IconButton> },
-    { columnName: 'dayOfWeek', numeric: true, disablePadding: false, label: 'Day of Week', value: d => d.dayOfWeek },
-    { columnName: 'weekOfMonth', numeric: true, disablePadding: true, label: 'Week of Month', value: d => d.weekOfMonth },
-    { columnName: 'eventTime', numeric: true, disablePadding: false, label: 'Time', value: d => d.eventTime },
-    { columnName: 'facility', numeric: true, disablePadding: false, label: 'Facility', value: d => d.facility?.name },
-    { columnName: 'address', numeric: true, disablePadding: false, label: 'Address', value: d => d.facility?.address },
-    { columnName: 'city', numeric: true, disablePadding: false, label: 'City', value: d => d.facility?.city },
-    { columnName: 'gender', numeric: true, disablePadding: false, label: 'Gender', value: d => handleGenderColumn(d.gender) },
-    { columnName: 'markAsMembersNeeded', numeric: true, disablePadding: false, label: 'Members are Needed?', value: d => d.markAsMembersNeeded ? 'true' : 'false' },
-    { columnName: 'numberNeeded', numeric: true, disablePadding: false, label: '# Needed', value: d => d.numberNeeded ? d.numberNeeded : 0 },
-    { columnName: 'boardChampion', numeric: true, disablePadding: false, label: 'Board Champion', value: d => d.boardChampion ? d.boardChampion?.firstName + ' ' + d.boardChampion?.lastName : 'empty' },
-    { columnName: 'panelCoordinator', numeric: true, disablePadding: false, label: 'Panel Coordinator', value: d => d.panelCoordinator ? d.panelCoordinator?.firstName + ' ' + d.panelCoordinator?.lastName : 'empty' },
-    { columnName: 'panelLeader', numeric: true, disablePadding: false, label: 'Panel Leader', value: d => d.panelLeader ? d.panelLeader?.firstName + ' ' + d.panelLeader?.lastName : 'empty' },
-    { columnName: 'panelMember1', numeric: true, disablePadding: false, label: 'Panel Member 1', value: d => d.panelMember1 ? d.panelMember1?.firstName + ' ' + d.panelMember1?.lastName : 'empty' },
-    { columnName: 'panelMember2', numeric: true, disablePadding: false, label: 'Panel Member 2', value: d => d.panelMember2 ? d.panelMember2?.firstName + ' ' + d.panelMember2?.lastName : 'empty' },
-    { columnName: 'panelMember3', numeric: true, disablePadding: false, label: 'Panel Member 3', value: d => d.panelMember3 ? d.panelMember3?.firstName + ' ' + d.panelMember3?.lastName : 'empty' },
-    { columnName: 'panelMember4', numeric: true, disablePadding: false, label: 'Panel Member 4', value: d => d.panelMember4 ? d.panelMember4?.firstName + ' ' + d.panelMember4?.lastName : 'empty' },
-    { columnName: 'panelMember5', numeric: true, disablePadding: false, label: 'Panel Member 5', value: d => d.panelMember5 ? d.panelMember5?.firstName + ' ' + d.panelMember5?.lastName : 'empty' }
+    { field: 'id', headerName: 'ID', width: 0, visible: false },
+    { field: '', headerName: '', width: 75, renderCell: (params) => (
+      <IconButton>
+        <DeleteForever fontSize='large' color='error' onClick={(e) => handleDelete(e, params?.row?.id)} data-cy='table-delete-btn' />
+      </IconButton>
+      )
+    },
+    { field: 'dayOfWeek', headerName: 'Day', width: 125 },
+    { field: 'weekOfMonth', headerName: 'Week', width: 75 },
+    { field: 'eventTime', headerName: 'Time', width: 100 },
+    { field: 'facility', headerName: 'Facility', width: 250, valueGetter: (value, row) => row?.facility?.name },
+    { field: 'address', headerName: 'Address', width: 150, valueGetter: (value, row) => row?.facility?.address },
+    { field: 'city', headerName: 'City', width: 100, valueGetter: (value, row) => row?.facility?.city },
+    { field: 'gender', headerName: 'Gender', width: 75, renderCell: (params) => (handleGenderColumn(params?.row)) },
+    { field: 'markAsMembersNeeded', headerName: 'Volunteers Needed?', type: 'boolean', width: 175},
+    { field: 'numberNeeded', headerName: '# Needed', width: 100, valueGetter: (value, row) => (row?.numberNeeded ? row?.numberNeeded : 0) },
+    { field: 'boardChampion', headerName: 'Board Champion', width: 150, valueGetter: (value, row) => row?.boardChampion ? row?.boardChampion?.firstName + ' ' + row?.boardChampion?.lastName : 'empty' },
+    { field: 'panelCoordinator', headerName: 'Panel Coordinator', width: 150, valueGetter: (value, row) => row?.panelCoordinator ? row?.panelCoordinator?.firstName + ' ' + row?.panelCoordinator?.lastName : 'empty' },
+    { field: 'panelLeader', headerName: 'Panel Leader', width: 150, valueGetter: (value, row) => row?.panelLeader ? row?.panelLeader?.firstName + ' ' + row?.panelLeader?.lastName : 'empty' },
+    { field: 'panelMember1', headerName: 'Panel Member 1', width: 150, valueGetter: (value, row) => row?.panelMember1 ? row?.panelMember1?.firstName + ' ' + row?.panelMember1?.lastName : 'empty' },
+    { field: 'panelMember2', headerName: 'Panel Member 2', width: 150, valueGetter: (value, row) => row?.panelMember2 ? row?.panelMember2?.firstName + ' ' + row?.panelMember2?.lastName : 'empty' },
+    { field: 'panelMember3', headerName: 'Panel Member 3', width: 150, valueGetter: (value, row) => row?.panelMember3 ? row?.panelMember3?.firstName + ' ' + row?.panelMember3?.lastName : 'empty' },
+    { field: 'panelMember4', headerName: 'Panel Member 4', width: 150, valueGetter: (value, row) => row?.panelMember4 ? row?.panelMember4?.firstName + ' ' + row?.panelMember4?.lastName : 'empty' },
+    { field: 'panelMember5', headerName: 'Panel Member 5', width: 150, valueGetter: (value, row) => row?.panelMember5 ? row?.panelMember5?.firstName + ' ' + row?.panelMember5?.lastName : 'empty' }
   ]
 });
 
 const PanelsDashboard = () => {
-  const [isOpen, setisOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [tableData, setTableData] = useState([]);
-  const [panel, setPanel] = useState(null);
+  const [panel, setPanel] = useState('');
   const [facilities, setFacilties] = useState([]);
   const [people, setPeople] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -92,8 +82,8 @@ const PanelsDashboard = () => {
       id: '',
       dayOfWeek: '',
       weekOfMonth: '',
-      eventTime: null,
-      facility: null,
+      eventTime: '12:00 AM',
+      facility: '',
       gender: '',
       markAsMembersNeeded: false,
       numberNeeded: 0,
@@ -111,10 +101,10 @@ const PanelsDashboard = () => {
       try {
         if (id) {
           await nchandiWebsiteService.putPanelWithPanelId({}, id, values);
-          setisOpen(false);
+          setIsOpen(false);
         } else {
           await nchandiWebsiteService.postPanel({}, values);
-          setisOpen(false);
+          setIsOpen(false);
         }
         enqueueSnackbar('This panel was successfully submitted.', snackbarMessages.success.configuration);
       } catch (err) {
@@ -196,6 +186,31 @@ const PanelsDashboard = () => {
   /**
    *
    */
+  const handleGenderColumn = (row) => {
+    if (row?.gender === 'Male') {
+      return <IconButton sx={{ color: nchandiTheme.handiCyan }} >
+          <Box>
+            <Man fontSize='large' />
+          </Box>
+        </IconButton>
+    } else if (row?.gender === 'Female') {
+        return <IconButton sx={{ color: nchandiTheme.handiLightGreen }}>
+            <Box>
+              <Woman fontSize='large' />
+            </Box>
+          </IconButton>
+    } else {
+      return <IconButton sx={{ color: nchandiTheme.handiLightCoral }}  >
+          <Box>
+            <Wc fontSize='large' />
+          </Box>
+        </IconButton>
+    }
+  };
+
+  /**
+   *
+   */
   const handleSave = () => {
     formik.setFieldValue('active', true);
     formik.submitForm();
@@ -210,7 +225,7 @@ const PanelsDashboard = () => {
    */
   const handleClose = () => {
     formik.handleReset();
-    setisOpen(false);
+    setIsOpen(false);
   };
 
   /**
@@ -218,15 +233,17 @@ const PanelsDashboard = () => {
    */
   const handleAdd = () => {
     formik.handleReset();
-    setisOpen(true);
+    setIsOpen(true);
   };
 
   /**
    *
    */
-  const handleSelection = (row) => {
-    formik.setValues(row);
-    setisOpen(true);
+  const handleSelection = (id) => {
+    if (id.length !== 0) {
+    formik.setValues(tableData.filter(row => row?.id === id[0])[0]);
+    setIsOpen(true);
+    }
   };
 
   /**
@@ -247,17 +264,17 @@ const PanelsDashboard = () => {
   /**
   *
   */
-  const handleDelete = (e, entity) => {
+  const handleDelete = (e, id) => {
     e.stopPropagation();
+    setPanel((tableData.filter(row => row?.id === id))[0]);
     setIsDeleteDialogOpen(true);
-    setPanel(entity);
   };
 
   /**
    *
    */
   const handleDeleteDialogClose = () => {
-    setPanel(null);
+    setPanel('');
     setIsDeleteDialogOpen(false);
   };
 
@@ -275,13 +292,13 @@ const PanelsDashboard = () => {
       enqueueSnackbar('There was an error deleting the panel!', snackbarMessages.error.configuration);
     } finally {
       setLoading(false);
-      setPanel(null);
+      setPanel('');
       setIsDeleteDialogOpen(false);
       fetchTableData();
     }
   };
 
-  const tableConfig = generateTableConfig(handleSelection, handleAdd, handleDelete);
+  const tableConfig = generateTableConfig(handleSelection, handleAdd, handleDelete, handleGenderColumn);
 
   return (
     <>
@@ -302,10 +319,13 @@ const PanelsDashboard = () => {
         {loading ?
           <Skeleton variant='rectangular' width='90%' height={250}/>
           :
-          <Grid sm={12}>
-            <EnhancedTable
-              data={tableData}
+          <Grid sm={12} height={500} width={100}>
+            <DataGrid
+              rows={tableData}
+              rowSelectionModel={panel}
+              loading={loading}
               {...tableConfig}
+              {...nchandiTableStyles}
             />
           </Grid>
         }
@@ -323,7 +343,7 @@ const PanelsDashboard = () => {
       <DeleteConfirmationDialog
         isOpen={isDeleteDialogOpen}
         entityName='Panel'
-        primaryText={panel?.facility.name}
+        primaryText={panel?.facility?.name}
         secondaryText={panel?.weekOfMonth + ' - ' + panel?.dayOfWeek + ' at ' + panel?.eventTime}
         handleClose={handleDeleteDialogClose}
         handleDelete={handleDeleteDialogConfirm}

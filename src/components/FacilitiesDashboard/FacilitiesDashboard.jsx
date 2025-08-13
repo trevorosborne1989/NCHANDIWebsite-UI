@@ -4,19 +4,23 @@ import {
   Typography,
   IconButton,
   Skeleton,
+  Button,
 } from '@mui/material';
-import { Add } from '@mui/icons-material';
+import {
+  DataGrid,
+  GridToolbar,
+  GridAddIcon,
+  GridToolbarContainer } from '@mui/x-data-grid';
 import { DeleteForever } from '@mui/icons-material';
 import { Circle } from '@mui/icons-material';
 import Grid from '@mui/material/Unstable_Grid2';
 import { useFormik } from 'formik';
 import { useSnackbar } from 'notistack';
 import snackbarMessages from '../../lib/snackbarMessages';
-import EnhancedTable from '../EnhancedTable/EnhancedTable';
 import FacilitiesDashboardDialog from '../FacilitiesDashboardDialog/FacilitiesDashboardDialog';
 import DeleteConfirmationDialog from '../DeleteConfirmationDialog/DeleteConfirmationDialog';
 import { yupSchema } from './ValidationSchema';
-import { nchandiTheme } from '../../App';
+import { nchandiTheme, nchandiTableStyles } from '../../App';
 import NCHANDIWebsiteService from '../../lib/NCHANDIWebsiteService'
 
 const nchandiWebsiteService = new NCHANDIWebsiteService();
@@ -29,30 +33,45 @@ const formatPhone = (phone) => {
   return (areaCode + '-' + first3 + '-' + last4);
 };
 
-const generateTableConfig = (handleSelection, handleAdd, handleDelete) => ({
-  title: 'Facilities',
-  dataKey: d => d.id,
-  handleSelection: handleSelection,
-  toolbar: (
-    <IconButton color='primary' onClick={handleAdd} data-cy='table-add-button'>
-      <Add sx={{ color: nchandiTheme.handiGreen }} fontSize='large' />
-    </IconButton>
-  ),
+const generateTableConfig = (handleSelection, handleAdd, handleDelete , handleActive) => ({
+  onRowSelectionModelChange: handleSelection,
+  slots: { toolbar: () => {
+      return (
+        <GridToolbarContainer sx={{ backgroundColor: nchandiTheme.handiSecondaryWhite }}>
+          <GridToolbar />
+          <Button color="primary" startIcon={<GridAddIcon />} onClick={handleAdd} >
+            New Row
+          </Button>
+        </GridToolbarContainer>
+      )
+    }
+  },
   columns: [
-    { columnName: '', numeric: true, disablePadding: false, label: '', value: d => <IconButton><DeleteForever fontSize='large'  color='error' onClick={e => handleDelete(e, d)} data-cy='table-delete-btn' /></IconButton> },
-    { columnName: 'name', numeric: true, disablePadding: false, label: 'Facility Name', value: d => d.name },
-    { columnName: 'type', numeric: true, disablePadding: true, label: 'Facility Type', value: d => d.type },
-    { columnName: 'address', numeric: true, disablePadding: false, label: 'Address', value: d => d.address },
-    { columnName: 'city', numeric: true, disablePadding: false, label: 'City', value: d => d.city },
-    { columnName: 'state', numeric: true, disablePadding: false, label: 'State', value: d => d.state },
-    { columnName: 'website', numeric: true, disablePadding: false, label: 'Website', value: d => d.website },
-    { columnName: 'primaryContactName', numeric: true, disablePadding: false, label: 'Primary Contact Name', value: d => d.primaryContactName },
-    { columnName: 'primaryContactEmail', numeric: true, disablePadding: false, label: 'Primary Contact Email', value: d => d.primaryContactEmail },
-    { columnName: 'primaryContactPhone', numeric: true, disablePadding: false, label: 'Primary Phone Number', value: d => d.primaryContactPhone ? formatPhone(d.primaryContactPhone) : ''},
-    { columnName: 'alternateContactName', numeric: true, disablePadding: false, label: 'Alternate Contact Name', value: d => d.alternateContactName },
-    { columnName: 'alternateContactEmail', numeric: true, disablePadding: false, label: 'Alternate Contact Email', value: d => d.alternateContactEmail },
-    { columnName: 'alternateContactPhone', numeric: true, disablePadding: false, label: 'Alternate Contact Phone', value: d => d.alternateContactPhone ? formatPhone(d.alternateContactPhone) : '' },
-    { columnName: '', numeric: true, disablePadding: false, label: 'Active', value: d => d.active ? <IconButton><Circle color='success'  /></IconButton> : <IconButton><Circle color='disabled' /></IconButton> },
+    { field: 'id', headerName: 'ID', width: 0, visible: false },
+    { field: '', headerName: '', width: 75, renderCell: (params) => (
+        <IconButton>
+          <DeleteForever fontSize='large' color='error' onClick={(e) => handleDelete(e, params?.row?.id)} data-cy='table-delete-btn' />
+        </IconButton>
+      )
+    },
+    { field: 'name', headerName: 'Facility Name', width: 200 },
+    { field: 'type', headerName: 'Facility Type', width: 125 },
+    { field: 'address', headerName: 'Address', width: 200 },
+    { field: 'city', headerName: 'City', width: 100 },
+    { field: 'state', headerName: 'State', width: 75 },
+    { field: 'website', headerName: 'Website', width: 200 },
+    { field: 'primaryContactName', headerName: 'Primary Contact Name', width: 200, valueFormatter: (value, row) => value ? value : 'none' },
+    { field: 'primaryContactEmail', headerName: 'Primary Contact Email', width: 200, valueFormatter: (value, row) => value ? value : 'none' },
+    { field: 'primaryContactPhone', headerName: 'Primary Phone #', width: 150, valueFormatter: (value, row) => value ? formatPhone(value) : '' },
+    { field: 'alternateContactName', headerName: 'Alternate Contact Name', width: 200, valueFormatter: (value, row) => value ? value : 'none' },
+    { field: 'alternateContactEmail', headerName: 'Alternate Contact Email', width: 200, valueFormatter: (value, row) => value ? value : 'none' },
+    { field: 'alternateContactPhone', headerName: 'Alternate Phone #', width: 150, valueFormatter: (value, row) => value ? formatPhone(value) : 'none' },
+    { field: 'active', headerName: 'Active', width: 75, renderCell: (params) => (
+      <IconButton>
+        <Circle color={handleActive(params.row)}  />
+      </IconButton>
+      )
+    }
   ]
 });
 
@@ -60,7 +79,7 @@ const FacilitiesDashboard = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [tableData, setTableData] = useState([]);
-  const [facility, setFacility] = useState(null);
+  const [facility, setFacility] = useState('');
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
 
@@ -124,6 +143,14 @@ const FacilitiesDashboard = () => {
     fetchTableData();
   }, [fetchTableData]);
 
+  const handleActive = (row) => {
+    if (row?.active) {
+      return 'info';
+    } else {
+      return 'disabled';
+    }
+  }
+
   /**
    *
    */
@@ -159,25 +186,27 @@ const FacilitiesDashboard = () => {
   /**
    *
    */
-  const handleSelection = (row) => {
-    formik.setValues(row);
+  const handleSelection = (id) => {
+    if (id.length !== 0) {
+    formik.setValues(tableData.filter(row => row?.id === id[0])[0]);
     setIsOpen(true);
+    }
   };
 
   /**
    *
    */
-  const handleDelete = (e, entity) => {
+  const handleDelete = (e, id) => {
     e.stopPropagation();
+    setFacility((tableData.filter(row => row?.id === id))[0]);
     setIsDeleteDialogOpen(true);
-    setFacility(entity);
   };
 
   /**
    *
    */
   const handleDeleteDialogClose = () => {
-    setFacility(null);
+    setFacility('');
     setIsDeleteDialogOpen(false);
   };
 
@@ -195,13 +224,13 @@ const FacilitiesDashboard = () => {
       enqueueSnackbar('There was an error deleting the facility!', snackbarMessages.error.configuration);
     } finally {
       setLoading(false);
-      setFacility(null);
+      setFacility('');
       setIsDeleteDialogOpen(false);
       fetchTableData();
     }
   };
 
-  const tableConfig = generateTableConfig(handleSelection, handleAdd, handleDelete);
+  const tableConfig = generateTableConfig(handleSelection, handleAdd, handleDelete, handleActive);
 
   return (
     <>
@@ -222,10 +251,13 @@ const FacilitiesDashboard = () => {
         {loading ?
           <Skeleton variant='rectangular' width='90%' height={250}/>
           :
-          <Grid sm={12}>
-            <EnhancedTable
-              data ={tableData}
+          <Grid sm={12} height={500} width={100}>
+            <DataGrid
+              rows={tableData}
+              rowSelectionModel={facility}
+              loading={loading}
               {...tableConfig}
+              {...nchandiTableStyles}
             />
           </Grid>
         }

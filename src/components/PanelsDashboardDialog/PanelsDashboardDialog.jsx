@@ -164,8 +164,8 @@ const PanelsDashboardDialog = ({ formik, facilityData, peopleData, isOpen, handl
               fullWidth
               variant='outlined'
               margin='normal'
-              value={formik.values.facility?.name}
-              onChange={e => formik.setFieldValue('facility', facilityData.find(facility => facility.name === e.target.value))}
+              value={formik.values?.facility?.name}
+              onChange={e => formik.setFieldValue('facility', facilityData.find(facility => facility?.name === e.target.value))}
               onBlur={formik.handleBlur}
               helperText={formik.touched.facility ? formik.errors.facility  : ""}
               error={formik.touched.facility && Boolean(formik.errors.facility)}
@@ -213,7 +213,7 @@ const PanelsDashboardDialog = ({ formik, facilityData, peopleData, isOpen, handl
             />}
             label="Members are Needed?" sx={{ color: nchandiTheme.handiDarkBlue }}
           />
-          {formik.values.markAsMembersNeeded &&
+          {formik.values?.markAsMembersNeeded &&
             <TextField
               select
               label='# Needed'
