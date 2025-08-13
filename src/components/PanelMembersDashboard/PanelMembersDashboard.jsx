@@ -1,50 +1,70 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import {
   Divider,
   Typography,
   IconButton,
-  Skeleton
+  Skeleton,
+  Button,
 } from '@mui/material';
-import { Add } from '@mui/icons-material';
+import {
+  DataGrid,
+  GridToolbar,
+  GridAddIcon,
+  GridToolbarContainer } from '@mui/x-data-grid';
 import { DeleteForever } from '@mui/icons-material';
 import { Circle } from '@mui/icons-material';
 import Grid from '@mui/material/Unstable_Grid2';
 import { useFormik } from 'formik';
 import { useSnackbar } from 'notistack';
 import snackbarMessages from '../../lib/snackbarMessages';
-import EnhancedTable from '../EnhancedTable/EnhancedTable';
 import PanelMembersDashboardDialog from '../PanelMembersDashboardDialog/PanelMembersDashboardDialog'
 import DeleteConfirmationDialog from '../DeleteConfirmationDialog/DeleteConfirmationDialog';
 import { yupSchema } from './ValidationSchema';
-import { nchandiTheme } from '../../App';
+import { nchandiTheme, nchandiTableStyles } from '../../App';
 import NCHANDIWebsiteService from '../../lib/NCHANDIWebsiteService'
 
 const nchandiWebsiteService = new NCHANDIWebsiteService();
 
 const formatPhone = (phone) => {
+  if (phone.length === 0) return;
   let areaCode = phone.substr(1, 3);
   let first3 = phone.substr(4, 3);
   let last4 = phone.substr(7, 4);
   return (areaCode + '-' + first3 + '-' + last4);
 };
 
-const generateTableConfig = (handleSelection, handleAdd, handleDelete) => ({
-  title: 'Panel Members',
-  dataKey: d => d.id,
-  handleSelection: handleSelection,
-  toolbar: (
-    <IconButton color='primary' onClick={handleAdd} data-cy='table-add-button'>
-      <Add sx={{ color: nchandiTheme.handiGreen }} fontSize='large' />
-    </IconButton>
-  ),
+const generateTableConfig = (handleSelection, handleAdd, handleDelete, handleActive) => ({
+  onRowSelectionModelChange: handleSelection,
+  slots: { toolbar: () => {
+      return (
+        <GridToolbarContainer sx={{ backgroundColor: nchandiTheme.handiSecondaryWhite }}>
+          <GridToolbar />
+          <Button color="primary" startIcon={<GridAddIcon />} onClick={handleAdd} >
+            New Row
+          </Button>
+        </GridToolbarContainer>
+      )
+    }
+  },
   columns: [
-    { columnName: '', numeric: true, disablePadding: false, label: '', value: d => <IconButton><DeleteForever fontSize='large' color='error' onClick={e => handleDelete(e, d)} data-cy='table-delete-btn' /></IconButton> },
-    { columnName: 'firstName', numeric: true, disablePadding: true, label: 'First Name', value: d => d.firstName },
-    { columnName: 'lastName', numeric: true, disablePadding: false, label: 'Last Name', value: d => d.lastName },
-    { columnName: 'email', numeric: true, disablePadding: false, label: 'Email', value: d => d.email },
-    { columnName: 'phone', numeric: true, disablePadding: false, label: 'Phone Number', value: d => d.phone ? formatPhone(d.phone) : '' },
-    { columnName: 'preferredContactMethod', numeric: true, disablePadding: false, label: 'Contact Method', value: d => d.preferredContactMethod },
-    { columnName: '', numeric: true, disablePadding: false, label: 'Active', value: d => d.active ? <IconButton><Circle color='success'  /></IconButton> : <IconButton><Circle color='disabled' /></IconButton> },
+    { field: 'id', headerName: 'ID', width: 0, visible: false },
+    { field: '', headerName: '', width: 75, renderCell: (params) => (
+      <IconButton>
+        <DeleteForever fontSize='large' color='error' onClick={(e) => handleDelete(e, params?.row?.id)} data-cy='table-delete-btn' />
+      </IconButton>
+      )
+    },
+    { field: 'firstName', headerName: 'First Name', width: 100 },
+    { field: 'lastName', headerName: 'Last Name', width: 100 },
+    { field: 'email', headerName: 'Email', width: 150 },
+    { field: 'phone', headerName: 'Phone Number', width: 150, valueFormatter: (value, row) => value ? formatPhone(value) : '' },
+    { field: 'preferredContactMethod', headerName: 'Contact Method', width: 150 },
+    { field: 'active', headerName: 'Active', width: 75, renderCell: (params) => (
+      <IconButton>
+        <Circle color={handleActive(params?.row)}  />
+      </IconButton>
+      )
+    }
   ]
 });
 
@@ -52,7 +72,7 @@ const PanelMembersDashboard = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [tableData, setTableData] = useState([]);
-  const [panelMember, setPanelMember] = useState(null);
+  const [panelMember, setPanelMember] = useState('');
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
 
@@ -123,8 +143,16 @@ const PanelMembersDashboard = () => {
     });
     const activeAndInactive = allActiveMembers.concat(...members);
     return activeAndInactive.filter((elem, index, self) => self.findIndex(
-      (t) => {return (t.firstName === elem.firstName && t.lastName === elem.lastName)}) === index)
+      (t) => {return (t?.firstName === elem?.firstName && t?.lastName === elem?.lastName)}) === index)
   };
+
+  const handleActive = (row) => {
+    if (row?.active) {
+      return 'info';
+    } else {
+      return 'disabled';
+    }
+  }
 
   /**
    *
@@ -156,25 +184,27 @@ const PanelMembersDashboard = () => {
   /**
    *
    */
-  const handleSelection = (row) => {
-    formik.setValues(row);
+  const handleSelection = (id) => {
+    if (id.length !== 0) {
+    formik.setValues(tableData.filter(row => row?.id === id[0])[0]);
     setIsOpen(true);
+    }
   };
 
   /**
    *
    */
-  const handleDelete = (e, entity) => {
+  const handleDelete = (e, id) => {
     e.stopPropagation();
+    setPanelMember((tableData.filter(row => row?.id === id))[0]);
     setIsDeleteDialogOpen(true);
-    setPanelMember(entity);
   };
 
   /**
    *
    */
   const handleDeleteDialogClose = () => {
-    setPanelMember(null);
+    setPanelMember('');
     setIsDeleteDialogOpen(false);
   };
 
@@ -192,13 +222,13 @@ const PanelMembersDashboard = () => {
       enqueueSnackbar('There was an error deleting the panel member!', snackbarMessages.error.configuration);
     } finally {
       setLoading(false);
-      setPanelMember(null);
+      setPanelMember('');
       setIsDeleteDialogOpen(false);
       fetchTableData();
     }
   };
 
-  const tableConfig = generateTableConfig(handleSelection, handleAdd, handleDelete);
+  const tableConfig = generateTableConfig(handleSelection, handleAdd, handleDelete, handleActive);
 
   return (
     <>
@@ -219,11 +249,13 @@ const PanelMembersDashboard = () => {
         {loading ?
           <Skeleton variant='rectangular' width='90%' height={250}/>
           :
-          <Grid sm={12}>
-            <EnhancedTable
-              data ={tableData}
-              handleSelection={handleSelection}
+          <Grid sm={12} height={500} width={100}>
+            <DataGrid
+              rows={tableData}
+              rowSelectionModel={panelMember}
+              loading={loading}
               {...tableConfig}
+              {...nchandiTableStyles}
             />
           </Grid>
         }

@@ -4,48 +4,71 @@ import {
   IconButton,
   Typography,
   Skeleton,
+  Box
 } from '@mui/material';
-import { DeleteForever, CheckCircleOutline } from '@mui/icons-material';
+import {
+  DataGrid,
+  GridToolbar,
+  GridToolbarContainer } from '@mui/x-data-grid';
+import { DeleteForever, CheckCircleOutline, Wc, Man, Woman } from '@mui/icons-material';
 import Grid from '@mui/material/Unstable_Grid2';
 import { useSnackbar } from 'notistack';
 import snackbarMessages from '../../lib/snackbarMessages';
-import EnhancedTable from '../EnhancedTable/EnhancedTable';
 import SaveConfirmationDialog from '../SaveConfirmationDialog/SaveConfirmationDialog';
 import DeleteConfirmationDialog from '../DeleteConfirmationDialog/DeleteConfirmationDialog';
+import { nchandiTheme, nchandiTableStyles } from '../../App';
 import NCHANDIWebsiteService from '../../lib/NCHANDIWebsiteService'
 
 const nchandiWebsiteService = new NCHANDIWebsiteService();
 
 const formatPhone = (phone) => {
+  if (phone.length === 0) return;
   let areaCode = phone.substr(1, 3);
   let first3 = phone.substr(4, 3);
   let last4 = phone.substr(7, 4);
   return (areaCode + '-' + first3 + '-' + last4);
 };
 
-const generateTableConfig = (handleSave, handleDelete) => ({
-  title: 'Pending Volunteers',
-  dataKey: d => d.id,
+const generateTableConfig = (handleSave, handleDelete, handleGenderColumn) => ({
+  slots: { toolbar: () => {
+      return (
+        <GridToolbarContainer sx={{ backgroundColor: nchandiTheme.handiSecondaryWhite }}>
+          <GridToolbar />
+        </GridToolbarContainer>
+      )
+    }
+  },
   columns: [
-    { columnName: '', numeric: true, disablePadding: false, label: '', value: d => <IconButton><CheckCircleOutline fontSize='large' color='success' onClick={e => handleSave(e, d)} data-cy='table-confirm-btn' /></IconButton>},
-    { columnName: '', numeric: true, disablePadding: false, label: '', value: d => <IconButton><DeleteForever fontSize='large'  color='error' onClick={e => handleDelete(e, d)} data-cy='table-delete-btn' /></IconButton> },
-    { columnName: 'fullName', numeric: true, disablePadding: false, label: 'Full Name', value: d => d.firstName + ' ' + d.lastName },
-    { columnName: 'email', numeric: true, disablePadding: false, label: 'Email', value: d => d.email },
-    { columnName: 'phone', numeric: true, disablePadding: false, label: 'Phone Number', value: d => d.phone ? formatPhone(d.phone) : '' },
-    { columnName: 'preferredContactMethod', numeric: true, disablePadding: false, label: 'Preferred Contact Method', value: d => d.preferredContactMethod },
-    { columnName: 'facilityName', numeric: true, disablePadding: false, label: 'Facility', value: d => d.facilityName },
-    { columnName: 'dayOfWeek', numeric: true, disablePadding: true, label: 'Day of Week', value: d => d.dayOfWeek },
-    { columnName: 'weekOfMonth', numeric: true, disablePadding: true, label: 'Week of Month', value: d => d.weekOfMonth },
-    { columnName: 'eventTime', numeric: true, disablePadding: false, label: 'Time', value: d => d.eventTime },
-    { columnName: 'numberNeeded', numeric: true, disablePadding: false, label: 'Number Needed', value: d => d.numberNeeded },
-    { columnName: 'gender', numeric: true, disablePadding: false, label: 'Panel Gender', value: d => d.gender },
+    { field: 'id', headerName: 'ID', width: 0, visible: false },
+    { field: 'approve', headerName: '', width: 75, renderCell: (params) => (
+        <IconButton>
+          <CheckCircleOutline fontSize='large' color='info' onClick={(e) => handleSave(e, params?.row?.id)} data-cy='table-confirm-btn' />
+        </IconButton>
+      )
+    },
+    { field: 'dismiss', headerName: '', width: 75, renderCell: (params) => (
+        <IconButton>
+          <DeleteForever fontSize='large' color='error' onClick={(e) => handleDelete(e, params?.row?.id)} data-cy='table-delete-btn' />
+        </IconButton>
+      )
+    },
+    { field: 'fullName', headerName: 'Full Name', width: 200, valueFormatter: (value, row) => row?.firstName + ' ' + row?.lastName },
+    { field: 'email', headerName: 'Email', width: 150 },
+    { field: 'phone', headerName: 'Phone #', width: 150, valueFormatter: (value, row) => value ? formatPhone(value) : '' },
+    { field: 'preferredContactMethod', headerName: 'Contact Method', width: 150 },
+    { field: 'facilityName', headerName: 'Facility', width: 250 },
+    { field: 'dayOfWeek', headerName: 'Day', width: 125 },
+    { field: 'weekOfMonth', headerName: 'Week', width: 75 },
+    { field: 'eventTime', headerName: 'Time', width: 100 },
+    { field: 'numberNeeded', headerName: '# Needed', width: 100 },
+    { field: 'gender', headerName: 'Panel Gender', width: 150, renderCell: (params) => (handleGenderColumn(params?.row)) },
   ]
 });
 
 const PendingVolunteersDashboard = () => {
   const [loading, setLoading] = useState(false);
   const [tableData, setTableData] = useState([]);
-  const [pending, setPending] = useState(null);
+  const [pending, setPending] = useState('');
   const [isSaveDialogOpen, setIsSaveDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
@@ -72,21 +95,48 @@ const PendingVolunteersDashboard = () => {
     fetchTableData();
   }, [fetchTableData]);
 
+  /**
+   *
+   */
+  const handleGenderColumn = (row) => {
+    if (row?.gender === 'Male') {
+      return <IconButton sx={{ color: nchandiTheme.handiCyan }} >
+          <Box>
+            <Man fontSize='large' />
+          </Box>
+        </IconButton>
+    } else if (row?.gender === 'Female') {
+        return <IconButton sx={{ color: nchandiTheme.handiLightGreen }}>
+            <Box>
+              <Woman fontSize='large' />
+            </Box>
+          </IconButton>
+    } else {
+      return <IconButton sx={{ color: nchandiTheme.handiLightCoral }}  >
+          <Box>
+            <Wc fontSize='large' />
+          </Box>
+        </IconButton>
+    }
+  };
 
   /**
    *
    */
-  const handleSave = (e, entity) => {
+  const handleSave = (e, id) => {
     e.stopPropagation();
-    setIsSaveDialogOpen(true);
-    setPending(entity);
+    if (id.length !== 0) {
+      console.log(id);
+      setPending((tableData.filter(row => row?.id === id))[0]);
+      setIsSaveDialogOpen(true);
+    }
   };
 
   /**
    *
    */
   const handleSaveDialogClose = () => {
-    setPending(null);
+    setPending('');
     setIsSaveDialogOpen(false);
   };
 
@@ -105,7 +155,7 @@ const PendingVolunteersDashboard = () => {
       enqueueSnackbar('There was an error adding the pending volunteer!', snackbarMessages.error.configuration);
     } finally {
       setLoading(false);
-      setPending(null);
+      setPending('');
       setIsSaveDialogOpen(false);
       fetchTableData();
     }
@@ -114,17 +164,17 @@ const PendingVolunteersDashboard = () => {
   /**
    *
    */
-  const handleDelete = (e, entity) => {
+  const handleDelete = (e, id) => {
     e.stopPropagation();
+    setPending((tableData.filter(row => row?.id === id))[0]);
     setIsDeleteDialogOpen(true);
-    setPending(entity);
   };
 
   /**
    *
    */
   const handleDeleteDialogClose = () => {
-    setPending(null);
+    setPending('');
     setIsDeleteDialogOpen(false);
   };
 
@@ -142,13 +192,13 @@ const PendingVolunteersDashboard = () => {
       enqueueSnackbar('There was an error deleting the pending volunteer!', snackbarMessages.error.configuration);
     } finally {
       setLoading(false);
-      setPending(null);
+      setPending('');
       setIsDeleteDialogOpen(false);
       fetchTableData();
     }
   };
 
-  const tableConfig = generateTableConfig(handleSave, handleDelete);
+  const tableConfig = generateTableConfig(handleSave, handleDelete, handleGenderColumn);
 
   return (
     <>
@@ -169,10 +219,13 @@ const PendingVolunteersDashboard = () => {
         {loading ?
           <Skeleton variant='rectangular' width='90%' height={250}/>
           :
-          <Grid sm={12}>
-            <EnhancedTable
-              data={tableData}
+          <Grid sm={11} height={500} width={'100%'}>
+            <DataGrid
+              rows={tableData}
+              rowSelectionModel={pending}
+              loading={loading}
               {...tableConfig}
+              {...nchandiTableStyles}
             />
           </Grid>
         }

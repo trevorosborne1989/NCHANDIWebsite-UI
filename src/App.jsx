@@ -53,7 +53,71 @@ export const nchandiTheme = {
   handiGrey: "#747373",
   handiYellow: "#ffc107",
   handiDarkYellow: "#c79100",
-  handiDarkRed: '	#8B0000'
+  handiDarkRed: '	#8B0000',
+  handiSkyBlue: '#87CEEB',
+  handiCyan: '#00ffff',
+  handiLightGreen: '#90ee90',
+  handiLightCoral: '#f08080'
+}
+
+export const nchandiTableStyles = {
+  rowSelection: true,
+  hideFooterSelectedRowCount: true,
+  initialState: {
+    columns: {
+      columnVisibilityModel: {
+        id: false,
+      },
+    },
+  },
+  sx:
+    {
+      fontSize: '100%',
+      color: nchandiTheme.handiSkyBlue,
+      boxShadow: 5,
+      opacity: "90%",
+      backgroundColor: nchandiTheme.handiDarkGreen,
+      border: 3,
+      borderColor: nchandiTheme.handiSecondaryWhite,
+      '& .MuiDataGrid-columnHeaderTitleContainer': {
+        color: nchandiTheme.handiYellow,
+      },
+      '& .MuiDataGrid-row:hover': {
+        color: nchandiTheme.handiBlue,
+        backgroundColor: nchandiTheme.handiGreen
+      },
+      '& .MuiDataGrid-cell:hover': {
+        color: nchandiTheme.handiSecondaryWhite,
+      },
+      '& .Mui-selected': {
+        color: nchandiTheme.handiSecondaryWhite,
+      }},
+  slotProps: {
+    pagination: {
+      sx: {
+        '& .MuiTablePagination-selectLabel': { // Target the label element
+          color: nchandiTheme.handiSecondaryWhite, // Or any color you prefer
+        },
+        '& .MuiTablePagination-select': { // Target the label element
+          color: nchandiTheme.handiSecondaryWhite, // Or any color you prefer
+        },
+        '& .MuiTablePagination-displayedRows': { // Target the label element
+          color: nchandiTheme.handiSecondaryWhite, // Or any color you prefer
+        },
+      },
+      SelectProps: {
+        MenuProps: {
+          PaperProps: {
+            sx: {
+              '& .MuiMenu-list': {
+                color: nchandiTheme.handiSecondaryWhite
+              },
+              backgroundColor: nchandiTheme.handiGreen
+            }
+          }
+        }
+      }
+    }},
 }
 
 const theme = createTheme({
