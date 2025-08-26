@@ -50,7 +50,7 @@ const generateTableConfig = (handleSelection, handleAdd, handleDelete , handleAc
     { field: 'id', headerName: 'ID', width: 0, visible: false },
     { field: '', headerName: '', width: 75, renderCell: (params) => (
         <IconButton>
-          <DeleteForever fontSize='large' color='error' onClick={(e) => handleDelete(e, params?.row?.id)} data-cy='table-delete-btn' />
+          <DeleteForever fontSize='large' color='error' onClick={(e) => handleDelete(e, params?.row)} data-cy='table-delete-btn' />
         </IconButton>
       )
     },
@@ -105,13 +105,21 @@ const FacilitiesDashboard = () => {
       try {
         if (id) {
           await nchandiWebsiteService.putFacilitiesWithFacilityId({}, id, values);
+          setTableData(prevData =>
+            prevData.map(row =>
+              row.id === id
+                ? { ...row, ...values }
+                : row
+            )
+          );
           setIsOpen(false);
         }else {
-          await nchandiWebsiteService.postFacilities({}, values);
+          const { data: { id } } = await nchandiWebsiteService.postFacilities({}, values);
+          values.id = id;
+          setTableData(prevData => [values, ...prevData]);
           setIsOpen(false);
         }
         enqueueSnackbar('This facility was successfully submitted.', snackbarMessages.success.configuration);
-        fetchTableData();
       } catch (err) {
         enqueueSnackbar('There was an error when submitting this form, please try again later or contact the Technology Chair', snackbarMessages.error.configuration);
         console.error(err);
@@ -196,9 +204,9 @@ const FacilitiesDashboard = () => {
   /**
    *
    */
-  const handleDelete = (e, id) => {
+  const handleDelete = (e, row) => {
     e.stopPropagation();
-    setFacility((tableData.filter(row => row?.id === id))[0]);
+    setFacility(row);
     setIsDeleteDialogOpen(true);
   };
 
@@ -215,8 +223,8 @@ const FacilitiesDashboard = () => {
    */
   const handleDeleteDialogConfirm = async () => {
     setLoading(true);
+    const { id } = facility;
     try {
-      const { id } = facility;
       await nchandiWebsiteService.deleteFacilitiesWithFacilityId({}, id);
       enqueueSnackbar('This facility was deleted.', snackbarMessages.success.configuration);
     } catch (error) {
@@ -225,8 +233,8 @@ const FacilitiesDashboard = () => {
     } finally {
       setLoading(false);
       setFacility('');
+      setTableData(tableData.filter(row => row?.id !== id));
       setIsDeleteDialogOpen(false);
-      fetchTableData();
     }
   };
 
