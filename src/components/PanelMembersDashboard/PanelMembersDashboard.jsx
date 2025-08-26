@@ -50,7 +50,7 @@ const generateTableConfig = (handleSelection, handleAdd, handleDelete, handleAct
     { field: 'id', headerName: 'ID', width: 0, visible: false },
     { field: '', headerName: '', width: 75, renderCell: (params) => (
       <IconButton>
-        <DeleteForever fontSize='large' color='error' onClick={(e) => handleDelete(e, params?.row?.id)} data-cy='table-delete-btn' />
+        <DeleteForever fontSize='large' color='error' onClick={(e) => handleDelete(e, params?.row)} data-cy='table-delete-btn' />
       </IconButton>
       )
     },
@@ -89,13 +89,21 @@ const PanelMembersDashboard = () => {
       try {
         if (id) {
           await nchandiWebsiteService.putPersonWithPersonId({}, id, values);
+          setTableData(prevData =>
+            prevData.map(row =>
+              row.id === id
+                ? { ...row, ...values }
+                : row
+            )
+          );
           setIsOpen(false);
         }else {
-          await nchandiWebsiteService.postPerson({}, values);
+          const { data: { id } } = await nchandiWebsiteService.postPerson({}, values);
+          values.id = id;
+          setTableData(prevData => [values, ...prevData]);
           setIsOpen(false);
         }
         enqueueSnackbar('This member was successfully submitted.', snackbarMessages.success.configuration);
-        fetchTableData();
       } catch (err) {
         enqueueSnackbar('There was an error when submitting this form, please try again later or contact the Technology Chair', snackbarMessages.error.configuration);
         console.error(err);
@@ -194,9 +202,9 @@ const PanelMembersDashboard = () => {
   /**
    *
    */
-  const handleDelete = (e, id) => {
+  const handleDelete = (e, row) => {
     e.stopPropagation();
-    setPanelMember((tableData.filter(row => row?.id === id))[0]);
+    setPanelMember(row);
     setIsDeleteDialogOpen(true);
   };
 
@@ -213,8 +221,8 @@ const PanelMembersDashboard = () => {
    */
   const handleDeleteDialogConfirm = async () => {
     setLoading(true);
+    const { id } = panelMember;
     try {
-      const { id } = panelMember;
       await nchandiWebsiteService.deletePersonWithPersonId({}, id);
       enqueueSnackbar('This panel member was deleted.', snackbarMessages.success.configuration);
     } catch (error) {
@@ -223,8 +231,8 @@ const PanelMembersDashboard = () => {
     } finally {
       setLoading(false);
       setPanelMember('');
+      setTableData(tableData.filter(row => row?.id !== id));
       setIsDeleteDialogOpen(false);
-      fetchTableData();
     }
   };
 

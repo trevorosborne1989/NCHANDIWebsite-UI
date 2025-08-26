@@ -42,13 +42,13 @@ const generateTableConfig = (handleSave, handleDelete, handleGenderColumn) => ({
     { field: 'id', headerName: 'ID', width: 0, visible: false },
     { field: 'approve', headerName: '', width: 75, renderCell: (params) => (
         <IconButton>
-          <CheckCircleOutline fontSize='large' color='info' onClick={(e) => handleSave(e, params?.row?.id)} data-cy='table-confirm-btn' />
+          <CheckCircleOutline fontSize='large' color='info' onClick={(e) => handleSave(e, params?.row)} data-cy='table-confirm-btn' />
         </IconButton>
       )
     },
     { field: 'dismiss', headerName: '', width: 75, renderCell: (params) => (
         <IconButton>
-          <DeleteForever fontSize='large' color='error' onClick={(e) => handleDelete(e, params?.row?.id)} data-cy='table-delete-btn' />
+          <DeleteForever fontSize='large' color='error' onClick={(e) => handleDelete(e, params?.row)} data-cy='table-delete-btn' />
         </IconButton>
       )
     },
@@ -123,13 +123,10 @@ const PendingVolunteersDashboard = () => {
   /**
    *
    */
-  const handleSave = (e, id) => {
+  const handleSave = (e, row) => {
     e.stopPropagation();
-    if (id.length !== 0) {
-      console.log(id);
-      setPending((tableData.filter(row => row?.id === id))[0]);
-      setIsSaveDialogOpen(true);
-    }
+    setPending(row);
+    setIsSaveDialogOpen(true);
   };
 
   /**
@@ -145,10 +142,9 @@ const PendingVolunteersDashboard = () => {
    */
   const handleSaveDialogConfirm = async () => {
     setLoading(true);
+    const { id } = pending;
     try {
-      const { id } = pending;
       await nchandiWebsiteService.approvePending({}, id, pending);
-      fetchTableData();
       enqueueSnackbar('This pending volunteer has been added.', snackbarMessages.success.configuration);
     } catch (error) {
       console.error(error);
@@ -156,17 +152,17 @@ const PendingVolunteersDashboard = () => {
     } finally {
       setLoading(false);
       setPending('');
+      setTableData(tableData.filter(row => row?.id !== id));
       setIsSaveDialogOpen(false);
-      fetchTableData();
     }
   };
 
   /**
    *
    */
-  const handleDelete = (e, id) => {
+  const handleDelete = (e, row) => {
     e.stopPropagation();
-    setPending((tableData.filter(row => row?.id === id))[0]);
+    setPending(row);
     setIsDeleteDialogOpen(true);
   };
 
@@ -183,8 +179,8 @@ const PendingVolunteersDashboard = () => {
    */
   const handleDeleteDialogConfirm = async () => {
     setLoading(true);
+    const { id } = pending;
     try {
-      const { id } = pending;
       await nchandiWebsiteService.deletePendingWithPendingId({}, id);
       enqueueSnackbar('This pending volunteer was deleted.', snackbarMessages.success.configuration);
     } catch (error) {
@@ -193,8 +189,8 @@ const PendingVolunteersDashboard = () => {
     } finally {
       setLoading(false);
       setPending('');
+      setTableData(tableData.filter(row => row?.id !== id));
       setIsDeleteDialogOpen(false);
-      fetchTableData();
     }
   };
 

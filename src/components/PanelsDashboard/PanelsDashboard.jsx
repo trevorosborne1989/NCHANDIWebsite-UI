@@ -43,7 +43,7 @@ const generateTableConfig = (handleSelection, handleAdd, handleDelete, handleGen
     { field: 'id', headerName: 'ID', width: 0, visible: false },
     { field: '', headerName: '', width: 75, renderCell: (params) => (
       <IconButton>
-        <DeleteForever fontSize='large' color='error' onClick={(e) => handleDelete(e, params?.row?.id)} data-cy='table-delete-btn' />
+        <DeleteForever fontSize='large' color='error' onClick={(e) => handleDelete(e, params?.row)} data-cy='table-delete-btn' />
       </IconButton>
       )
     },
@@ -101,9 +101,18 @@ const PanelsDashboard = () => {
       try {
         if (id) {
           await nchandiWebsiteService.putPanelWithPanelId({}, id, values);
+          setTableData(prevData =>
+            prevData.map(row =>
+              row.id === id
+                ? { ...row, ...values }
+                : row
+            )
+          );
           setIsOpen(false);
         } else {
-          await nchandiWebsiteService.postPanel({}, values);
+          const { data: { id } } = await nchandiWebsiteService.postPanel({}, values);
+          values.id = id;
+          setTableData(prevData => [values, ...prevData]);
           setIsOpen(false);
         }
         enqueueSnackbar('This panel was successfully submitted.', snackbarMessages.success.configuration);
@@ -111,7 +120,6 @@ const PanelsDashboard = () => {
         enqueueSnackbar('There was an error when submitting this form, please try again later or contact the Technology Chair', snackbarMessages.error.configuration);
         console.error(err);
       }
-      fetchTableData();
     },
     validationSchema: yupSchema,
     validateOnBlur: true,
@@ -264,9 +272,9 @@ const PanelsDashboard = () => {
   /**
   *
   */
-  const handleDelete = (e, id) => {
+  const handleDelete = (e, row) => {
     e.stopPropagation();
-    setPanel((tableData.filter(row => row?.id === id))[0]);
+    setPanel(row);
     setIsDeleteDialogOpen(true);
   };
 
@@ -283,8 +291,8 @@ const PanelsDashboard = () => {
    */
   const handleDeleteDialogConfirm = async () => {
     setLoading(true);
+    const { id } = panel;
     try {
-      const { id } = panel;
       await nchandiWebsiteService.deletePanelsWithPanelId({}, id);
       enqueueSnackbar('This panel was deleted.', snackbarMessages.success.configuration);
     } catch (error) {
@@ -293,8 +301,8 @@ const PanelsDashboard = () => {
     } finally {
       setLoading(false);
       setPanel('');
+      setTableData(tableData.filter(row => row?.id !== id));
       setIsDeleteDialogOpen(false);
-      fetchTableData();
     }
   };
 
