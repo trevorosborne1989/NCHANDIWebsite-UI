@@ -254,7 +254,7 @@ const HomePage = () => {
                 }
                 {item?.type === "Announcement With Attachment" &&
                 <Box alignItems={'center'} mb={2}>
-                  <Card variant="elevation" elevation={10} sx={{ maxWidth: '10%', backgroundColor: "#f8d77f" }}>
+                  <Card variant="elevation" elevation={10} sx={{ maxWidth: '20%', backgroundColor: "#f8d77f" }}>
                     <Tooltip title="See Attachment">
                       <IconButton>
                         <AttachFile
