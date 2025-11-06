@@ -70,6 +70,12 @@ const Resources = () => {
       aaPaperbackQty: 0,
       aaPocketSize: false,
       aaPocketSizeQty: 0,
+      aaComesOfAge: false,
+      aaComesOfAgeQty: 0,
+      bigBookPlainEnglish: false,
+      bigBookPlainEnglishQty: 0,
+      aBookOfFellowship: false,
+      aBookOfFellowshipQty: 0,
       grapevine: false,
       grapevineQty: 0,
       laVina: false,
@@ -670,6 +676,78 @@ const Resources = () => {
                           onBlur={formik.handleBlur}
                           helperText={formik.touched.aaPocketSizeQty ? formik.errors.aaPocketSizeQty : ""}
                           error={formik.touched.aaPocketSizeQty && Boolean(formik.errors.aaPocketSizeQty)}
+                        />}
+                        <FormControlLabel
+                          control={<Checkbox
+                            sx={{ color: nchandiTheme.handiDarkGreen,'&.Mui-checked': {color: nchandiTheme.handiGreen} }}
+                            name='aaComesOfAge'
+                            checked={formik.values.aaComesOfAge}
+                            value={formik.values.aaComesOfAge}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            />}
+                          label="AA Comes of Age" sx={{ color: nchandiTheme.handiDarkBlue}}
+                        />
+                        {formik.values.aaComesOfAge &&
+                        <TextField
+                          label="*AA Comes of Age Quantity"
+                          sx={{ width: '60%' }}
+                          variant='filled'
+                          color='secondary'
+                          name='aaComesOfAgeQty'
+                          value={formik.values.aaComesOfAgeQty}
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          helperText={formik.touched.aaComesOfAgeQty ? formik.errors.aaComesOfAgeQty : ""}
+                          error={formik.touched.aaComesOfAgeQty && Boolean(formik.errors.aaComesOfAgeQty)}
+                        />}
+                        <FormControlLabel
+                          control={<Checkbox
+                            sx={{ color: nchandiTheme.handiDarkGreen,'&.Mui-checked': {color: nchandiTheme.handiGreen} }}
+                            name='bigBookPlainEnglish'
+                            checked={formik.values.bigBookPlainEnglish}
+                            value={formik.values.bigBookPlainEnglish}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            />}
+                          label="Big Book plain English" sx={{ color: nchandiTheme.handiDarkBlue}}
+                        />
+                        {formik.values.bigBookPlainEnglish &&
+                        <TextField
+                          label="*Big Book plain English Quantity"
+                          sx={{ width: '60%' }}
+                          variant='filled'
+                          color='secondary'
+                          name='bigBookPlainEnglishQty'
+                          value={formik.values.bigBookPlainEnglishQty}
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          helperText={formik.touched.bigBookPlainEnglishQty ? formik.errors.bigBookPlainEnglishQty : ""}
+                          error={formik.touched.bigBookPlainEnglishQty && Boolean(formik.errors.bigBookPlainEnglishQty)}
+                        />}
+                        <FormControlLabel
+                          control={<Checkbox
+                            sx={{ color: nchandiTheme.handiDarkGreen,'&.Mui-checked': {color: nchandiTheme.handiGreen} }}
+                            name='aBookOfFellowship'
+                            checked={formik.values.aBookOfFellowship}
+                            value={formik.values.aBookOfFellowship}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            />}
+                          label="A Book of Fellowship - 90 Years of Sharing Love and Service" sx={{ color: nchandiTheme.handiDarkBlue}}
+                        />
+                        {formik.values.aBookOfFellowship &&
+                        <TextField
+                          label="*A Book of Fellowship Quantity"
+                          sx={{ width: '60%' }}
+                          variant='filled'
+                          color='secondary'
+                          name='aBookOfFellowshipQty'
+                          value={formik.values.aBookOfFellowshipQty}
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          helperText={formik.touched.aBookOfFellowshipQty ? formik.errors.aBookOfFellowshipQty : ""}
+                          error={formik.touched.aBookOfFellowshipQty && Boolean(formik.errors.aBookOfFellowshipQty)}
                         />}
                         <FormControlLabel
                           control={<Checkbox
