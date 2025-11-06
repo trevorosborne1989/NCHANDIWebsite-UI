@@ -87,6 +87,66 @@ export const yupSchema = yup.object().shape({
       }
     )
   }).nullable(),
+  aaComesOfAge: yup.boolean().nullable(),
+  aaComesOfAgeQty: yup.number().typeError('Numbers only')
+  .when('aaComesOfAge', {
+    is: true,
+    then: schema => schema.test(
+      'aaComesOfAgeQty validation',
+      'Required',
+      aaComesOfAgeQty => {
+        if (!aaComesOfAgeQty) {
+          return new yup.ValidationError(
+            'Required',
+            aaComesOfAgeQty,
+            'aaComesOfAgeQty'
+          );
+        } else {
+          return true;
+        }
+      }
+    )
+  }).nullable(),
+  bigBookPlainEnglish: yup.boolean().nullable(),
+  bigBookPlainEnglishQty: yup.number().typeError('Numbers only')
+  .when('bigBookPlainEnglish', {
+    is: true,
+    then: schema => schema.test(
+      'bigBookPlainEnglishQty validation',
+      'Required',
+      bigBookPlainEnglishQty => {
+        if (!bigBookPlainEnglishQty) {
+          return new yup.ValidationError(
+            'Required',
+            bigBookPlainEnglishQty,
+            'bigBookPlainEnglishQty'
+          );
+        } else {
+          return true;
+        }
+      }
+    )
+  }).nullable(),
+  aBookOfFellowship: yup.boolean().nullable(),
+  aBookOfFellowshipQty: yup.number().typeError('Numbers only')
+  .when('aBookOfFellowship', {
+    is: true,
+    then: schema => schema.test(
+      'aBookOfFellowshipQty validation',
+      'Required',
+      aBookOfFellowshipQty => {
+        if (!aBookOfFellowshipQty) {
+          return new yup.ValidationError(
+            'Required',
+            aBookOfFellowshipQty,
+            'aBookOfFellowshipQty'
+          );
+        } else {
+          return true;
+        }
+      }
+    )
+  }).nullable(),
   grapevine: yup.boolean().nullable(),
   grapevineQty: yup.number().typeError('Numbers only')
   .when('grapevine', {
