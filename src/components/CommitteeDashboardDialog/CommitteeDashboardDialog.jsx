@@ -15,29 +15,57 @@ import { Clear } from '@mui/icons-material';
 
 const commitmentOptions = [
   {
-    value: 'Chair',
-    label: 'Chair',
+    value: 'Chairperson',
+    label: 'Chairperson',
   },
   {
-    value: 'CoChair',
-    label: 'CoChair',
+    value: 'Associate Chairperson',
+    label: 'Associate Chairperson',
   },
   {
-    value: 'Librarian',
-    label: 'Librarian',
+    value: 'Facilities Chairperson',
+    label: 'Facilities Chairperson',
   },
   {
-    value: 'Technology',
-    label: 'Technology',
+    value: 'Facilities Associate Chairperson',
+    label: 'Facilities Associate Chairperson',
   },
   {
     value: 'Treasurer',
     label: 'Treasurer',
   },
   {
-    value: 'Facilities',
-    label: 'Facilities',
-  }
+    value: 'Associate Treasurer',
+    label: 'Associate Treasurer',
+  },
+  {
+    value: 'Secretary',
+    label: 'Secretary',
+  },
+  {
+    value: 'Librarian',
+    label: 'Librarian',
+  },
+  {
+    value: 'Website and Technology',
+    label: 'Website and Technology',
+  },
+  {
+    value: 'Policy & Guidelines',
+    label: 'Policy & Guidelines',
+  },
+  {
+    value: 'So Cal H&I Intergroup Liaison',
+    label: 'So Cal H&I Intergroup Liaison',
+  },
+  {
+    value: 'Spanish Liaison',
+    label: 'Spanish Liaison',
+  },,
+  {
+    value: 'New Member Liaison',
+    label: 'New Member Liaison',
+  },
 ];
 
 const CommitteeDashboardDialog = ({ formik, peopleData, isOpen, handleClear, handleSave, handleClose }) => {
