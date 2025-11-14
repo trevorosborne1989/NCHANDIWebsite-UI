@@ -61,11 +61,11 @@ const commitmentOptions = [
   {
     value: 'Spanish Liaison',
     label: 'Spanish Liaison',
-  },,
+  },
   {
     value: 'New Member Liaison',
     label: 'New Member Liaison',
-  },
+  }
 ];
 
 const CommitteeDashboardDialog = ({ formik, peopleData, isOpen, handleClear, handleSave, handleClose }) => {
