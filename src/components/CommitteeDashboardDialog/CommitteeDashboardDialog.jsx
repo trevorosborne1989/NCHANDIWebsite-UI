@@ -7,26 +7,12 @@ import {
   DialogActions,
   DialogContent,
   DialogContentText,
-  DialogTitle
+  DialogTitle,
+  Box,
+  IconButton,
 } from '@mui/material';
-import Grid from '@mui/material/Unstable_Grid2';
-import PhoneInput from 'react-phone-input-2'
-import 'react-phone-input-2/lib/style.css'
+import { Clear } from '@mui/icons-material';
 
-const contactOptions = [
-  {
-    value: 'None',
-    label: 'None'
-  },
-  {
-    value: 'Text',
-    label: 'Text'
-  },
-  {
-    value: 'Email',
-    label: 'Email'
-  }
-];
 const commitmentOptions = [
   {
     value: 'Chair',
@@ -54,7 +40,11 @@ const commitmentOptions = [
   }
 ];
 
-const CommitteeDashboardDialog = ({ formik, isOpen, handleSave, handleClose }) => {
+const CommitteeDashboardDialog = ({ formik, peopleData, isOpen, handleClear, handleSave, handleClose }) => {
+
+  const handlePanelMemberChange = (e, panelMember) => {
+    formik.setFieldValue(panelMember, peopleData.find(person => person.firstName + person.lastName === e.target.value));
+  }
 
   return (
     <>
@@ -64,45 +54,30 @@ const CommitteeDashboardDialog = ({ formik, isOpen, handleSave, handleClose }) =
           <DialogContentText pb={3}>
             Please fill out the committee information below.
           </DialogContentText>
-          <TextField
-            label='First Name'
-            name='firstName'
-            fullWidth
-            variant='outlined'
-            margin='dense'
-            value={formik.values.firstName}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            helperText={formik.touched.firstName ? formik.errors.firstName : ""}
-            error={formik.touched.firstName && Boolean(formik.errors.firstName)}
-            required
-          />
-          <TextField
-            label='Last Name'
-            name='lastName'
-            fullWidth
-            variant='outlined'
-            margin='dense'
-            value={formik.values.lastName}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            helperText={formik.touched.lastName ? formik.errors.lastName : ""}
-            error={formik.touched.lastName && Boolean(formik.errors.lastName)}
-            required
-          />
-          <TextField
-            label='Email'
-            name='email'
-            fullWidth
-            variant='outlined'
-            margin='dense'
-            value={formik.values.email}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            helperText={formik.touched.email ? formik.errors.email : ""}
-            error={formik.touched.email && Boolean(formik.errors.email)}
-            required
-          />
+          <Box display={'flex'}>
+            <TextField
+              select
+              label='Committee Member'
+              name='committeeMember'
+              fullWidth
+              variant='outlined'
+              margin='dense'
+              value={formik.values?.committeeMember ? formik.values?.committeeMember?.firstName + formik.values?.committeeMember?.lastName : ''}
+              onChange={e => handlePanelMemberChange(e, 'committeeMember')}
+              onBlur={formik.handleBlur}
+              helperText={formik.touched.committeeMember ? formik.errors.committeeMember : ""}
+              error={formik.touched.committeeMember && Boolean(formik.errors.committeeMember)}
+            >
+              {peopleData?.map(option => (
+                <MenuItem key={option?.firstName + option?.lastName} value={option?.firstName + option?.lastName}>
+                  {option?.firstName + ' ' + option?.lastName}
+                </MenuItem>
+              ))}
+            </TextField>
+            <IconButton color='error' onClick={e => handleClear(e, 'committeeMember')} data-cy='modal-clear-panel-member1'>
+              <Clear fontSize='large' />
+            </IconButton>
+          </Box>
           <TextField
             select
             label='H&I Commitment'
@@ -123,46 +98,6 @@ const CommitteeDashboardDialog = ({ formik, isOpen, handleSave, handleClose }) =
               </MenuItem>
             ))}
           </TextField>
-          <Grid Grid container sm={12} pt={2}>
-            <Grid sm={6} pt={1}>
-              <PhoneInput
-                country="US"
-                disableDropdown
-                value={formik.values.phone}
-                onChange={value => formik.setFieldValue('phone', value)}
-                isValid={() => {
-                  if (formik.touched.phone && Boolean(formik.errors.phone)) {
-                    return 'Invalid phone number';
-                  } else {
-                    return true;
-                  }
-                }}
-              />
-            </Grid>
-            <Grid sm={6} pl={8}>
-              <TextField
-                select
-                label='Contact Method'
-                name='preferredContactMethod'
-                variant='outlined'
-                size='small'
-                margin='dense'
-                sx={{width: 175, minWidth: '100%'}}
-                value={formik.values.preferredContactMethod}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                helperText={formik.touched.preferredContactMethod ? formik.errors.preferredContactMethod : ""}
-                error={formik.touched.preferredContactMethod && Boolean(formik.errors.preferredContactMethod)}
-                required
-              >
-                {contactOptions.map(option => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </TextField>
-            </Grid>
-          </Grid>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
