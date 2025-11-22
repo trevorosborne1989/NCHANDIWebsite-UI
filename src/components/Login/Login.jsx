@@ -37,7 +37,7 @@ const Login = () => {
       try {
         const { data: authorities } = await nchandiWebsiteService.authenticate(token);
         if (authorities[0]?.authority.length > 5) {
-          Cookies.set('isAdmin', true); // use get cookie to get this value at the top level of a component to set a piece of state like isAdmin for a rendering conditional.
+          Cookies.set('isAdmin', true); // use get cookie to get this value at the top level of a component to set a piece of state like tempCookie for a rendering conditional.
         }
         console.log(authorities[0]?.authority);
         enqueueSnackbar('Login successful.', snackbarMessages.success.configuration);
@@ -78,7 +78,7 @@ const Login = () => {
             <Grid sm={8}>
               <Paper variant='elevation' elevation={15} sx={{ backgroundColor: nchandiTheme.handiDarkGreen }} >
                 <Grid container alignContent={'center'} justifyContent={'center'} direction={'column'} >
-                  <Grid sm={10}>
+                  <Grid sm={10}  ml={3} mr={3}>
                     <Box py={7} pb={3}>
                       <Typography variant="h6" color={'white'} >
                         Email Address
@@ -87,7 +87,7 @@ const Login = () => {
                         label='Email'
                         name='usernameParameter'
                         color='primary'
-                        sx={{ backgroundColor: 'white' }}
+                        sx={{ backgroundColor: 'white'}}
                         fullWidth
                         type='email'
                         variant='filled'
@@ -101,7 +101,7 @@ const Login = () => {
                       />
                     </Box>
                   </Grid>
-                  <Grid sm={10}>
+                  <Grid sm={10} ml={3} mr={3}>
                     <Typography variant="h6" color={'white'}>
                       Password
                     </Typography>
@@ -138,7 +138,7 @@ const Login = () => {
                         }
                       </Button>
                     </Grid>
-                    <Grid sm={12}>
+                    <Grid sm={12} ml={2} mr={2}>
                       <Typography variant="h7" color={'white'}>
                         Login is for chairmembers and other appointees.
                       </Typography>

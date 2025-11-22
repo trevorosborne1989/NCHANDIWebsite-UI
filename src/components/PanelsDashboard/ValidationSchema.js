@@ -29,9 +29,9 @@ export const yupSchema = yup.object().shape({
   boardChampion: yup.object().shape({}).nullable(),
   panelCoordinator: yup.object().shape({}).nullable(),
   panelLeader: yup.object().shape({}).nullable(),
-  panleMember1: yup.object().shape({}).nullable(),
-  panleMember2: yup.object().shape({}).nullable(),
-  panleMember3: yup.object().shape({}).nullable(),
-  panleMember4: yup.object().shape({}).nullable(),
-  panleMember5: yup.object().shape({}).nullable()
+  panelMember1: yup.object().shape({}).nullable(),
+  panelMember2: yup.object().shape({}).nullable(),
+  panelMember3: yup.object().shape({}).nullable(),
+  panelMember4: yup.object().shape({}).nullable(),
+  panelMember5: yup.object().shape({}).nullable()
 });

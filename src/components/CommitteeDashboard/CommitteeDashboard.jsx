@@ -4,77 +4,88 @@ import {
   Typography,
   IconButton,
   Skeleton,
+  Button,
 } from '@mui/material';
-import { Add, DeleteForever } from '@mui/icons-material';
+import {
+  DataGrid,
+  GridToolbar,
+  GridAddIcon,
+  GridToolbarContainer } from '@mui/x-data-grid';
+import { DeleteForever } from '@mui/icons-material';
 import Grid from '@mui/material/Unstable_Grid2';
 import { useFormik } from 'formik';
 import { useSnackbar } from 'notistack';
 import snackbarMessages from '../../lib/snackbarMessages';
-import EnhancedTable from '../EnhancedTable/EnhancedTable';
 import CommitteeDashboardDialog from '../CommitteeDashboardDialog/CommitteeDashboardDialog';
 import DeleteConfirmationDialog from '../DeleteConfirmationDialog/DeleteConfirmationDialog';
 import { yupSchema } from './ValidationSchema';
-import { nchandiTheme } from '../../App';
+import { nchandiTheme, nchandiTableStyles } from '../../App';
 import NCHANDIWebsiteService from '../../lib/NCHANDIWebsiteService'
+import { Tooltip } from '@mui/material';
 
 const nchandiWebsiteService = new NCHANDIWebsiteService();
 
 const formatPhone = (phone) => {
+  if (phone.length === 0) return;
   let areaCode = phone.substr(1, 3);
   let first3 = phone.substr(4, 3);
   let last4 = phone.substr(7, 4);
   return (areaCode + '-' + first3 + '-' + last4);
 };
 
-const generateTableConfig = (handleSelection, handleAdd, handleDelete) => ({
-  title: 'Committee Members',
-  dataKey: d => d.id,
-  handleSelection: handleSelection,
-  toolbar: (
-    <IconButton color='primary' onClick={handleAdd} data-cy='table-add-button'>
-      <Add sx={{ color: nchandiTheme.handiGreen }} fontSize='large' />
-    </IconButton>
-  ),
+const generateTableConfig = (handleAdd, handleRemove) => ({
+  slots: { toolbar: () => {
+      return (
+        <GridToolbarContainer sx={{ backgroundColor: nchandiTheme.handiSecondaryWhite }}>
+          <GridToolbar />
+          <Button color="primary" startIcon={<GridAddIcon />} onClick={handleAdd} >
+            New Row
+          </Button>
+        </GridToolbarContainer>
+      )
+    }
+  },
   columns: [
-    { columnName: '', numeric: true, disablePadding: false, label: '', value: d => <IconButton><DeleteForever fontSize='large' color='error' onClick={e => handleDelete(e, d)} data-cy='table-delete-btn' /></IconButton> },
-    { columnName: 'firstName', numeric: true, disablePadding: true, label: 'First Name', value: d => d.firstName },
-    { columnName: 'lastName', numeric: true, disablePadding: false, label: 'Last Name', value: d => d.lastName },
-    { columnName: 'email', numeric: true, disablePadding: false, label: 'Email', value: d => d.email },
-    { columnName: 'phone', numeric: true, disablePadding: false, label: 'Phone Number', value: d => d.phone ? formatPhone(d.phone) : '' },
-    { columnName: 'preferredContactMethod', numeric: true, disablePadding: false, label: 'Contact Method', value: d => d.preferredContactMethod },
-    { columnName: 'commitment', numeric: true, disablePadding: false, label: 'Commitment', value: d => d.commitment }
+    { field: 'id', headerName: 'ID', width: 0, visible: false },
+    { field: '', headerName: '', width: 75, renderCell: (params) => (
+      <Tooltip title={"Remove from Committee list."} >
+        <IconButton>
+          <DeleteForever fontSize='large' color='error' onClick={(e) => handleRemove(e, params?.row)} data-cy='table-delete-btn' />
+        </IconButton>
+      </Tooltip>
+      )
+    },
+    { field: 'firstName', headerName: 'First Name', width: 100 },
+    { field: 'lastName', headerName: 'Last Name', width: 100 },
+    { field: 'email', headerName: 'Email', width: 150 },
+    { field: 'phone', headerName: 'Phone Number', width: 150, valueFormatter: (value, row) => value ? formatPhone(value) : '' },
+    { field: 'preferredContactMethod', headerName: 'Contact Method', width: 150 },
+    { field: 'commitment', headerName: 'Commitment', width: 150 }
   ]
 });
 
 const CommitteeDashboard = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [peopleData, setPeopleData] = useState([]);
   const [tableData, setTableData] = useState([]);
-  const [committeeMember, setCommitteeMember] = useState(null);
+  const [committeeMember, setCommitteeMember] = useState('');
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
 
   const formik = useFormik({
     initialValues: {
-      firstName: '',
-      lastName: '',
-      email: '',
-      phone: '',
-      preferredContactMethod: '',
+      committeeMember: null,
       commitment: ''
     },
     onSubmit: async (values) => {
-      const { id } = values;
       try {
-        if (id) {
-          await nchandiWebsiteService.putPersonWithPersonId({}, id, values);
-          setIsOpen(false);
-        }else {
-          await nchandiWebsiteService.postPerson({}, values);
-          setIsOpen(false);
-        }
+        values.committeeMember.commitment = values.commitment;
+        const { data: { id } } = await nchandiWebsiteService.putPersonWithPersonId({}, values.committeeMember.id, values.committeeMember);
+        values.id = id;
+        setTableData(prevData => [values.committeeMember, ...prevData]);
+        setIsOpen(false);
         enqueueSnackbar('This committee member was successfully submitted.', snackbarMessages.success.configuration);
-        fetchTableData();
       } catch (err) {
         enqueueSnackbar('There was an error when submitting this form, please try again later or contact the Technology Chair', snackbarMessages.error.configuration);
         console.error(err);
@@ -90,8 +101,9 @@ const CommitteeDashboard = () => {
   const fetchTableData = useCallback(async () => {
     try {
       setLoading(true);
-      const committeeMembers = (await nchandiWebsiteService.getPeople()).data.filter(person => person.commitment);
-      setTableData(committeeMembers);
+      const people = (await nchandiWebsiteService.getPeople()).data;
+      setPeopleData(people);
+      setTableData(people.filter(person => person.commitment));
     } catch (err) {
       console.error(err);
     } finally {
@@ -136,25 +148,24 @@ const CommitteeDashboard = () => {
   /**
    *
    */
-  const handleSelection = (row) => {
-    formik.setValues(row);
-    setIsOpen(true);
+  const handleClear = (e, field) => {
+    formik.setFieldValue(field, null);
   };
 
   /**
    *
    */
-  const handleDelete = (e, entity) => {
+  const handleRemove = (e, row) => {
     e.stopPropagation();
+    setCommitteeMember(row);
     setIsDeleteDialogOpen(true);
-    setCommitteeMember(entity);
   };
 
   /**
    *
    */
   const handleDeleteDialogClose = () => {
-    setCommitteeMember(null);
+    setCommitteeMember('');
     setIsDeleteDialogOpen(false);
   };
 
@@ -163,22 +174,23 @@ const CommitteeDashboard = () => {
    */
   const handleDeleteDialogConfirm = async () => {
     setLoading(true);
+    const { id } = committeeMember;
+    committeeMember.commitment = null;
     try {
-      const { id } = committeeMember;
-      await nchandiWebsiteService.deletePersonWithPersonId({}, id);
-      enqueueSnackbar('This pending volunteer was deleted.', snackbarMessages.success.configuration);
+      await nchandiWebsiteService.putPersonWithPersonId({}, id, committeeMember);
+      enqueueSnackbar('This member was removed from the committee list.', snackbarMessages.success.configuration);
     } catch (error) {
       console.error(error);
-      enqueueSnackbar('There was an error deleting the pending volunteer!', snackbarMessages.error.configuration);
+      enqueueSnackbar('There was an error removing the committee member from the list!', snackbarMessages.error.configuration);
     } finally {
       setLoading(false);
-      setCommitteeMember(null);
+      setCommitteeMember('');
+      setTableData(tableData.filter(row => row?.id !== id));
       setIsDeleteDialogOpen(false);
-      fetchTableData();
     }
   };
 
-  const tableConfig = generateTableConfig(handleSelection, handleAdd, handleDelete);
+  const tableConfig = generateTableConfig(handleAdd, handleRemove);
 
   return (
     <>
@@ -196,19 +208,24 @@ const CommitteeDashboard = () => {
       </Grid>
       <Grid container sm={12} justifyContent={'center'}>
         {loading ?
-          <Skeleton variant='rectangular' width='90%' height={250}/>
+          <Skeleton variant='rectangular' width='90%' height={500}/>
           :
-          <Grid sm={12}>
-            <EnhancedTable
-              data ={tableData}
+          <Grid sm={12} height={500} width={100}>
+            <DataGrid
+              rows={tableData}
+              rowSelectionModel={committeeMember}
+              loading={loading}
               {...tableConfig}
+              {...nchandiTableStyles}
             />
           </Grid>
         }
       </Grid>
       <CommitteeDashboardDialog
         formik={formik}
+        peopleData={peopleData}
         isOpen={isOpen}
+        handleClear={handleClear}
         handleSave={handleSave}
         handleClose={handleClose}
       />
@@ -216,6 +233,7 @@ const CommitteeDashboard = () => {
         isOpen={isDeleteDialogOpen}
         entityName='Committee Member'
         primaryText={committeeMember?.firstName + ' ' + committeeMember?.lastName}
+        secondaryText={"This member will only be removed from the committee list, not deleted."}
         handleClose={handleDeleteDialogClose}
         handleDelete={handleDeleteDialogConfirm}
       />

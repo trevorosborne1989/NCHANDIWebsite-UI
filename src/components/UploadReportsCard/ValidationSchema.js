@@ -1,19 +1,17 @@
 import * as yup from 'yup';
 
-const FILE_SIZE = 1024000; //1MB
+// const FILE_SIZE = 1024000; //1MB
 
-const SUPPORTED_FORMATS = ['jpg', 'gif', 'png', 'jpeg', 'txt', 'pdf'];
+// const SUPPORTED_FORMATS = ['jpg', 'gif', 'png', 'jpeg', 'txt', 'pdf'];
 
 export const yupSchema = yup.object().shape({
-  type: yup.string().required('Required').typeError('Required'),
   monthOfYear: yup.string().required('Required').typeError('Required'),
-  file: yup.mixed()
-    .test('fileSize', "File size cannot exceed 1MB and must be a pdf, txt, jpg, gif, png, or jpeg", value => value?.size <= FILE_SIZE)
-    .test('fileType', `Unsupported File Format. Accepted formats include: ${SUPPORTED_FORMATS}`, value => {
-      if (value) {
-        return SUPPORTED_FORMATS.includes(value.name.split('.').pop());
-      }
-    }),
+    // .test('fileSize', "File size cannot exceed 1MB and must be a pdf, txt, jpg, gif, png, or jpeg", value => value?.size <= FILE_SIZE)
+    // .test('fileType', `Unsupported File Format. Accepted formats include: ${SUPPORTED_FORMATS}`, value => {
+    //   if (value) {
+    //     return SUPPORTED_FORMATS.includes(value.name.split('.').pop());
+    //   }
+    // }),
 }).test(
   'reportTypeTest',
   null,
