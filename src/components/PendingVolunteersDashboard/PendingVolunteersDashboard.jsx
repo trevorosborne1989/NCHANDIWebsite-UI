@@ -4,13 +4,14 @@ import {
   IconButton,
   Typography,
   Skeleton,
-  Box
+  Box,
+  Tooltip,
 } from '@mui/material';
 import {
   DataGrid,
   GridToolbar,
   GridToolbarContainer } from '@mui/x-data-grid';
-import { DeleteForever, CheckCircleOutline, Wc, Man, Woman } from '@mui/icons-material';
+import { DeleteForever, CheckCircleOutline, Wc, Man, Woman, Pause, FiberNew } from '@mui/icons-material';
 import Grid from '@mui/material/Unstable_Grid2';
 import { useSnackbar } from 'notistack';
 import snackbarMessages from '../../lib/snackbarMessages';
@@ -29,7 +30,7 @@ const formatPhone = (phone) => {
   return (areaCode + '-' + first3 + '-' + last4);
 };
 
-const generateTableConfig = (handleSave, handleDelete, handleGenderColumn) => ({
+const generateTableConfig = (handleSave, handleDelete, handleGenderColumn, handleIsStandbyColumn, handleStandby) => ({
   slots: { toolbar: () => {
       return (
         <GridToolbarContainer sx={{ backgroundColor: nchandiTheme.handiSecondaryWhite }}>
@@ -40,18 +41,20 @@ const generateTableConfig = (handleSave, handleDelete, handleGenderColumn) => ({
   },
   columns: [
     { field: 'id', headerName: 'ID', width: 0, visible: false },
-    { field: 'approve', headerName: '', width: 75, renderCell: (params) => (
+    { field: 'approve', headerName: '', width: 30, renderCell: (params) => (
         <IconButton>
           <CheckCircleOutline fontSize='large' color='info' onClick={(e) => handleSave(e, params?.row)} data-cy='table-confirm-btn' />
         </IconButton>
       )
     },
-    { field: 'dismiss', headerName: '', width: 75, renderCell: (params) => (
+    { field: 'dismiss', headerName: '', width: 30, renderCell: (params) => (
         <IconButton>
           <DeleteForever fontSize='large' color='error' onClick={(e) => handleDelete(e, params?.row)} data-cy='table-delete-btn' />
         </IconButton>
       )
     },
+    { field: 'isStandby', headerName: 'On Standby', width: 125, align: 'center', headerAlign: 'center', renderCell: (params) => (handleIsStandbyColumn(params?.row))},
+    { field: 'createdDate', headerName: 'Request Date', width: 150 },
     { field: 'fullName', headerName: 'Full Name', width: 200, valueFormatter: (value, row) => row?.firstName + ' ' + row?.lastName },
     { field: 'email', headerName: 'Email', width: 150 },
     { field: 'phone', headerName: 'Phone #', width: 150, valueFormatter: (value, row) => value ? formatPhone(value) : '' },
@@ -123,6 +126,29 @@ const PendingVolunteersDashboard = () => {
   /**
    *
    */
+  const handleIsStandbyColumn = (row) => {
+    if (row?.isStandby) {
+      return <Tooltip title="Yes" placement='right-end' arrow>
+          <IconButton sx={{ color: nchandiTheme.handiLightCoral }} >
+            <Box>
+              <Pause fontSize='large' onClick={(e) => handleStandby(e, row)} />
+            </Box>
+          </IconButton>
+        </Tooltip>
+    } else {
+        return <Tooltip title="No" placement='right-end' arrow>
+          <IconButton sx={{ color: nchandiTheme.handiCyan }}>
+              <Box>
+                <FiberNew fontSize='large' onClick={(e) => handleStandby(e, row)} />
+              </Box>
+            </IconButton>
+          </Tooltip>
+    }
+  }
+
+  /**
+   *
+   */
   const handleSave = (e, row) => {
     e.stopPropagation();
     setPending(row);
@@ -154,6 +180,36 @@ const PendingVolunteersDashboard = () => {
       setPending('');
       setTableData(tableData.filter(row => row?.id !== id));
       setIsSaveDialogOpen(false);
+    }
+  };
+
+  /**
+   *
+   */
+  const handleStandby = async (e, row) => {
+    e.stopPropagation();
+    row.isStandby = !row.isStandby;
+    let date = row.createdDate;
+    delete row.createdDate;
+    setLoading(true);
+    const { id } = row;
+    try {
+      await nchandiWebsiteService.putPendingWithPendingId({}, id, row);
+      enqueueSnackbar('Standby changed for this volunteer.', snackbarMessages.success.configuration);
+    } catch (error) {
+      console.error(error);
+      enqueueSnackbar('There was an error changing standby for this volunteer!', snackbarMessages.error.configuration);
+    } finally {
+      setLoading(false);
+      setPending('');
+      row.createdDate = date;
+      setTableData(prevData =>
+          prevData.map(item =>
+            item.id === id
+              ? { ...item, ...row }
+              : item
+          )
+        );
     }
   };
 
@@ -194,7 +250,7 @@ const PendingVolunteersDashboard = () => {
     }
   };
 
-  const tableConfig = generateTableConfig(handleSave, handleDelete, handleGenderColumn);
+  const tableConfig = generateTableConfig(handleSave, handleDelete, handleGenderColumn, handleIsStandbyColumn, handleStandby);
 
   return (
     <>
