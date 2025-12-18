@@ -168,9 +168,15 @@ const PendingVolunteersDashboard = () => {
    */
   const handleSaveDialogConfirm = async () => {
     setLoading(true);
+    let pendingMember = pending;
+    /**
+     * Service won't deserialize this nicely formatted date back to LocalDateTime without converting here,
+     * so just delete it. Service doesn't have a setter for createdDate so it won't update to null.
+     */
+    delete pendingMember.createdDate;
     const { id } = pending;
     try {
-      await nchandiWebsiteService.approvePending({}, id, pending);
+      await nchandiWebsiteService.approvePending({}, id, pendingMember);
       enqueueSnackbar('This pending volunteer has been added.', snackbarMessages.success.configuration);
     } catch (error) {
       console.error(error);
