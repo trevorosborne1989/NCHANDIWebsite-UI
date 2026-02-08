@@ -68,22 +68,16 @@ const Resources = () => {
       stepsAndTraditions12x12Qty: 0,
       aaPaperback: false,
       aaPaperbackQty: 0,
-      aaPocketSize: false,
-      aaPocketSizeQty: 0,
-      aaComesOfAge: false,
-      aaComesOfAgeQty: 0,
+      dailyReflections: false,
+      dailyReflectionsQty: 0,
       bigBookPlainEnglish: false,
       bigBookPlainEnglishQty: 0,
-      aBookOfFellowship: false,
-      aBookOfFellowshipQty: 0,
-      grapevine: false,
-      grapevineQty: 0,
-      laVina: false,
-      laVinaQty: 0,
       newcomerPackets: false,
       newcomerPacketsQty: 0,
-      literatureRackWithPamphlets: false,
-      literatureRackWithPamphletsQty: 0,
+      bigBookSpanish: false,
+      bigBookSpanishQty: 0,
+      stepsAndTraditions12x12Spanish: false,
+      stepsAndTraditions12x12SpanishQty: 0,
       other: false,
       otherQty: 0,
       comments: ''
@@ -656,50 +650,26 @@ const Resources = () => {
                         <FormControlLabel
                           control={<Checkbox
                             sx={{ color: nchandiTheme.handiDarkGreen,'&.Mui-checked': {color: nchandiTheme.handiGreen} }}
-                            name='aaPocketSize'
-                            checked={formik.values.aaPocketSize}
-                            value={formik.values.aaPocketSize}
+                            name='dailyReflections'
+                            checked={formik.values.dailyReflections}
+                            value={formik.values.dailyReflections}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             />}
-                          label="Alcoholic Anonymous pocket size" sx={{ color: nchandiTheme.handiDarkBlue}}
+                          label="Daily Reflections" sx={{ color: nchandiTheme.handiDarkBlue}}
                         />
-                        {formik.values.aaPocketSize &&
+                        {formik.values.dailyReflections &&
                         <TextField
-                          label="*Pocket Size Quantity"
+                          label="*Daily Reflections Quantity"
                           sx={{ width: '60%' }}
                           variant='filled'
                           color='secondary'
-                          name='aaPocketSizeQty'
-                          value={formik.values.aaPocketSizeQty}
+                          name='dailyReflectionsQty'
+                          value={formik.values.dailyReflectionsQty}
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
-                          helperText={formik.touched.aaPocketSizeQty ? formik.errors.aaPocketSizeQty : ""}
-                          error={formik.touched.aaPocketSizeQty && Boolean(formik.errors.aaPocketSizeQty)}
-                        />}
-                        <FormControlLabel
-                          control={<Checkbox
-                            sx={{ color: nchandiTheme.handiDarkGreen,'&.Mui-checked': {color: nchandiTheme.handiGreen} }}
-                            name='aaComesOfAge'
-                            checked={formik.values.aaComesOfAge}
-                            value={formik.values.aaComesOfAge}
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                            />}
-                          label="AA Comes of Age" sx={{ color: nchandiTheme.handiDarkBlue}}
-                        />
-                        {formik.values.aaComesOfAge &&
-                        <TextField
-                          label="*AA Comes of Age Quantity"
-                          sx={{ width: '60%' }}
-                          variant='filled'
-                          color='secondary'
-                          name='aaComesOfAgeQty'
-                          value={formik.values.aaComesOfAgeQty}
-                          onChange={formik.handleChange}
-                          onBlur={formik.handleBlur}
-                          helperText={formik.touched.aaComesOfAgeQty ? formik.errors.aaComesOfAgeQty : ""}
-                          error={formik.touched.aaComesOfAgeQty && Boolean(formik.errors.aaComesOfAgeQty)}
+                          helperText={formik.touched.dailyReflectionsQty ? formik.errors.dailyReflectionsQty : ""}
+                          error={formik.touched.dailyReflectionsQty && Boolean(formik.errors.dailyReflectionsQty)}
                         />}
                         <FormControlLabel
                           control={<Checkbox
@@ -728,78 +698,6 @@ const Resources = () => {
                         <FormControlLabel
                           control={<Checkbox
                             sx={{ color: nchandiTheme.handiDarkGreen,'&.Mui-checked': {color: nchandiTheme.handiGreen} }}
-                            name='aBookOfFellowship'
-                            checked={formik.values.aBookOfFellowship}
-                            value={formik.values.aBookOfFellowship}
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                            />}
-                          label="A Book of Fellowship - 90 Years of Sharing Love and Service" sx={{ color: nchandiTheme.handiDarkBlue}}
-                        />
-                        {formik.values.aBookOfFellowship &&
-                        <TextField
-                          label="*A Book of Fellowship Quantity"
-                          sx={{ width: '60%' }}
-                          variant='filled'
-                          color='secondary'
-                          name='aBookOfFellowshipQty'
-                          value={formik.values.aBookOfFellowshipQty}
-                          onChange={formik.handleChange}
-                          onBlur={formik.handleBlur}
-                          helperText={formik.touched.aBookOfFellowshipQty ? formik.errors.aBookOfFellowshipQty : ""}
-                          error={formik.touched.aBookOfFellowshipQty && Boolean(formik.errors.aBookOfFellowshipQty)}
-                        />}
-                        <FormControlLabel
-                          control={<Checkbox
-                            sx={{ color: nchandiTheme.handiDarkGreen,'&.Mui-checked': {color: nchandiTheme.handiGreen} }}
-                            name='grapevine'
-                            checked={formik.values.grapevine}
-                            value={formik.values.grapevine}
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                            />}
-                          label="Grapevines" sx={{ color: nchandiTheme.handiDarkBlue}}
-                        />
-                        {formik.values.grapevine &&
-                        <TextField
-                          label="*Grapevine Quantity"
-                          sx={{ width: '60%' }}
-                          variant='filled'
-                          color='secondary'
-                          name='grapevineQty'
-                          value={formik.values.grapevineQty}
-                          onChange={formik.handleChange}
-                          onBlur={formik.handleBlur}
-                          helperText={formik.touched.grapevineQty ? formik.errors.grapevineQty : ""}
-                          error={formik.touched.grapevineQty && Boolean(formik.errors.grapevineQty)}
-                        />}
-                        <FormControlLabel
-                          control={<Checkbox
-                            sx={{ color: nchandiTheme.handiDarkGreen,'&.Mui-checked': {color: nchandiTheme.handiGreen} }}
-                            name='laVina'
-                            checked={formik.values.laVina}
-                            value={formik.values.laVina}
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                            />}
-                          label="La Vina" sx={{ color: nchandiTheme.handiDarkBlue}}
-                        />
-                        {formik.values.laVina &&
-                        <TextField
-                          label="*La Vina Quantity"
-                          sx={{ width: '60%' }}
-                          variant='filled'
-                          color='secondary'
-                          name='laVinaQty'
-                          value={formik.values.laVinaQty}
-                          onChange={formik.handleChange}
-                          onBlur={formik.handleBlur}
-                          helperText={formik.touched.laVinaQty ? formik.errors.laVinaQty : ""}
-                          error={formik.touched.laVinaQty && Boolean(formik.errors.laVinaQty)}
-                        />}
-                        <FormControlLabel
-                          control={<Checkbox
-                            sx={{ color: nchandiTheme.handiDarkGreen,'&.Mui-checked': {color: nchandiTheme.handiGreen} }}
                             name='newcomerPackets'
                             checked={formik.values.newcomerPackets}
                             value={formik.values.newcomerPackets}
@@ -824,26 +722,50 @@ const Resources = () => {
                         <FormControlLabel
                           control={<Checkbox
                             sx={{ color: nchandiTheme.handiDarkGreen,'&.Mui-checked': {color: nchandiTheme.handiGreen} }}
-                            name='literatureRackWithPamphlets'
-                            checked={formik.values.literatureRackWithPamphlets}
-                            value={formik.values.literatureRackWithPamphlets}
+                            name='bigBookSpanish'
+                            checked={formik.values.bigBookSpanish}
+                            value={formik.values.bigBookSpanish}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             />}
-                          label="Literature Rack w/ Pamphlets" sx={{ color: nchandiTheme.handiDarkBlue}}
+                          label="Alcoholic Anonymous Spanish" sx={{ color: nchandiTheme.handiDarkBlue}}
                         />
-                        {formik.values.literatureRackWithPamphlets &&
+                        {formik.values.bigBookSpanish &&
                         <TextField
-                          label="*Rack Quantity"
+                          label="*Big Book Spanish Qty"
                           sx={{ width: '60%' }}
                           variant='filled'
                           color='secondary'
-                          name='literatureRackWithPamphletsQty'
-                          value={formik.values.literatureRackWithPamphletsQty}
+                          name='bigBookSpanishQty'
+                          value={formik.values.bigBookSpanishQty}
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
-                          helperText={formik.touched.literatureRackWithPamphletsQty ? formik.errors.literatureRackWithPamphletsQty : ""}
-                          error={formik.touched.literatureRackWithPamphletsQty && Boolean(formik.errors.literatureRackWithPamphletsQty)}
+                          helperText={formik.touched.bigBookSpanishQty ? formik.errors.bigBookSpanishQty : ""}
+                          error={formik.touched.bigBookSpanishQty && Boolean(formik.errors.bigBookSpanishQty)}
+                        />}
+                        <FormControlLabel
+                          control={<Checkbox
+                            sx={{ color: nchandiTheme.handiDarkGreen,'&.Mui-checked': {color: nchandiTheme.handiGreen} }}
+                            name='stepsAndTraditions12x12Spanish'
+                            checked={formik.values.stepsAndTraditions12x12Spanish}
+                            value={formik.values.stepsAndTraditions12x12Spanish}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            />}
+                          label="12 Steps and 12 Traditions Spanish" sx={{ color: nchandiTheme.handiDarkBlue}}
+                        />
+                        {formik.values.stepsAndTraditions12x12Spanish &&
+                        <TextField
+                          label="*12x12 Spanish Quantity"
+                          sx={{ width: '60%' }}
+                          variant='filled'
+                          color='secondary'
+                          name='stepsAndTraditions12x12SpanishQty'
+                          value={formik.values.stepsAndTraditions12x12SpanishQty}
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          helperText={formik.touched.stepsAndTraditions12x12SpanishQty ? formik.errors.stepsAndTraditions12x12SpanishQty : ""}
+                          error={formik.touched.stepsAndTraditions12x12SpanishQty && Boolean(formik.errors.stepsAndTraditions12x12SpanishQty)}
                         />}
                         <FormControlLabel
                           control={<Checkbox

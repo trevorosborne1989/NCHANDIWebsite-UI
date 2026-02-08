@@ -67,39 +67,19 @@ export const yupSchema = yup.object().shape({
       }
     )
   }).nullable(),
-  aaPocketSize: yup.boolean().nullable(),
-  aaPocketSizeQty: yup.number().typeError('Numbers only')
-  .when('aaPocketSize', {
+  dailyReflections: yup.boolean().nullable(),
+  dailyReflectionsQty: yup.number().typeError('Numbers only')
+  .when('dailyReflections', {
     is: true,
     then: schema => schema.test(
-      'aaPocketSizeQty validation',
+      'dailyReflectionsQty validation',
       'Required',
-      aaPocketSizeQty => {
-        if (!aaPocketSizeQty) {
+      dailyReflectionsQty => {
+        if (!dailyReflectionsQty) {
           return new yup.ValidationError(
             'Required',
-            aaPocketSizeQty,
-            'aaPocketSizeQty'
-          );
-        } else {
-          return true;
-        }
-      }
-    )
-  }).nullable(),
-  aaComesOfAge: yup.boolean().nullable(),
-  aaComesOfAgeQty: yup.number().typeError('Numbers only')
-  .when('aaComesOfAge', {
-    is: true,
-    then: schema => schema.test(
-      'aaComesOfAgeQty validation',
-      'Required',
-      aaComesOfAgeQty => {
-        if (!aaComesOfAgeQty) {
-          return new yup.ValidationError(
-            'Required',
-            aaComesOfAgeQty,
-            'aaComesOfAgeQty'
+            dailyReflectionsQty,
+            'dailyReflectionsQty'
           );
         } else {
           return true;
@@ -127,66 +107,6 @@ export const yupSchema = yup.object().shape({
       }
     )
   }).nullable(),
-  aBookOfFellowship: yup.boolean().nullable(),
-  aBookOfFellowshipQty: yup.number().typeError('Numbers only')
-  .when('aBookOfFellowship', {
-    is: true,
-    then: schema => schema.test(
-      'aBookOfFellowshipQty validation',
-      'Required',
-      aBookOfFellowshipQty => {
-        if (!aBookOfFellowshipQty) {
-          return new yup.ValidationError(
-            'Required',
-            aBookOfFellowshipQty,
-            'aBookOfFellowshipQty'
-          );
-        } else {
-          return true;
-        }
-      }
-    )
-  }).nullable(),
-  grapevine: yup.boolean().nullable(),
-  grapevineQty: yup.number().typeError('Numbers only')
-  .when('grapevine', {
-    is: true,
-    then: schema => schema.test(
-      'grapevineQty validation',
-      'Required',
-      grapevineQty => {
-        if (!grapevineQty) {
-          return new yup.ValidationError(
-            'Required',
-            grapevineQty,
-            'grapevineQty'
-          );
-        } else {
-          return true;
-        }
-      }
-    )
-  }).nullable(),
-  laVina: yup.boolean().nullable(),
-  laVinaQty: yup.number().typeError('Numbers only')
-  .when('laVina', {
-    is: true,
-    then: schema => schema.test(
-      'laVinaQty validation',
-      'Required',
-      laVinaQty => {
-        if (!laVinaQty) {
-          return new yup.ValidationError(
-            'Required',
-            laVinaQty,
-            'laVinaQty'
-          );
-        } else {
-          return true;
-        }
-      }
-    )
-  }).nullable(),
   newcomerPackets: yup.boolean().nullable(),
   newcomerPacketsQty: yup.number().typeError('Numbers only')
   .when('newcomerPackets', {
@@ -207,19 +127,39 @@ export const yupSchema = yup.object().shape({
       }
     )
   }).nullable(),
-  literatureRackWithPamphlets: yup.boolean().nullable(),
-  literatureRackWithPamphletsQty: yup.number().typeError('Numbers only')
-  .when('literatureRackWithPamphlets', {
+  bigBookSpanish: yup.boolean().nullable(),
+  bigBookSpanishQty: yup.number().typeError('Numbers only')
+  .when('bigBookSpanish', {
     is: true,
     then: schema => schema.test(
-      'literatureRackWithPamphletsQty validation',
+      'bigBookSpanishQty validation',
       'Required',
-      literatureRackWithPamphletsQty => {
-        if (!literatureRackWithPamphletsQty) {
+      bigBookSpanishQty => {
+        if (!bigBookSpanishQty) {
           return new yup.ValidationError(
             'Required',
-            literatureRackWithPamphletsQty,
-            'literatureRackWithPamphletsQty'
+            bigBookSpanishQty,
+            'bigBookSpanishQty'
+          );
+        } else {
+          return true;
+        }
+      }
+    )
+  }).nullable(),
+  stepsAndTraditions12x12Spanish: yup.boolean().nullable(),
+  stepsAndTraditions12x12SpanishQty: yup.number().typeError('Numbers only')
+  .when('stepsAndTraditions12x12Spanish', {
+    is: true,
+    then: schema => schema.test(
+      'stepsAndTraditions12x12SpanishQty validation',
+      'Required',
+      stepsAndTraditions12x12SpanishQty => {
+        if (!stepsAndTraditions12x12SpanishQty) {
+          return new yup.ValidationError(
+            'Required',
+            stepsAndTraditions12x12SpanishQty,
+            'stepsAndTraditions12x12SpanishQty'
           );
         } else {
           return true;
