@@ -13,6 +13,7 @@ import Panels from './components/Panels/Panels';
 import Resources from './components/Resources/Resources';
 import Contact from './components/Contact/Contact';
 import Login from './components/Login/Login';
+import PasswordReset from './components/PasswordReset/PasswordReset';
 import AdminContainer from './components/AdminContainer/AdminContainer';
 import Unathorized from './components/Unathorized/Unathorized';
 import { SnackbarProvider } from 'notistack';
@@ -57,6 +58,10 @@ import { SnackbarProvider } from 'notistack';
         {
           path: "admin-container",
           element: <AdminContainer />,
+        },
+        {
+          path: "reset-password",
+          element: <PasswordReset />,
         },
         {
           path: "unathorized",

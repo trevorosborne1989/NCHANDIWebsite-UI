@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Container,
@@ -6,9 +6,11 @@ import {
   TextField,
   Typography,
   Button,
-  CircularProgress
+  CircularProgress,
+  Link
 } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
+import LoginForgetPasswordDialog from "../LoginForgetPasswordDialog/LoginForgetPasswordDialog";
 import {Buffer} from 'buffer';
 import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
@@ -22,31 +24,51 @@ import NCHANDIWebsiteService from '../../lib/NCHANDIWebsiteService'
 const nchandiWebsiteService = new NCHANDIWebsiteService();
 
 const Login = () => {
+  const [dialogOpen, setDialogOpen] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
   const history = useNavigate();
 
   const formik = useFormik({
     initialValues: {
       usernameParameter: '',
-      passwordParameter: ''
+      passwordParameter: '',
+      forgotPassword: false,
+      email: ''
     },
     onSubmit: async (values) => {
       const { usernameParameter } = values;
       const { passwordParameter } = values;
-      const token = Buffer.from(`${usernameParameter}:${passwordParameter}`, 'utf8').toString('base64')
-      try {
-        const { data: authorities } = await nchandiWebsiteService.authenticate(token);
-        if (authorities[0]?.authority.length > 5) {
-          Cookies.set('isAdmin', true); // use get cookie to get this value at the top level of a component to set a piece of state like tempCookie for a rendering conditional.
+      const { email } = values;
+      if (email) {
+        try {
+          formik.setSubmitting(true);
+          await nchandiWebsiteService.resetPassword({}, email);
+          setDialogOpen(false);
+          enqueueSnackbar('If you are a committee member and your email exists, a message will be sent with password instructions.', snackbarMessages.success.configuration);
+        } catch (err) {
+          enqueueSnackbar('There was an error when submitting your password request, please try again later or contact the Technology Chair', snackbarMessages.error.configuration);
+          console.error(err);
+        } finally {
+          formik.resetForm();
         }
-        console.log(authorities[0]?.authority);
-        enqueueSnackbar('Login successful.', snackbarMessages.success.configuration);
-        history('/admin-container');
-        // window.location.reload();
-      } catch (err) {
-        enqueueSnackbar('Invalid username or password.', snackbarMessages.error.configuration);
-        formik.resetForm();
-        console.error(err);
+      } else {
+        const token = Buffer.from(`${usernameParameter}:${passwordParameter}`, 'utf8').toString('base64')
+        try {
+          const { data: authorities } = await nchandiWebsiteService.authenticate(token);
+          if (authorities[0]?.authority.length > 5) {
+            Cookies.set('isAdmin', true); // use get cookie to get this value at the top level of a component to set a piece of state like tempCookie for a rendering conditional.
+          } else {
+            throw new Error("This login is not an Admin.");
+          }
+          console.log(authorities[0]?.authority);
+          enqueueSnackbar('Login successful.', snackbarMessages.success.configuration);
+          history('/admin-container');
+          // window.location.reload();
+        } catch (err) {
+          enqueueSnackbar('Invalid username or password.', snackbarMessages.error.configuration);
+          formik.resetForm();
+          console.error(err);
+        }
       }
     },
     validationSchema: yupSchema,
@@ -58,12 +80,25 @@ const Login = () => {
     if (!formik.isValid) {
       enqueueSnackbar('There are fields missing or invalid in your form. Please fill out all the required fields.', snackbarMessages.error.configuration);
     }
-    formik.setSubmitting(false);
   };
 
   const handleKeyPress = (e) => {
     if (e.key === "Enter")
       handleSave();
+  };
+
+  const handleDialogSave = (e) => {
+    formik.setFieldValue('forgotPassword', true);
+    formik.submitForm();
+      if (!formik.isValid) {
+        enqueueSnackbar('The email field is missing. Please fill out this required field.', snackbarMessages.error.configuration);
+      }
+      formik.setSubmitting(false);
+  };
+
+  const handleDialogClose = () => {
+    formik.setFieldValue('forgotPassword', false);
+    setDialogOpen(false);
   };
 
     return (
@@ -132,10 +167,11 @@ const Login = () => {
                         size='large'
                         onClick={handleSave}
                         disabled={formik.isSubmitting}
-                      >
-                        Submit {formik.isSubmitting &&
-                          <Box ml={1} mt={1}><CircularProgress size={15} /></Box>
+                        startIcon={formik.isSubmitting &&
+                          <CircularProgress size={30} color='warning' />
                         }
+                      >
+                        Submit
                       </Button>
                     </Grid>
                     <Grid sm={12} ml={2} mr={2}>
@@ -143,12 +179,28 @@ const Login = () => {
                         Login is for chairmembers and other appointees.
                       </Typography>
                     </Grid>
+                    <Grid sm={12} ml={2} mr={2}>
+                      <Link component='button' variant={'h6'} underline='hover' color={nchandiTheme.handiDarkYellow}
+                        onClick={() => {
+                          setDialogOpen(true);
+                          formik.setFieldValue('forgotPassword', true);
+                        }}
+                      >
+                        Forgot Password, or new appointee?
+                      </Link>
+                    </Grid>
                   </Box>
                 </Grid>
               </Paper>
             </Grid>
           </Grid>
         </div>
+        <LoginForgetPasswordDialog
+          formik={formik}
+          isOpen={dialogOpen}
+          handleSave={handleDialogSave}
+          handleClose={handleDialogClose}
+        />
       </Container>
     )
 }

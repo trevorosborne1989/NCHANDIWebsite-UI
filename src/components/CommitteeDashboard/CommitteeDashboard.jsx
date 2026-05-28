@@ -64,6 +64,16 @@ const generateTableConfig = (handleAdd, handleRemove) => ({
   ]
 });
 
+const generatePassword = (length = 12) => {
+    const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+";
+  let password = "";
+  for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * charset.length);
+      password += charset[randomIndex];
+  }
+  return password;
+}
+
 const CommitteeDashboard = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -82,6 +92,7 @@ const CommitteeDashboard = () => {
       try {
         values.committeeMember.commitment = values.commitment;
         const { data: { id } } = await nchandiWebsiteService.putPersonWithPersonId({}, values.committeeMember.id, values.committeeMember);
+        await nchandiWebsiteService.resetPassword({}, values.committeeMember?.email);
         values.id = id;
         setTableData(prevData => [values.committeeMember, ...prevData]);
         setIsOpen(false);
@@ -122,6 +133,7 @@ const CommitteeDashboard = () => {
    *
    */
   const handleSave = () => {
+    formik.setFieldValue('committeeMember.password', generatePassword());
     formik.submitForm();
     if (!formik.isValid) {
       enqueueSnackbar('There are fields missing in your form. Please fill out all the required fields.', snackbarMessages.error.configuration);
