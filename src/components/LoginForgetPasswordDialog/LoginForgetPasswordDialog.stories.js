@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import CommitteeDashboardDialog from './CommitteeDashboardDialog';
+import LoginForgetPasswordDialog from './LoginForgetPasswordDialog';
 import { useSnackbar } from 'notistack';
 import snackbarMessages from '../../lib/snackbarMessages';
 import { useFormik } from 'formik';
@@ -8,8 +8,8 @@ import { Box, Button } from '@mui/material';
 
 
 export default {
-    title: 'CommitteeDashboardDialog',
-    component: CommitteeDashboardDialog,
+    title: 'LoginForgetPasswordDialog',
+    component: LoginForgetPasswordDialog,
   };
 
   export const Primary = ({...props}) => {
@@ -18,17 +18,12 @@ export default {
 
     const formik = useFormik({
       initialValues: {
-        firstName: '',
-        lastName: '',
-        email: '',
-        phone: '',
-        preferredContactMethod: '',
-        commitment: ''
+        email: ''
       },
       onSubmit: async () => {
         try {
           // await post method()   Use await here.
-          enqueueSnackbar('This committee member was successfully submitted.', snackbarMessages.success.configuration);
+          enqueueSnackbar('Your volunteer request was successfully submitted.', snackbarMessages.success.configuration);
           handleDialogClose();
         } catch (err) {
           enqueueSnackbar('There was an error when submitting this form, please try again later or contact the Technology Chair', snackbarMessages.error.configuration);
@@ -42,6 +37,9 @@ export default {
     const handleDialogSave = async () => {
       formik.submitForm();
       const errors = await formik.validateForm();
+      console.log(errors);
+      console.log(Object.keys(errors).length );
+
       if (!formik.isValid) {
         enqueueSnackbar('There are fields missing or invalid in your form. Please fill out all the required fields.', snackbarMessages.error.configuration);
       }
@@ -60,15 +58,15 @@ export default {
       return (
         <>
           <Box textAlign={'center'} py={7}>
-            <Button variant='contained' onClick={handleClick}>Open Committee Members Dialog</Button>
+            <Button variant='contained' onClick={handleClick}>Open Login Forget Password Dialog</Button>
           </Box>
-          <CommitteeDashboardDialog
-          formik={formik}
-          isOpen={dialogOpen}
-          handleSave={handleDialogSave}
-          handleClose={handleDialogClose}
-          >
-          </CommitteeDashboardDialog>
+          <LoginForgetPasswordDialog
+            formik={formik}
+            isOpen={dialogOpen}
+            handleSave={handleDialogSave}
+            handleClose={handleDialogClose}
+            >
+          </LoginForgetPasswordDialog>
         </>
       );
     };

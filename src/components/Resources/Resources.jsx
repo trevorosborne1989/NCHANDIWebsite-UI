@@ -84,6 +84,7 @@ const Resources = () => {
     },
     onSubmit: async (values) => {
       try {
+        formik.setSubmitting(true);
         await nchandiWebsiteService.emailLiteratureRequest({}, values);
         formik.handleReset();
         enqueueSnackbar('This request was successfully submitted.', snackbarMessages.success.configuration);
@@ -824,10 +825,11 @@ const Resources = () => {
                       size='large'
                       onClick={async () => { await handleSubmit(); }}
                       disabled={formik.isSubmitting}
-                    >
-                      Submit {formik.isSubmitting &&
-                        <Box ml={1} mt={1}><CircularProgress size={15} /></Box>
+                      startIcon={formik.isSubmitting &&
+                        <CircularProgress size={30} color='warning' />
                       }
+                    >
+                      Submit
                     </Button>
                   </Grid>
                 </Grid>
