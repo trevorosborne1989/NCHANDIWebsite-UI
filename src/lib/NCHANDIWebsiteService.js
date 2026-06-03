@@ -442,7 +442,7 @@ class NCHANDIWebsiteService {
    */
   resetPassword(params, personEmail, body) {
 
-    return this.instance.post(serviceURL + '/password-reset-tokens/' + personEmail + '', params)
+    return this.instance.post(serviceURL + '/password-reset-tokens/reset-password/' + personEmail + '', params)
   }
 
   /**
