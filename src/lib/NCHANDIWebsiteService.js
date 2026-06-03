@@ -36,8 +36,8 @@ class NCHANDIWebsiteService {
 
   /**
    * Valid Query Parameters:
-   * { 
-   * } 
+   * {
+   * }
    * @return Check serviceURL/swagger-ui/index.html#/ for more information on the response body 
    */
   savePending(params, body) {
@@ -47,9 +47,9 @@ class NCHANDIWebsiteService {
 
   /**
    * Valid Query Parameters:
-   * { 
-   * string : pendingId, 
-   * } 
+   * {
+   * string : pendingId,
+   * }
    * @return Check serviceURL/swagger-ui/index.html#/ for more information on the response body 
    */
   getPendingWithPendingId(params, pendingId, body) {
@@ -59,9 +59,9 @@ class NCHANDIWebsiteService {
 
   /**
    * Valid Query Parameters:
-   * { 
-   * string : pendingId, 
-   * } 
+   * {
+   * string : pendingId,
+   * }
    * @return Check serviceURL/swagger-ui/index.html#/ for more information on the response body 
    */
   putPendingWithPendingId(params, pendingId, body) {
@@ -71,9 +71,9 @@ class NCHANDIWebsiteService {
 
   /**
    * Valid Query Parameters:
-   * { 
-   * string : pendingId, 
-   * } 
+   * {
+   * string : pendingId,
+   * }
    * @return Check serviceURL/swagger-ui/index.html#/ for more information on the response body 
    */
   deletePendingWithPendingId(params, pendingId, body) {
@@ -83,9 +83,9 @@ class NCHANDIWebsiteService {
 
   /**
    * Valid Query Parameters:
-   * { 
-   * string : pendingId, 
-   * } 
+   * {
+   * string : pendingId,
+   * }
    * @return Check serviceURL/swagger-ui/index.html#/ for more information on the response body 
    */
   approvePending(params, pendingId, body) {
@@ -95,8 +95,8 @@ class NCHANDIWebsiteService {
 
   /**
    * Valid Query Parameters:
-   * { 
-   * } 
+   * {
+   * }
    * @return Check serviceURL/swagger-ui/index.html#/ for more information on the response body 
    */
   getAllPanels(params, body) {
@@ -106,8 +106,8 @@ class NCHANDIWebsiteService {
 
   /**
    * Valid Query Parameters:
-   * { 
-   * } 
+   * {
+   * }
    * @return Check serviceURL/swagger-ui/index.html#/ for more information on the response body 
    */
   getOpenPanels(params, body) {
@@ -117,8 +117,8 @@ class NCHANDIWebsiteService {
 
   /**
    * Valid Query Parameters:
-   * { 
-   * } 
+   * {
+   * }
    * @return Check serviceURL/swagger-ui/index.html#/ for more information on the response body 
    */
   postPanel(params, body) {
@@ -128,9 +128,9 @@ class NCHANDIWebsiteService {
 
   /**
    * Valid Query Parameters:
-   * { 
-   * string : panelId, 
-   * } 
+   * {
+   * string : panelId,
+   * }
    * @return Check serviceURL/swagger-ui/index.html#/ for more information on the response body 
    */
   getPanelsWithPanelId(params, panelId, body) {
@@ -140,9 +140,9 @@ class NCHANDIWebsiteService {
 
   /**
    * Valid Query Parameters:
-   * { 
-   * string : panelId, 
-   * } 
+   * {
+   * string : panelId,
+   * }
    * @return Check serviceURL/swagger-ui/index.html#/ for more information on the response body 
    */
   putPanelWithPanelId(params, panelId, body) {
@@ -424,8 +424,32 @@ class NCHANDIWebsiteService {
   /**
    * Valid Query Parameters:
    * {
+   * string : token,
    * }
-   * @return Check serviceURL/swagger-ui/index.html#/ for more information on the response body 
+   * @return Check serviceURL/swagger-ui/index.html#/ for more information on the response body
+   */
+  getPasswordResetTokenByToken(params, token, body) {
+
+    return this.instance.get(serviceURL + '/password-reset-tokens/' + token + '', params)
+  }
+
+  /**
+   * Valid Query Parameters:
+   * {
+   * string : personEmail,
+   * }
+   * @return Check serviceURL/swagger-ui/index.html#/ for more information on the response body
+   */
+  resetPassword(params, personEmail, body) {
+
+    return this.instance.post(serviceURL + '/password-reset-tokens/' + personEmail + '', params)
+  }
+
+  /**
+   * Valid Query Parameters:
+   * {
+   * }
+   * @return Check serviceURL/swagger-ui/index.html#/ for more information on the response body
    */
   logout(params, body) {
 
@@ -436,7 +460,7 @@ class NCHANDIWebsiteService {
    * Valid Query Parameters:
    * {
    * }
-   * @return Check serviceURL/swagger-ui/index.html#/ for more information on the response body 
+   * @return Check serviceURL/swagger-ui/index.html#/ for more information on the response body
    */
   emailLiteratureRequest(params, body) {
 
