@@ -45,12 +45,17 @@ const commitmentOptions = [
   }
 ];
 
+const currentBudgetPattern = new RegExp((new Date().getFullYear()).toString(), "i");
+
+const currentFinancialSummaryPattern = new RegExp(((new Date().getFullYear()) - 1).toString(), "i");
+
 
 const Resources = () => {
   const [facilityOptions, setFaciltiyOptions] = useState([]);
   const [panelMaterials, setPanelMaterials] = useState([]);
   const [generalResources, setGeneralResources] = useState([]);
   const [monthlyReports, setMonthlyReports] = useState([]);
+  const [archivedReports, setArchivedReports] = useState([]);
   const [loading, setLoading] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
 
@@ -131,13 +136,16 @@ const Resources = () => {
   /**
    *
    */
-  const fetchPanelMaterials = useCallback(async () => {
+  const fetchResources = useCallback(async () => {
     try {
       setLoading(true);
-      let result = (await nchandiWebsiteService.getResourceItems()).data.filter(resourceItem => resourceItem?.type === 'Panel Material');
-      setPanelMaterials(result);
+      let result = (await nchandiWebsiteService.getResourceItems()).data
+      setPanelMaterials(result.filter(resourceItem => resourceItem?.type === 'Panel Material'));
+      setGeneralResources(result.filter(resourceItem => resourceItem?.type === 'General Resource'));
+      setMonthlyReports(result.filter(resourceItem => (resourceItem?.type === 'Financial' || resourceItem?.type === 'Minutes')));
+      setArchivedReports(result.filter(resourceItem => resourceItem?.type === 'Archived Report'));
     } catch (err) {
-      enqueueSnackbar('Unable to fetch current panel materials, please try again later or contact the Technology Chair', snackbarMessages.error.configuration);
+      enqueueSnackbar('Unable to fetch resources, please try again later or contact the Technology Chair', snackbarMessages.error.configuration);
       console.error(err);
     } finally {
       setLoading(false);
@@ -148,54 +156,8 @@ const Resources = () => {
    *
    */
   useEffect(() => {
-    fetchPanelMaterials();
-  }, [fetchPanelMaterials]);
-
-  /**
-   *
-   */
-  const fetchGeneralResources = useCallback(async () => {
-    try {
-      setLoading(true);
-      let result = (await nchandiWebsiteService.getResourceItems()).data.filter(resourceItem => resourceItem?.type === 'General Resource');
-      setGeneralResources(result);
-    } catch (err) {
-      enqueueSnackbar('Unable to fetch current general resources, please try again later or contact the Technology Chair', snackbarMessages.error.configuration);
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  }, [enqueueSnackbar]);
-
-  /**
-   *
-   */
-  useEffect(() => {
-    fetchGeneralResources();
-  }, [fetchGeneralResources]);
-
-  /**
-   *
-   */
-  const fetchMonthlyReports = useCallback(async () => {
-    try {
-      setLoading(true);
-      let result = (await nchandiWebsiteService.getResourceItems()).data.filter(resourceItem => (resourceItem?.type === 'Financial' || resourceItem?.type === 'Minutes'));
-      setMonthlyReports(result);
-    } catch (err) {
-      enqueueSnackbar('Unable to fetch current monthly reports, please try again later or contact the Technology Chair', snackbarMessages.error.configuration);
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  }, [enqueueSnackbar]);
-
-  /**
-   *
-   */
-  useEffect(() => {
-    fetchMonthlyReports();
-  }, [fetchMonthlyReports]);
+    fetchResources();
+  }, [fetchResources]);
 
   /**
    *
@@ -375,7 +337,7 @@ const Resources = () => {
                   </Typography>
                 </Grid>
                 <Grid sm={10} pb={5}>
-                  <IconButton onClick={e => handleClick(e, monthlyReports.find(monthlyReport => monthlyReport.type === (new Date().getFullYear() - 1).toString() + ' Previous Year Financial Summary'))}>
+                  <IconButton onClick={e => handleClick(e, archivedReports.find(archivedReport => currentFinancialSummaryPattern.test(archivedReport.name) && /financial.summary/i.test(archivedReport.name)))}>
                     <Link variant={'h5'} color={'#FFFFFF'} underline='always' >
                     {((new Date().getFullYear()) - 1).toString()} Previous Year Financial Summary
                     </Link>
@@ -388,7 +350,7 @@ const Resources = () => {
                   </Typography>
                 </Grid>
                 <Grid sm={10}>
-                  <IconButton onClick={e => handleClick(e, monthlyReports.find(monthlyReport => monthlyReport.type === ((new Date().getFullYear()).toString() + ' Proposed Budget')))}>
+                  <IconButton onClick={e => handleClick(e, archivedReports.find(archivedReport => currentBudgetPattern.test(archivedReport.name) && /proposed.budget/i.test(archivedReport.name)))}>
                     <Link variant={'h5'} color={'#FFFFFF'} underline='always' >
                       {(new Date().getFullYear()).toString()} Proposed Budget
                     </Link>
@@ -438,7 +400,7 @@ const Resources = () => {
                   </Typography>
                 </Grid>
                 <Grid sm={10}>
-                  <Link variant={'h5'} color={'#FFFFFF'} underline='always' href='http://www.aasandiego.org/releaseform.pdf' target="_blank" >
+                  <Link variant={'h5'} color={'#FFFFFF'} underline='always' onClick={e => handleClick(e, archivedReports.find(archivedReport => /contact.on.release/i.test(archivedReport.name)))} >
                     Contact on Release Form
                   </Link>
                 </Grid>
