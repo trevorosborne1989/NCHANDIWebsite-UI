@@ -5,15 +5,19 @@ import {
   Skeleton,
   Box,
   IconButton,
+  Tooltip,
 } from "@mui/material";
 import {
   Wc,
   Man,
   Woman,
+  FileDownloadOutlined,
 } from '@mui/icons-material';
 import {
   DataGrid,
-  GridToolbar,
+  GridToolbarColumnsButton,
+  GridToolbarFilterButton,
+  GridToolbarDensitySelector,
   GridToolbarContainer,
 } from '@mui/x-data-grid';
 import Grid from '@mui/material/Unstable_Grid2';
@@ -21,19 +25,38 @@ import PanelsDialog from "../PanelsDialog/PanelsDialog";
 import { useFormik } from 'formik';
 import { useSnackbar } from 'notistack';
 import snackbarMessages from '../../lib/snackbarMessages';
+import { CSVLink } from 'react-csv';
 import { yupSchema } from './ValidationSchema';
 import NCHANDIWebsiteService from '../../lib/NCHANDIWebsiteService'
 import { nchandiTheme, nchandiTableStyles } from '../../App';
 
 const nchandiWebsiteService = new NCHANDIWebsiteService();
 
-const generateTableConfig = (handleSelection, handleGenderColumn) => ({
+const generateTableConfig = (handleSelection, handleGenderColumn, tableData) => ({
   onRowSelectionModelChange: handleSelection,
   slots: {
     toolbar: () => {
       return (
         <GridToolbarContainer sx={{ backgroundColor: nchandiTheme.handiSecondaryWhite }}>
-          <GridToolbar />
+          <GridToolbarColumnsButton />
+          <GridToolbarFilterButton />
+          <GridToolbarDensitySelector />
+          <CSVLink data={tableData} filename="export.csv" headers={exportHeaders} style={{ textDecoration: 'none' }}>
+            <Tooltip title="Export CSV" placement='bottom'>
+              <IconButton color="primary" size='small' sx={{
+                  borderRadius: 0,
+                  '& .MuiTouchRipple-root': {
+                    borderRadius: 0,
+                  },
+                }} 
+              >
+                <FileDownloadOutlined />
+                <Typography fontSize={'13px'} pl={.5}>
+                  EXPORT
+                </Typography>
+              </IconButton>
+            </Tooltip>
+          </CSVLink>
         </GridToolbarContainer>
       )
     },
@@ -67,6 +90,18 @@ const generateTableConfig = (handleSelection, handleGenderColumn) => ({
     { field: 'website', headerName: 'Website',  width: 250, valueGetter: (value, row) => row?.facility?.website }
   ]
 });
+
+const exportHeaders = [
+  { label: "Day", key: "dayOfWeek" },
+  { label: "Week", key: "weekOfMonth" }, // Dot notation handles the nesting
+  { label: "Time", key: "eventTime" },
+  { label: "Facility", key: "facility.name" },
+  { label: "Gender", key: "gender" },
+  { label: "# Needed", key: "numberNeeded" },
+  { label: "Address", key: "facility.address" },
+  { label: "City", key: "facility.city" },
+  { label: "Website", key: "facility.website" }
+];
 
 const Panels = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -166,7 +201,7 @@ const Panels = () => {
     }
   };
 
-  const tableConfig = generateTableConfig(handleSelection, handleGenderColumn);
+  const tableConfig = generateTableConfig(handleSelection, handleGenderColumn, tableData);
 
   return (
     <Box ml={2} mr={2}>

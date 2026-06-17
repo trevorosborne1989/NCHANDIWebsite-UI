@@ -5,18 +5,23 @@ import {
   IconButton,
   Skeleton,
   Button,
+  Tooltip,
 } from '@mui/material';
 import {
   DataGrid,
-  GridToolbar,
+  GridToolbarColumnsButton,
+  GridToolbarFilterButton,
+  GridToolbarDensitySelector,
   GridAddIcon,
-  GridToolbarContainer } from '@mui/x-data-grid';
-import { DeleteForever } from '@mui/icons-material';
+  GridToolbarContainer 
+} from '@mui/x-data-grid';
+import { DeleteForever, FileDownloadOutlined } from '@mui/icons-material';
 import { Circle } from '@mui/icons-material';
 import Grid from '@mui/material/Unstable_Grid2';
 import { useFormik } from 'formik';
 import { useSnackbar } from 'notistack';
 import snackbarMessages from '../../lib/snackbarMessages';
+import { CSVLink } from 'react-csv';
 import FacilitiesDashboardDialog from '../FacilitiesDashboardDialog/FacilitiesDashboardDialog';
 import DeleteConfirmationDialog from '../DeleteConfirmationDialog/DeleteConfirmationDialog';
 import { yupSchema } from './ValidationSchema';
@@ -33,12 +38,30 @@ const formatPhone = (phone) => {
   return (areaCode + '-' + first3 + '-' + last4);
 };
 
-const generateTableConfig = (handleSelection, handleAdd, handleDelete , handleActive) => ({
+const generateTableConfig = (handleSelection, handleAdd, handleDelete , handleActive, tableData) => ({
   onRowSelectionModelChange: handleSelection,
   slots: { toolbar: () => {
       return (
         <GridToolbarContainer sx={{ backgroundColor: nchandiTheme.handiSecondaryWhite }}>
-          <GridToolbar />
+          <GridToolbarColumnsButton />
+          <GridToolbarFilterButton />
+          <GridToolbarDensitySelector />
+          <CSVLink data={tableData} filename="export.csv" headers={exportHeaders} style={{ textDecoration: 'none' }}>
+            <Tooltip title="Export CSV" placement='bottom'>
+              <IconButton color="primary" size='small' sx={{
+                  borderRadius: 0,
+                  '& .MuiTouchRipple-root': {
+                    borderRadius: 0,
+                  },
+                }} 
+              >
+                <FileDownloadOutlined />
+                <Typography fontSize={'13px'} pl={.5}>
+                  EXPORT
+                </Typography>
+              </IconButton>
+            </Tooltip>
+          </CSVLink>
           <Button color="primary" startIcon={<GridAddIcon />} onClick={handleAdd} >
             New Row
           </Button>
@@ -74,6 +97,22 @@ const generateTableConfig = (handleSelection, handleAdd, handleDelete , handleAc
     }
   ]
 });
+
+const exportHeaders = [
+  { label: "Facility Name", key: "name" },
+  { label: "Facility Type", key: "type" }, // Dot notation handles the nesting
+  { label: "Address", key: "address" },
+  { label: "City", key: "city" },
+  { label: "State", key: "state" },
+  { label: "Website", key: "website" },
+  { label: "Primary Contact Name", key: "primaryContactName" },
+  { label: "Primary Contact Email", key: "primaryContactEmail" },
+  { label: "Primary Phone #", key: "primaryContactPhone" },
+  { label: "Alternate Contact Name", key: "alternateContactName" },
+  { label: "Alternate Contact Email", key: "alternateContactEmail" },
+  { label: "Alternate Phone #", key: "alternateContactPhone" },
+  { label: "Active", key: "active" }
+];
 
 const FacilitiesDashboard = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -238,7 +277,7 @@ const FacilitiesDashboard = () => {
     }
   };
 
-  const tableConfig = generateTableConfig(handleSelection, handleAdd, handleDelete, handleActive);
+  const tableConfig = generateTableConfig(handleSelection, handleAdd, handleDelete, handleActive, tableData);
 
   return (
     <>
