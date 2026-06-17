@@ -8,14 +8,18 @@ import {
 } from '@mui/material';
 import {
   DataGrid,
-  GridToolbar,
   GridAddIcon,
-  GridToolbarContainer } from '@mui/x-data-grid';
-import { DeleteForever } from '@mui/icons-material';
+  GridToolbarColumnsButton,
+  GridToolbarFilterButton,
+  GridToolbarDensitySelector,
+  GridToolbarContainer,
+} from '@mui/x-data-grid';
+import { DeleteForever, FileDownloadOutlined } from '@mui/icons-material';
 import Grid from '@mui/material/Unstable_Grid2';
 import { useFormik } from 'formik';
 import { useSnackbar } from 'notistack';
 import snackbarMessages from '../../lib/snackbarMessages';
+import { CSVLink } from 'react-csv';
 import CommitteeDashboardDialog from '../CommitteeDashboardDialog/CommitteeDashboardDialog';
 import DeleteConfirmationDialog from '../DeleteConfirmationDialog/DeleteConfirmationDialog';
 import { yupSchema } from './ValidationSchema';
@@ -33,11 +37,29 @@ const formatPhone = (phone) => {
   return (areaCode + '-' + first3 + '-' + last4);
 };
 
-const generateTableConfig = (handleAdd, handleRemove) => ({
+const generateTableConfig = (handleAdd, handleRemove, tableData) => ({
   slots: { toolbar: () => {
       return (
         <GridToolbarContainer sx={{ backgroundColor: nchandiTheme.handiSecondaryWhite }}>
-          <GridToolbar />
+          <GridToolbarColumnsButton />
+          <GridToolbarFilterButton />
+          <GridToolbarDensitySelector />
+          <CSVLink data={tableData} filename="export.csv" headers={exportHeaders} style={{ textDecoration: 'none' }}>
+            <Tooltip title="Export CSV" placement='bottom'>
+              <IconButton color="primary" size='small' sx={{
+                  borderRadius: 0,
+                  '& .MuiTouchRipple-root': {
+                    borderRadius: 0,
+                  },
+                }} 
+              >
+                <FileDownloadOutlined />
+                <Typography fontSize={'13px'} pl={.5}>
+                  EXPORT
+                </Typography>
+              </IconButton>
+            </Tooltip>
+          </CSVLink>
           <Button color="primary" startIcon={<GridAddIcon />} onClick={handleAdd} >
             New Row
           </Button>
@@ -63,6 +85,15 @@ const generateTableConfig = (handleAdd, handleRemove) => ({
     { field: 'commitment', headerName: 'Commitment', width: 150 }
   ]
 });
+
+const exportHeaders = [
+  { label: "First Name", key: "firstName" },
+  { label: "Last Name", key: "lastName" }, // Dot notation handles the nesting
+  { label: "Email", key: "email" },
+  { label: "Phone Number", key: "phone" },
+  { label: "Contact Method", key: "preferredContactMethod" },
+  { label: "Commitment", key: "commitment" }
+];
 
 const generatePassword = (length = 12) => {
     const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+";
@@ -202,7 +233,7 @@ const CommitteeDashboard = () => {
     }
   };
 
-  const tableConfig = generateTableConfig(handleAdd, handleRemove);
+  const tableConfig = generateTableConfig(handleAdd, handleRemove, tableData);
 
   return (
     <>

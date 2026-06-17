@@ -7,17 +7,22 @@ import {
   Box,
   Skeleton,
   Button,
+  Tooltip,
 } from '@mui/material';
 import {
   DataGrid,
-  GridToolbar,
+  GridToolbarColumnsButton,
+  GridToolbarFilterButton,
+  GridToolbarDensitySelector,
   GridAddIcon,
-  GridToolbarContainer } from '@mui/x-data-grid';
-import { DeleteForever, Wc, Man, Woman } from '@mui/icons-material';
+  GridToolbarContainer 
+} from '@mui/x-data-grid';
+import { DeleteForever, Wc, Man, Woman, FileDownloadOutlined, } from '@mui/icons-material';
 import Grid from '@mui/material/Unstable_Grid2';
 import { useFormik } from 'formik';
 import { useSnackbar } from 'notistack';
 import snackbarMessages from '../../lib/snackbarMessages';
+import { CSVLink } from 'react-csv';
 import PanelsDashboardDialog from '../PanelsDashboardDialog/PanelsDashboardDialog'
 import DeleteConfirmationDialog from '../DeleteConfirmationDialog/DeleteConfirmationDialog';
 import { yupSchema } from './ValidationSchema';
@@ -26,12 +31,30 @@ import NCHANDIWebsiteService from '../../lib/NCHANDIWebsiteService'
 
 const nchandiWebsiteService = new NCHANDIWebsiteService();
 
-const generateTableConfig = (handleSelection, handleAdd, handleDelete, handleGenderColumn) => ({
+const generateTableConfig = (handleSelection, handleAdd, handleDelete, handleGenderColumn, tableData) => ({
   onRowSelectionModelChange: handleSelection,
   slots: { toolbar: () => {
       return (
         <GridToolbarContainer sx={{ backgroundColor: nchandiTheme.handiSecondaryWhite }}>
-          <GridToolbar />
+          <GridToolbarColumnsButton />
+          <GridToolbarFilterButton />
+          <GridToolbarDensitySelector />
+          <CSVLink data={tableData} filename="export.csv" headers={exportHeaders} style={{ textDecoration: 'none' }}>
+            <Tooltip title="Export CSV" placement='bottom'>
+              <IconButton color="primary" size='small' sx={{
+                  borderRadius: 0,
+                  '& .MuiTouchRipple-root': {
+                    borderRadius: 0,
+                  },
+                }} 
+              >
+                <FileDownloadOutlined />
+                <Typography fontSize={'13px'} pl={.5}>
+                  EXPORT
+                </Typography>
+              </IconButton>
+            </Tooltip>
+          </CSVLink>
           <Button color="primary" startIcon={<GridAddIcon />} onClick={handleAdd} >
             New Row
           </Button>
@@ -66,6 +89,32 @@ const generateTableConfig = (handleSelection, handleAdd, handleDelete, handleGen
     { field: 'panelMember5', headerName: 'Panel Member 5', width: 150, valueGetter: (value, row) => row?.panelMember5 ? row?.panelMember5?.firstName + ' ' + row?.panelMember5?.lastName : 'empty' }
   ]
 });
+
+const exportHeaders = [
+  { label: "Day", key: "dayOfWeek" },
+  { label: "Week", key: "weekOfMonth" }, // Dot notation handles the nesting
+  { label: "Time", key: "eventTime" },
+  { label: "Facility", key: "facility.name" },
+  { label: "Address", key: "facility.address" },
+  { label: "City", key: "facility.city" },
+  { label: "Gender", key: "gender" },
+  { label: "Volunteers Needed?", key: "markAsMembersNeeded" },
+  { label: "# Needed", key: "numberNeeded" },
+  { label: "Board Champion First Name", key: "boardChampion.firstName"},
+  { label: "Board Champion Last Name", key: "boardChampion.lastName"},
+  { label: "Panel Coordinator First Name", key: "panelCoordinator.firstName" },
+  { label: "Panel Coordinator Last Name", key: "panelCoordinator.lastName" },
+  { label: "Panel Member 1 First Name", key: "panelMember1.firstName" },
+  { label: "Panel Member 1 Last Name", key: "panelMember1.lastName" },
+  { label: "Panel Member 2 First Name", key: "panelMember2.firstName" },
+  { label: "Panel Member 2 Last Name", key: "panelMember2.lastName" },
+  { label: "Panel Member 3 First Name", key: "panelMember3.firstName" },
+  { label: "Panel Member 3 Last Name", key: "panelMember3.lastName" },
+  { label: "Panel Member 4 First Name", key: "panelMember4.firstName" },
+  { label: "Panel Member 4 Last Name", key: "panelMember4.lastName" },
+  { label: "Panel Member 5 First Name", key: "panelMember5.firstName" },
+  { label: "Panel Member 5 Last Name", key: "panelMember5.lastName" },
+];
 
 const PanelsDashboard = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -306,7 +355,8 @@ const PanelsDashboard = () => {
     }
   };
 
-  const tableConfig = generateTableConfig(handleSelection, handleAdd, handleDelete, handleGenderColumn);
+  const tableConfig = generateTableConfig(handleSelection, handleAdd, handleDelete, handleGenderColumn, tableData);
+
 
   return (
     <>

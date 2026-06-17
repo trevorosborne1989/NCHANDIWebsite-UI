@@ -11,7 +11,7 @@ import {
   Wc,
   Man,
   Woman,
-  FileDownload,
+  FileDownloadOutlined,
 } from '@mui/icons-material';
 import {
   DataGrid,
@@ -32,7 +32,7 @@ import { nchandiTheme, nchandiTableStyles } from '../../App';
 
 const nchandiWebsiteService = new NCHANDIWebsiteService();
 
-const generateTableConfig = (handleSelection, handleGenderColumn, handleExportClick, tableData) => ({
+const generateTableConfig = (handleSelection, handleGenderColumn, tableData) => ({
   onRowSelectionModelChange: handleSelection,
   slots: {
     toolbar: () => {
@@ -43,8 +43,17 @@ const generateTableConfig = (handleSelection, handleGenderColumn, handleExportCl
           <GridToolbarDensitySelector />
           <CSVLink data={tableData} filename="export.csv" headers={exportHeaders} style={{ textDecoration: 'none' }}>
             <Tooltip title="Export CSV" placement='bottom'>
-              <IconButton color="primary" >
-                <FileDownload />
+              <IconButton color="primary" size='small' sx={{
+                  borderRadius: 0,
+                  '& .MuiTouchRipple-root': {
+                    borderRadius: 0,
+                  },
+                }} 
+              >
+                <FileDownloadOutlined />
+                <Typography fontSize={'13px'} pl={.5}>
+                  EXPORT
+                </Typography>
               </IconButton>
             </Tooltip>
           </CSVLink>
@@ -192,11 +201,7 @@ const Panels = () => {
     }
   };
 
-  const handleExportClick = () => {
-    // Put your custom export code here.
-  };
-
-  const tableConfig = generateTableConfig(handleSelection, handleGenderColumn, handleExportClick, tableData);
+  const tableConfig = generateTableConfig(handleSelection, handleGenderColumn, tableData);
 
   return (
     <Box ml={2} mr={2}>

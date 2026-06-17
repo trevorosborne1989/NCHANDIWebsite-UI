@@ -9,12 +9,25 @@ import {
 } from '@mui/material';
 import {
   DataGrid,
-  GridToolbar,
-  GridToolbarContainer } from '@mui/x-data-grid';
-import { DeleteForever, CheckCircleOutline, Wc, Man, Woman, Pause, FiberNew } from '@mui/icons-material';
+  GridToolbarColumnsButton,
+  GridToolbarFilterButton,
+  GridToolbarDensitySelector,
+  GridToolbarContainer 
+} from '@mui/x-data-grid';
+import { 
+  DeleteForever, 
+  CheckCircleOutline, 
+  Wc, 
+  Man, 
+  Woman, 
+  Pause, 
+  FiberNew,
+  FileDownloadOutlined,
+} from '@mui/icons-material';
 import Grid from '@mui/material/Unstable_Grid2';
 import { useSnackbar } from 'notistack';
 import snackbarMessages from '../../lib/snackbarMessages';
+import { CSVLink } from 'react-csv';
 import SaveConfirmationDialog from '../SaveConfirmationDialog/SaveConfirmationDialog';
 import DeleteConfirmationDialog from '../DeleteConfirmationDialog/DeleteConfirmationDialog';
 import { nchandiTheme, nchandiTableStyles } from '../../App';
@@ -30,11 +43,29 @@ const formatPhone = (phone) => {
   return (areaCode + '-' + first3 + '-' + last4);
 };
 
-const generateTableConfig = (handleSave, handleDelete, handleGenderColumn, handleIsStandbyColumn, handleStandby) => ({
+const generateTableConfig = (handleSave, handleDelete, handleGenderColumn, handleIsStandbyColumn, handleStandby, tableData) => ({
   slots: { toolbar: () => {
       return (
         <GridToolbarContainer sx={{ backgroundColor: nchandiTheme.handiSecondaryWhite }}>
-          <GridToolbar />
+          <GridToolbarColumnsButton />
+          <GridToolbarFilterButton />
+          <GridToolbarDensitySelector />
+          <CSVLink data={tableData} filename="export.csv" headers={exportHeaders} style={{ textDecoration: 'none' }}>
+            <Tooltip title="Export CSV" placement='bottom'>
+              <IconButton color="primary" size='small' sx={{
+                  borderRadius: 0,
+                  '& .MuiTouchRipple-root': {
+                    borderRadius: 0,
+                  },
+                }} 
+              >
+                <FileDownloadOutlined />
+                <Typography fontSize={'13px'} pl={.5}>
+                  EXPORT
+                </Typography>
+              </IconButton>
+            </Tooltip>
+          </CSVLink>
         </GridToolbarContainer>
       )
     }
@@ -67,6 +98,21 @@ const generateTableConfig = (handleSave, handleDelete, handleGenderColumn, handl
     { field: 'gender', headerName: 'Panel Gender', width: 150, renderCell: (params) => (handleGenderColumn(params?.row)) },
   ]
 });
+
+const exportHeaders = [
+  { label: "Request Date", key: "createdDate" },
+  { label: "First Name", key: "firstName" }, // Dot notation handles the nesting
+  { label: "Last Name", key: "lastName" },
+  { label: "Email", key: "email" },
+  { label: "Phone #", key: "phone" },
+  { label: "Contact Method", key: "preferredContactMethod" },
+  { label: "Facility", key: "facilityName" },
+  { label: "Day", key: "dayOfWeek" },
+  { label: "Week", key: "weekOfMonth" },
+  { label: "Time", key: "eventTime" },
+  { label: "# Needed", key: "numberNeeded" },
+  { label: "Panel Gender", key: "gender" }
+];
 
 const PendingVolunteersDashboard = () => {
   const [loading, setLoading] = useState(false);
@@ -256,7 +302,7 @@ const PendingVolunteersDashboard = () => {
     }
   };
 
-  const tableConfig = generateTableConfig(handleSave, handleDelete, handleGenderColumn, handleIsStandbyColumn, handleStandby);
+  const tableConfig = generateTableConfig(handleSave, handleDelete, handleGenderColumn, handleIsStandbyColumn, handleStandby, tableData);
 
   return (
     <>
