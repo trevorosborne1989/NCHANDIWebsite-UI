@@ -65,7 +65,15 @@ const commitmentOptions = [
   {
     value: 'New Member Liaison',
     label: 'New Member Liaison',
-  }
+  },
+  {
+    value: 'Board Champion',
+    label: 'Board Champion',
+  },
+  {
+    value: 'Panel Coordinator',
+    label: 'Panel Coordinator',
+  },
 ];
 
 const CommitteeDashboardDialog = ({ formik, peopleData, isOpen, handleClear, handleSave, handleClose }) => {
